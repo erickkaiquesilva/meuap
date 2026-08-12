@@ -1,0 +1,23 @@
+/* ============================================================
+   ANIMAÇÕES & LOADING (reutilizáveis em qualquer página)
+   ============================================================ */
+@keyframes shimmer{ 0%{ background-position:-420px 0; } 100%{ background-position:420px 0; } }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+@keyframes heartPop{ 0%{ transform:scale(1); } 35%{ transform:scale(1.4); } 60%{ transform:scale(.9); } 100%{ transform:scale(1); } }
+
+/* Skeleton loader — usado em grids de resultado durante o carregamento */
+.skeleton-card{ width:170px; border:1px solid var(--neutral-100); border-radius:var(--radius-lg); overflow:hidden; background:#fff; }
+.skeleton-media, .skeleton-line{ background:linear-gradient(90deg, var(--neutral-100) 25%, var(--neutral-200) 37%, var(--neutral-100) 63%); background-size:420px 100%; animation:shimmer 1.4s ease infinite; }
+.skeleton-media{ aspect-ratio:4/3; }
+.skeleton-line{ height:10px; border-radius:5px; margin:12px; }
+.skeleton-line.short{ width:45%; }
+
+/* Botão em estado de carregamento */
+.spin-btn .icon{ animation:spin .8s linear infinite; }
+
+/* Spinner autônomo (indicador de carregamento inline) */
+.spinner{ display:inline-block; animation:spin .8s linear infinite; color:var(--primary-500); flex:none; }
+.spinner-sm{ width:16px; height:16px; }
+.spinner-md{ width:24px; height:24px; }
+.spinner-lg{ width:34px; height:34px; }
+.loading-row{ display:flex; gap:var(--sp-6); align-items:center; flex-wrap:wrap; }

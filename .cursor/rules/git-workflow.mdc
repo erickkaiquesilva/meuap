@@ -1,0 +1,71 @@
+---
+description: Git workflow — commit standards, branch naming, and PR rules for Chave project
+alwaysApply: true
+---
+
+# Git Workflow — Chave Project
+
+## Branch Rules
+
+**NEVER commit or push directly to `main`.** All work happens on a dedicated branch.
+
+### Branch Naming
+
+```
+feat/T001        # new feature — branch from main
+fix/T001         # bug fix — branch from main
+release/v1.0.0   # release — branch from main
+```
+
+Always branch from `main`:
+```bash
+git checkout main && git pull origin main
+git checkout -b feat/T001
+```
+
+The user is responsible for opening Pull Requests. When a ticket is done, inform the user so they can open the PR.
+
+## Commit Standard
+
+Every commit **must** reference the ticket number and type:
+
+```
+feat-T001: setup project React + TypeScript + Vite
+fix-T002: resolved env config not loading in mock mode
+hotfix-T016: resolved crash on home screen QA
+```
+
+Format: `<type>-<ticket>: <short description in English>`
+
+| Prefix | When to use |
+|---|---|
+| `feat-TXXX` | New feature or implementation |
+| `fix-TXXX` | Bug fix |
+| `hotfix-TXXX` | Critical crash or production fix |
+
+### Rules
+
+- Description must be clear and in English
+- Use present tense ("resolved", "setup", "add", "remove")
+- One logical change per commit — do not bundle unrelated changes
+- Do not commit generated files, build artifacts, or `node_modules`
+- Do not commit `.env` files containing real values (only `.env.example`)
+
+## Changelog
+
+After each completed ticket, update `Changelog.md` at the project root:
+
+```markdown
+## [v1.0.0] — In progress
+
+- feat-T001: setup project React + TypeScript + Vite
+- fix-T002: resolved env config not loading in mock mode
+```
+
+## Checklist Before Every Commit
+
+- [ ] Working on a feature/fix branch (not `main`)
+- [ ] Commit message follows `<type>-<ticket>: <description>` format
+- [ ] No unrelated files staged
+- [ ] `Changelog.md` updated with this ticket's entry
+- [ ] Tests pass (`npm test`)
