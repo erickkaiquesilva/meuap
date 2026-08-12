@@ -1,0 +1,646 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        
+
+
+
+<!-- Metas -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="Pedro Granado - Imobili&aacute;ria em Maring&aacute; - Venda e loca&ccedil;&atilde;o de im&oacute;veis - Casas, Apartamentos e Terrenos em  Maring&aacute;">
+<link rel="icon" href="webroot/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="webroot/img/favicon.ico" type="image/x-icon">
+<meta property="og:title" content="Pedro Granado Im&oacute;veis" />
+<meta property="og:description" content="Especialista em Loca&ccedil;&atilde;o, Venda e Lan&ccedil;amentos" />
+<meta property="og:image" content="https://www.pedrogranado.com.br/webroot/img/favicon.ico" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Pedro Granado Im&oacute;veis" />
+<!-- Se o URL for HTTPS -->
+<meta property="og:image:secure_url" content="https://www.pedrogranado.com.br/webroot/img/favicon.ico" />
+<!-- Opcional, mas recomendÃ¡vel -->
+<meta property="og:image" itemprop="image" content="https://www.pedrogranado.com.br/webroot/img/favicon.ico" />
+<base href="//www.pedrogranado.com.br">
+
+<!-- CSS -->
+<!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+-->
+<link rel="stylesheet" href="webroot/css/bootstrap/4.1.3/bootstrap.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-flat.css" />
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-classic.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-minima.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-plain.css" /> -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Questrial">
+<link rel="stylesheet" href="webroot/css/website.css">
+
+<!-- Jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Script ajax do buscador -->
+<script src="//www.pedrogranado.com.br/kurole_include/site/js/pesquisa.js?v=11"></script>
+
+<!-- Scripts de exibiÃ§Ã£o do buscador -->
+<script src="webroot/js/form_buscador.js?v=19:57:17" charset="utf-8"></script>
+
+<!-- Script funÃ§Ãµes do sistema -->
+<script src="//www.pedrogranado.com.br/kurole_include/js/js.js"></script>
+
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
+<script src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
+<script src="webroot/js/jquery.scrollspeed.js"></script>
+<script src="webroot/js/website.js" charset="utf-8"></script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P4Q5XS4');</script>
+<!-- End Google Tag Manager --> 	        <!-- API Google Maps -->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDOjSu8GStFQPLeKarxgEh38_cUORIgwg&callback=initMap"></script>
+        <script type="text/javascript">
+            function initMap() {
+
+                // The locations
+                var local_a = {lat: -23.422827, lng: -51.942631};
+                var label_a = '<b style="font-weight: bold;">Estacionamento MK</b><br>'+'<span>Rua N&eacute;o Alves Martins, 2977</span><br>'+'<span>Maring&aacute; - PR</span>';
+                var infowindow_a = new google.maps.InfoWindow({
+                    content: label_a
+                });
+                var local_b = {lat: -23.424611, lng: -51.943591};
+                var label_b = '<b style="font-weight: bold;">Estacionamento Stop Car</b><br>'+'<span>Avenida Paran&aacute;, 325</span><br>'+'<span>Maring&aacute; - PR</span>';
+                var infowindow_b = new google.maps.InfoWindow({
+                    content: label_b
+                });
+                // The map, centered at local_a
+                var map = new google.maps.Map(
+                    document.getElementById('map_canvas'), {zoom: 16, center: local_a});
+
+                // The markers
+                var marker_a = new google.maps.Marker({position: local_a, map: map});
+                marker_a.addListener('click', function() {
+                    infowindow_a.open(map, marker_a);
+                });
+                var marker_b = new google.maps.Marker({position: local_b, map: map});
+                marker_b.addListener('click', function() {
+                    infowindow_b.open(map, marker_b);
+                });
+            }
+        </script>
+        <title>Imobili&aacute;ria Maring&aacute; - Pedro Granado: Estacionamento</title>
+    </head>
+    <body>
+        <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P4Q5XS4"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<script type="text/javascript" async src="https://d335luupugsy2.cloudfront.net/js/loader-scripts/70e54f4c-8bae-4b82-af6a-85070302d2de-loader.js" ></script> 
+<script src="https://unpkg.com/blip-chat-widget" type="text/javascript"></script>
+<link rel="stylesheet" href="https://www.pedrogranado.com.br/site_ksi/chatbot/rafa.css">
+<script src="https://www.pedrogranado.com.br/site_ksi/chatbot/chatrafa.js?v=1" type="text/javascript"></script>
+<style>
+    .contato-wpp-float{
+        position: fixed;
+        z-index: 7000;
+        bottom: 120px;
+        right: 40px;
+        width: 70px;
+        height: 70px;
+        background-color: #34af23;
+        border-radius: 50%;
+    }
+    .contato-wpp-float:hover{
+        background-color: #59C2E0;
+    }
+    .contato-wpp-float a svg{
+        position: relative; 
+        color: #FFF; 
+        margin: 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+}
+</style>
+
+<div class="contato-wpp-float" id='botao_whatsapp' style="display: none;"> 
+    <a href="https://wa.me/44991726129" target="_blank"> <!--xml version="1.0" encoding="iso-8859-1"-->
+        <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"> 
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="30" viewBox="0 0 90 90" style="enable-background:new 0 0 90 90;" xml:space="preserve"> <g> <path id="WhatsApp" fill='white' d="M90,43.841c0,24.213-19.779,43.841-44.182,43.841c-7.747,0-15.025-1.98-21.357-5.455L0,90l7.975-23.522 c-4.023-6.606-6.34-14.354-6.34-22.637C1.635,19.628,21.416,0,45.818,0C70.223,0,90,19.628,90,43.841z M45.818,6.982 c-20.484,0-37.146,16.535-37.146,36.859c0,8.065,2.629,15.534,7.076,21.61L11.107,79.14l14.275-4.537 c5.865,3.851,12.891,6.097,20.437,6.097c20.481,0,37.146-16.533,37.146-36.857S66.301,6.982,45.818,6.982z M68.129,53.938 c-0.273-0.447-0.994-0.717-2.076-1.254c-1.084-0.537-6.41-3.138-7.4-3.495c-0.993-0.358-1.717-0.538-2.438,0.537 c-0.721,1.076-2.797,3.495-3.43,4.212c-0.632,0.719-1.263,0.809-2.347,0.271c-1.082-0.537-4.571-1.673-8.708-5.333 c-3.219-2.848-5.393-6.364-6.025-7.441c-0.631-1.075-0.066-1.656,0.475-2.191c0.488-0.482,1.084-1.255,1.625-1.882 c0.543-0.628,0.723-1.075,1.082-1.793c0.363-0.717,0.182-1.344-0.09-1.883c-0.27-0.537-2.438-5.825-3.34-7.977 c-0.902-2.15-1.803-1.792-2.436-1.792c-0.631,0-1.354-0.09-2.076-0.09c-0.722,0-1.896,0.269-2.889,1.344 c-0.992,1.076-3.789,3.676-3.789,8.963c0,5.288,3.879,10.397,4.422,11.113c0.541,0.716,7.49,11.92,18.5,16.223 C58.2,65.771,58.2,64.336,60.186,64.156c1.984-0.179,6.406-2.599,7.312-5.107C68.398,56.537,68.398,54.386,68.129,53.938z"/> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg> 
+    </a>
+</div>
+
+<script>
+    $(window).on("load", function () {
+      mostrarBotao();
+    })
+    
+    function verificarHorarioAtivo() {
+        let agora = new Date();
+        let dia_da_semana = agora.getDay();
+        let hora = agora.getHours();
+        let botao_ativo = false;
+    
+        // Segunda a sexta-feira
+        if (dia_da_semana >= 1 && dia_da_semana <= 5) {
+            if (hora >= 18 || hora < 8){
+                botao_ativo = true;
+            };
+        }
+    
+        // Sábado
+        else if (dia_da_semana == 6) {
+            if (hora >= 12){
+                botao_ativo = true;
+            };
+        }
+        
+        // Domingo
+        else {  
+            if (hora <= 23){
+                botao_ativo = true;
+            };
+        }
+        
+		return botao_ativo;
+    }
+    
+    function mostrarBotao() {
+        let botao = $('#botao_whatsapp');
+    
+        if (verificarHorarioAtivo() ) {
+            botao.css("display", "block");
+        } else {
+            botao.css("display", "none");
+        }
+    }
+</script> 
+        <!-- Elementos -->
+        <main>
+            <div class="sticky-top">
+                
+<header class="header navbar navbar-expand-lg navbar-light border-bottom">
+    <div class="container">
+        <a class="navbar-brand w-50" href="/">
+            <img class="img-fluid" src="webroot/img/logo.png" alt="Logo da Empresa">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="nav-item dropdown d-none d-lg-inline ml-3">
+            <a type="button" class="btn btn-outline-danger" id="btn-portal" role="button"  target="_blank" href="pgi/clientes/login.php">
+                <span><i class="fas fa-user fa-fw"></i> Portal do Cliente</span>
+            </a>
+			<!--
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-1">
+                <form action="" method="post" onsubmit="return pprr(getDados_todos(this), '//www.pedrogranado.com.br/pgi/clientes/login.php', 'rs_login1', 'https://www.carregando.com.br/preloader/carregando.gif', '');" style="width: 500px;" class="text-center">
+                    <p>Acesse a 2&#170; via do boleto e o extrato do propriet&aacute;rio</p>
+                    <div id="rs_login1" class="alert-login"></div>
+                    <small>
+                        <p>Preencha os campos abaixo com as informa&ccedil;&oacute;es recebidas via e-mail e clique em "Acessar &aacute;rea do cliente" 
+                        para visualizar seus extratos ou boletos</p>
+                    </small>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="l_usuario" name="l_usuario" placeholder="CPF ou CNPJ" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="l_senha" name="l_senha" placeholder="Senha">
+                        <p class="text-right"><small><a href="javascript:void(0)" role="button"  data-toggle="modal" data-toggle="dropdown" data-target="#resetPassword">Esqueceu sua senha?</a></small></p>
+                    </div>
+                    <button id="btn-login" type="submit" class="btn btn-dark">Acessar &aacute;rea do cliente</button><hr>
+                    <small>
+                        <p>Caso n&atilde;o tenha as informa&ccedil;&atilde;&oacute;es de acesso, <a href="contato">entre em contato conosco</a></p>
+                    </small>
+                </form>
+            </div>
+			-->
+            <div class="nav-item dropdown d-none d-lg-inline ml-3">
+                <button type="button" class="btn btn-dark text-light dropdown-toggle" id="btn-contato" role="button" data-toggle="dropdown">
+                    <span><i class="fas fa-phone fa-fw fa-flip-horizontal"></i> Contato</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right bg-dark text-light" style="width: 320px;" aria-labelledby="dropdown-2">
+                    <div class="row m-4">
+                        <a class="col-lg-10">
+                            <div class="font-weight-light">Loja Centro</div>
+                            <strong>(44) 3222-8866</strong>
+                        </a>
+                        <a href="https://goo.gl/maps/THft1ULyyF32" class="col-lg-2 btn btn-outline-light d-flex align-items-center justify-content-center" target="blank">
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                        </a>
+                    </div>
+                    <div class="row m-4">
+                        <a class="col-lg-10">
+                            <div class="font-weight-light">Loja Conceito </div>
+                            <strong>(44) 3028-8866</strong>
+                        </a>
+                        <a href="https://goo.gl/maps/pvzMvrhmXL42" class="col-lg-2 btn btn-outline-light d-flex align-items-center justify-content-center" target="blank">
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                        </a>
+                    </div>
+                    <div class="row m-4">
+                        <a href="contato" class="col-lg-12 btn btn-success">
+                            <i class="fas fa-headset fa-fw"></i> Central de atendimento
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>                
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav m-auto text-center text-lg-left">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="lancamentos" role="button" data-toggle="dropdown">
+                        <span>Lan&ccedil;amentos</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown-1">
+                        					
+						
+                                                    <a class="dropdown-item" href="lancamentos/?construtoras=17096">Construtora Futuro Ltda</a>
+                                                    <a class="dropdown-item" href="lancamentos/?construtoras=20177">Just Construções E Empreendimentos Ltda</a>
+                        
+                        <!-- Mapa de lanÃ§amentos -->
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="mapa-de-lancamentos">Mapa de lan&ccedil;amentos</a>
+                    </div>
+                </li>
+<!--				Chamado 94777 - Cliente solicitou a desativaÃ§Ã£o deste link
+					Airton - 04/02/2022
+-->
+<!--
+                <li class="nav-item">
+                    <a class="nav-link" href="http://www.construtorafuturo.com.br">Construtora</a>
+                </li>
+-->
+                                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="venda" id="vendas" role="button" data-toggle="dropdown">
+                        <span>Vendas</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown-2">
+                        <a class="dropdown-item" href="comprar">Im&oacute;veis para venda</a>
+                        <!-- <a class="dropdown-item" href="imoveis-nos-eua">Im&oacute;veis nos EUA</a> -->
+                        <a class="dropdown-item" href="simule-seu-financiamento">Simule seu financiamento</a>
+                        <a class="dropdown-item" href="simulador-de-escritura">Simulador de escritura</a>
+                        <a class="dropdown-item" href="anuncie-seu-imovel">Anuncie seu im&oacute;vel</a>
+                        <a class="dropdown-item" href="nao-achei">N&atilde;o achei</a>
+                        <a class="dropdown-item" href="duvidas-frequentes/venda">D&uacute;vidas frequentes</a>
+                        <a class="dropdown-item" href="plantao-de-vendas">Plant&atilde;o de vendas</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="locacao" role="button" data-toggle="dropdown">
+                        <span>Loca&ccedil;&atilde;o</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown-3">
+                        <a class="dropdown-item" href="alugar">Im&oacute;veis para loca&ccedil;&atilde;o</a>
+                        <!-- <a class="dropdown-item" href="portal-do-estudante">Portal universit&aacute;rio</a> -->
+                        <!-- <a class="dropdown-item" href="seguro-fianca">Seguro fian&ccedil;a</a> -->
+<!--                        <a class="dropdown-item" href="locatario-e-fiador">Locat&aacute;rio e fiador</a>-->
+                        <a class="dropdown-item" href="anuncie-seu-imovel">Anuncie seu im&oacute;vel</a>
+                        <a class="dropdown-item" href="nao-achei">N&atilde;o achei</a>
+                        <a class="dropdown-item" href="duvidas-frequentes/locacao">D&uacute;vidas frequentes</a>
+                    </div>
+                </li>
+				<li>
+					<a id="locacao_temporada" target="_blank" class="nav-link" href="https://www.shortstay.pedrogranado.com.br/">Loca&ccedil;&atilde;o por Temporada</a>
+					
+				</li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="institucional" role="button" data-toggle="dropdown">
+                        <span>Institucional</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown-4">
+                        <a class="dropdown-item" href="institucional">Quem somos</a>
+                        <!-- <a class="dropdown-item" href="institucional#valorizacao-imobiliaria">Valoriza&ccedil;&atilde;o imobili&aacute;ria</a> -->
+                        <!-- <a class="dropdown-item" href="institucional#parceiros">Parceiros</a> -->
+                        <!-- <a class="dropdown-item" href="https://www.youtube.com/user/pedrogranadoimoveis" target="blank">Pedro Granado TV</a> -->
+                        <a class="dropdown-item" href="noticias">Not&iacute;cias</a>
+<!--                        <a class="dropdown-item" href="depoimentos">Depoimentos</a>-->
+                        <a class="dropdown-item" href="contato">Central de atendimento</a>
+                        <!--<a class="dropdown-item" href="trabalhe-conosco">Trabalhe conosco</a>-->
+                        <!--<a class="dropdown-item" target="_blank" href="https://pedrogranado.rhgestor.com.br/">Trabalhe conosco</a>-->
+                    </div>
+                </li>
+                <!-- Menu favoritos -->
+                <li class="nav-item">
+                                        <a id="meus-favoritos" class="nav-link" href="favoritos" style="background: none;">Favoritos</a>
+                </li>
+                
+                				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="administrativo" role="button" data-toggle="dropdown">
+                        <span>Administrativo</span>
+                    </a>
+					<div class="dropdown-menu" aria-labelledby="dropdown-4">
+                        <a class="dropdown-item" href="manutencao">Manuten&ccedil;&atilde;o</a>
+                        <a class="dropdown-item" target="_blank" href="https://wa.me/5544991330095">Fale conosco</a>
+                        <a class="dropdown-item" target="_blank" href="https://apps.apple.com/br/app/pedro-granado/id1451634658">Baixe nosso APP IOS</a>
+                        <a class="dropdown-item" target="_blank" href="https://play.google.com/store/apps/details?id=br.com.kurole.app.pedrogranado">Baixe nosso APP Android</a>
+                    </div>
+				</li>
+               	               
+                <a class="nav-link" title="Trabalhe Conosco" target="_blank" href="https://ai.yapp.rec.br/carreiras/d2fe8061-830e-4f92-8c9e-c5058b3dddfe" id="" role="button">
+					<span>Trabalhe conosco</span>
+				</a>                
+                
+                <li class="nav-item dropdown d-lg-none">
+                    <a href="pgi/clientes/login.php" target="blank" class="nav-link">Portal do cliente</a>
+                </li>
+                <li class="nav-item dropdown d-lg-none">
+                    <a href="contato" class="nav-link">Contato</a>
+                </li>
+            </ul>
+        </div>
+        </div>
+    </div>
+</nav>            </div>
+            <div class="conteudo">
+                <section class="estacionamento">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h3>Estacionamento</h3>
+                                <hr>
+                                <div id="map_canvas" style="width: 100%; height: 500px;">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="redes">
+    <h2 class="d-none">Redes Sociais</h2>
+    <div class="container">
+        <div class="row" style="justify-content: center">
+            <div class="col-2 text-center">
+                <a href="noticias" class="text-dark" target="blank" data-toggle="tooltip" data-placement="top" title="Not&iacute;cias">
+                <i class="far fa-newspaper fa-fw fa-lg"></i></i>
+                </a>
+            </div>
+<!--
+            <div class="col-2 text-center">
+                <a href="https://twitter.com/pedrogranadoimv" class="text-dark" target="blank" data-toggle="tooltip" data-placement="top" title="Twitter">
+                    <i class="fab fa-twitter fa-fw fa-lg"></i>
+                </a>
+            </div>
+-->
+            <div class="col-2 text-center">
+                <a href="https://www.youtube.com/user/pedrogranadoimoveis" class="text-dark" target="blank" data-toggle="tooltip" data-placement="top" title="YouTube">
+                    <i class="fab fa-youtube fa-fw fa-lg"></i>
+                </a>
+            </div>
+            <div class="col-2 text-center">
+                <a href="https://www.instagram.com/pedrogranadoimoveis" class="text-dark" target="blank" data-toggle="tooltip" data-placement="top" title="Instagram">
+                    <i class="fab fa-instagram fa-fw fa-lg"></i>
+                </a>
+            </div>
+            <div class="col-2 text-center">
+                <a href="https://www.facebook.com/pedrogranadoimoveis" class="text-dark" target="blank" data-toggle="tooltip" data-placement="top" title="Facebook">
+                    <i class="fab fa-facebook-f fa-fw fa-lg"></i>
+                </a>
+            </div>
+            <div class="col-2 text-center">
+                <a href="https://www.linkedin.com/company/pedro-granado-im%C3%B3veis" class="text-dark" target="blank" data-toggle="tooltip" data-placement="top" title="Linkedin">
+                    <i class="fab fa-linkedin-in fa-fw fa-lg"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>                <section class="footer">
+    <h2 class="d-none">Imobili&aacute;ria maring&aacute; - Pedro Granado</h2>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-3 mb-3 mb-lg-0">
+                <img class="img-fluid" src="webroot/img/logo-rodape.png" alt="Logo da Empresa"><br>
+                <small class="text-uppercase"></small>
+            </div>
+            <div class="col-lg-3 mb-3 mb-lg-0">
+                <strong class="text-uppercase">CASA PEDRO GRANADO</strong><br>
+                <small>Av. Paran&aacute; , 490 - Centro<br>CEP: 87013-070 - Maring&aacute; - PR</small><hr>
+                <p>(44) <span class="fone">3222-8866</span></p>
+            </div>
+            <div class="col-lg-3 mb-3 mb-lg-0">
+                <strong class="text-uppercase">Loja Conceito</strong><br>
+                <small>Av. Prudente de Morais , 301 - Zona 07<br>CEP: 87020-010 - Maring&aacute; - PR</small><hr>
+                <p>(44) <span class="fone">3028-8866</span></p>
+            </div>
+            <div class="col-lg-3">
+                <div class="row d-flex justify-content-center mb-3">
+                    <div class="col-3">
+                        <a href="//www.centralimob.com.br/imoveis/venda/imob-28-pedro-granado-imoveis" data-toggle="tooltip" data-placement="top" title="Central de Neg&oacute;cios Imobili&aacute;rios" target="blank">
+                            <img class="img-fluid" src="webroot/img/cni.png" alt="Central de Neg&oacute;cios Imobili&aacute;rios">
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a href="//www.abmi.org.br" data-toggle="tooltip" data-placement="top" title="Associa&ccedil;&atilde;o Brasileira do Mercado Imobili&aacute;rio" target="blank">
+                            <img class="img-fluid" src="webroot/img/abmi.png" alt="Associa&ccedil;&atilde;o Brasileira do Mercado Imobili&aacute;rio">
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a href="//www.indicadordeimoveis.com.br" data-toggle="tooltip" data-placement="top" title="Indicador de Im&oacute;veis" target="blank">
+                            <img class="img-fluid" src="webroot/img/indicador.png" alt="Indicador de Im&oacute;veis">
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <a href="estacionamento">
+                            <img class="img-fluid" src="webroot/img/estacionamento.png" alt="Estacionamento Exclusivo">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Google Analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-71525304-25"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-71525304-25');
+</script>
+   
+
+<!-- Facebook Pixel Code -->
+
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '304618010377144'); 
+fbq('track', 'PageView');
+</script>
+<noscript>
+<img height="1" width="1"
+src="https://www.facebook.com/tr?id=304618010377144&ev=PageView
+&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
+<!-- Selo -->
+<style>
+			.selo-integra::before {
+				content: "";
+				position: absolute;
+				top: 0 !important;
+				left: 15px !important;
+				width: 160px;
+				height: 160px;
+				z-index: 2 !important;
+				background-image: url('https://www.pedrogranado.com.br/webroot/img/imovel-para-investimento.png');
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center center;
+			}
+			.selo-card::before {
+				width: 120px;
+				height: 120px;
+				position: absolute;
+				top: 0;
+				left: 10px;
+				z-index: 999;
+				content: "";
+				background-image: url('https://www.pedrogranado.com.br/webroot/img/imovel-para-investimento.png');
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center center;
+			}
+			.card_imoveis_home.card_pesq .selo-card::before{
+				left: 25px !important;
+			}
+			@media only screen and (max-width : 480px) {
+				.selo-integra::before {
+					width: 80px;
+					height: 80px;
+				}
+			}
+			</style>
+		<script>
+			$(document).ready(function(){
+				function addSeloIntegraImovel(){
+					let descricao_imovel = document.querySelector('#descricao_imovel');
+					
+					if (descricao_imovel) {
+						const descricao = descricao_imovel.innerHTML;
+						if (descricao.indexOf('IMÓVEL PARA INVESTIMENTO') > -1) {
+							let node_root = document.querySelector('.lSSlideWrapper');
+							console.log(node_root);
+							if (node_root) {
+								node_root.classList.add('selo-integra');
+							}
+							
+						}
+					}
+				}
+				function addSeloCardImovel() {
+					const card_imoveis = document.querySelectorAll('.card_imoveis_home');
+					[...card_imoveis].forEach(card => {
+						let descricao = card.getAttribute('data-descricao');
+						if (descricao.indexOf("IMÓVEL PARA INVESTIMENTO") > -1) {
+							let node_root = card.querySelector('.thumb');
+							node_root.classList.add('selo-card');
+						}
+					})
+				}
+				
+				let data_atual = new Date().toISOString().slice(0,10).replace(/-/gi, '');
+				let data_limite = new Date('2021-06-30').toISOString().slice(0,10).replace(/-/gi, '');
+				
+				if (data_atual <= data_limite) {
+					addSeloIntegraImovel();
+					addSeloCardImovel();
+				}
+			})
+		</script>
+<footer class="bg-dark p-3">
+    <div class="container">
+        <div class="row text-center d-flex align-items-center text-lg-left">
+            <div class="col-lg-6">
+                <small>&copy; 2026 - Pedro Granado Imoveis Ltda - CRECI J03632 | J09352</small>
+            </div>
+            <div class="col-lg-6 text-center text-lg-right">
+                <small>
+                    <span>Desenvolvido por</span>
+                    <a href="http://www.kurole.com/" target="blank">
+                        <img src="webroot/img/icon-kurole.png" alt="Kurole Web Design">
+                    </a>
+                    <span>Kurole</span>
+                </small>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Modal Redefinir Senha -->
+	<div class="modal" id="resetPassword" tabindex="-1" role="dialog">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content ">
+		  <div class="modal-header">
+			<h5 class="modal-title">Redefinir senha</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+	  	  	  <!-- PASSO 1 : INFORME O CPF/CNPJ -->
+		  	  <div id="rp_step1">
+				<p>
+					Informe seu CPF ou CNPJ, você receberá em seu email ou celular as instruções para criar uma nova senha.
+				</p>
+				<div class="form-group">
+					<input type="text" class="form-control cpfOuCnpj" id="cpf_usuario" name="cpf_usuario" placeholder="CPF ou CNPJ" autocomplete="off">
+				</div>
+			  </div>
+			  <!-- FIM PASSO 1 : INFORME O CPF/CNPJ -->
+			  
+			  <!-- PASSO 2 : SELECIONE COMO QUER RECEBER A NOVA SENHA  -->
+			  <div id="rp_step2" style="display: none">
+			  	
+			  </div>
+			  <!-- FIM PASSO 2 : SELECIONE COMO QUER RECEBER A NOVA SENHA  -->
+			  
+			  <!-- PASSO 3 : MENSAGEM DE CONFIRMAÇÃO DE STATUS ENVIADO  -->
+			  <div id="rp_step3" style="/*display: none*/">
+			  </div>
+			  <!-- FIM PASSO 3 : MENSAGEM DE CONFIRMAÇÃO DE STATUS ENVIADO  -->
+			  
+			  <div id="feedback_login"></div>
+		  </div>
+		  <div class="modal-footer detalhes">
+		  	<button type="button" class="btn btn-outline-danger"  id="btn_cancelar_redefinir_senha" onClick="voltarStep('cancelar')" data-dismiss="modal">Cancelar</button>
+		  	<button type="button" class="btn btn-outline-danger"  id="btn_fechar_redefinir_senha"  onClick="voltarStep('cancelar')" data-dismiss="modal" style="display: none">Fechar</button>
+			<button type="button" class="btn btn-dark text-light" id="btn_proximo_redefinir_senha" onClick="redefinirSenha('cpf_usuario',1,'')">Receber nova senha</button>
+			<button type="button" class="btn btn-dark text-light" id="btn_anterior_redefinir_senha" onClick="voltarStep(1)" style="display: none">Voltar</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+<!-- Modal Redefinir Senha -->
+
+            </div>
+        </main>
+    </body>
+</html>

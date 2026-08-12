@@ -1,0 +1,1482 @@
+<script>
+// --- ATUALIZAÇÃO DA PÁGINA AO MUDAR O TEMA ---
+document.addEventListener('themeChanged', function(e) {
+    const novoTema = e.detail.isDark ? 'dark' : 'light';
+    
+    // Verifica qual era o tema salvo na sessão atual
+    const temaAnterior = sessionStorage.getItem('temaAtual');
+
+    // Se não tinha tema salvo (primeiro acesso) ou se o tema for igual ao que já estava
+    if (!temaAnterior || temaAnterior === novoTema) {
+        // Apenas salva o tema atual e não faz nada
+        sessionStorage.setItem('temaAtual', novoTema);
+        return; 
+    }
+
+    // Se chegou aqui, é porque o tema MUDOU durante a navegação.
+    // Atualiza o tema na sessão para a página voltar certa após o F5
+    sessionStorage.setItem('temaAtual', novoTema);
+
+    // Dá um tempinho e recarrega a página
+    setTimeout(function() {
+        window.location.reload();
+    }, 150);
+});
+</script>
+
+
+<!doctype html>
+<html lang="pt-BR" >
+
+<head>
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>@font-face{font-display:swap;
+            font-family: "Oatmeal";
+            src: url("https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/includes/fonts/OatmealPro2-Regular.otf");
+            font-weight: normal;
+            font-style: normal;
+            
+        }
+
+        @font-face{font-display:swap;
+            font-family: "Oatmeal";
+            src: url("https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/includes/fonts/OatmealPro2-SemiBold.otf");
+            font-weight: bold;
+            font-style: normal;
+        }</style>
+
+    <!-- OneTrust Cookies Consent Notice start for quintoandar.com.br -->
+    <!--<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="578b8896-f244-4c42-b2f7-ecbaa4415c8e" ></script>-->
+
+    <script data-loading-method="user-interaction" data-src="https://cdn-lib.quintoandar.com.br/cookie-banner/cookie-scripts-blocker.min.js"></script>
+    <script data-loading-method="user-interaction" data-src="https://cdn-lib.quintoandar.com.br/cookie-banner/cookie-banner-importer.esm.js"></script>
+
+    <script type="text/plain" class="optanon-category-C0002">
+        OneTrust.InsertScript('https://js.appboycdn.com/web-sdk/2.4/appboy.min.js?ver=5.5.1', 'head', null, null, '2');
+    </script>
+
+    <script type="text/javascript">
+        function OptanonWrapper() {}
+    </script>
+    <!-- OneTrust Cookies Consent Notice end for quintoandar.com.br -->
+
+    <!-- Braze functions -->
+    <script async type="text/javascript" data-loading-method="user-interaction" data-src="data:text/javascript,%3B%2B%28function%20%28a%2C%20p%2C%20P%2C%20b%2C%20y%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20a.appboy%20%3D%20%7B%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20a.appboyQueue%20%3D%20%5B%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20var%20s%20%3D%20%27initialize%20destroy%20getDeviceId%20toggleAppboyLogging%20setLogger%20openSession%20changeUser%20requestImmediateDataFlush%20requestFeedRefresh%20subscribeToFeedUpdates%20requestContentCardsRefresh%20subscribeToContentCardsUpdates%20logCardImpressions%20logCardClick%20logCardDismissal%20logFeedDisplayed%20logContentCardsDisplayed%20logInAppMessageImpression%20logInAppMessageClick%20logInAppMessageButtonClick%20logInAppMessageHtmlClick%20subscribeToNewInAppMessages%20subscribeToInAppMessage%20removeSubscription%20removeAllSubscriptions%20logCustomEvent%20logPurchase%20isPushSupported%20isPushBlocked%20isPushGranted%20isPushPermissionGranted%20registerAppboyPushMessages%20unregisterAppboyPushMessages%20trackLocation%20stopWebTracking%20resumeWebTracking%20wipeData%20ab%20ab.DeviceProperties%20ab.User%20ab.User.Genders%20ab.User.NotificationSubscriptionTypes%20ab.User.prototype.getUserId%20ab.User.prototype.setFirstName%20ab.User.prototype.setLastName%20ab.User.prototype.setEmail%20ab.User.prototype.setGender%20ab.User.prototype.setDateOfBirth%20ab.User.prototype.setCountry%20ab.User.prototype.setHomeCity%20ab.User.prototype.setLanguage%20ab.User.prototype.setEmailNotificationSubscriptionType%20ab.User.prototype.setPushNotificationSubscriptionType%20ab.User.prototype.setPhoneNumber%20ab.User.prototype.setAvatarImageUrl%20ab.User.prototype.setLastKnownLocation%20ab.User.prototype.setUserAttribute%20ab.User.prototype.setCustomUserAttribute%20ab.User.prototype.addToCustomAttributeArray%20ab.User.prototype.removeFromCustomAttributeArray%20ab.User.prototype.incrementCustomUserAttribute%20ab.User.prototype.addAlias%20ab.User.prototype.setCustomLocationAttribute%20ab.InAppMessage%20ab.InAppMessage.SlideFrom%20ab.InAppMessage.ClickAction%20ab.InAppMessage.DismissType%20ab.InAppMessage.OpenTarget%20ab.InAppMessage.ImageStyle%20ab.InAppMessage.TextAlignment%20ab.InAppMessage.Orientation%20ab.InAppMessage.CropType%20ab.InAppMessage.prototype.subscribeToClickedEvent%20ab.InAppMessage.prototype.subscribeToDismissedEvent%20ab.InAppMessage.prototype.removeSubscription%20ab.InAppMessage.prototype.removeAllSubscriptions%20ab.InAppMessage.prototype.closeMessage%20ab.InAppMessage.Button%20ab.InAppMessage.Button.prototype.subscribeToClickedEvent%20ab.InAppMessage.Button.prototype.removeSubscription%20ab.InAppMessage.Button.prototype.removeAllSubscriptions%20ab.SlideUpMessage%20ab.ModalMessage%20ab.FullScreenMessage%20ab.HtmlMessage%20ab.ControlMessage%20ab.Feed%20ab.Feed.prototype.getUnreadCardCount%20ab.ContentCards%20ab.ContentCards.prototype.getUnviewedCardCount%20ab.Card%20ab.Card.prototype.dismissCard%20ab.ClassicCard%20ab.CaptionedImage%20ab.Banner%20ab.ControlCard%20ab.WindowUtils%20display%20display.automaticallyShowNewInAppMessages%20display.showInAppMessage%20display.showFeed%20display.destroyFeed%20display.toggleFeed%20display.showContentCards%20display.hideContentCards%20display.toggleContentCards%20sharedLib%27.split%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%27%20%27%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%29%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20i%20%3D%200%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20i%20%3C%20s.length%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20i%2B%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20for%20%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20var%20m%20%3D%20s%5Bi%5D%2C%20k%20%3D%20a.appboy%2C%20l%20%3D%20m.split%28%27.%27%29%2C%20j%20%3D%200%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20j%20%3C%20l.length%20-%201%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20j%2B%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20k%20%3D%20k%5Bl%5Bj%5D%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20k%5Bl%5Bj%5D%5D%20%3D%20new%20Function%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%27return%20function%20%27%20%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20m.replace%28%2F%5C.%2Fg%2C%20%27_%27%29%20%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%27%28%29%7Bwindow.appboyQueue.push%28arguments%29%3B%20return%20true%7D%27%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%29%28%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20window.appboy.getUser%20%3D%20function%20%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20new%20window.appboy.ab.User%28%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20window.appboy.getCachedFeed%20%3D%20function%20%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20new%20window.appboy.ab.Feed%28%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20window.appboy.getCachedContentCards%20%3D%20function%20%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20new%20window.appboy.ab.ContentCards%28%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3B%28y%20%3D%20p.createElement%28P%29%29.type%20%3D%20%27text%2Fjavascript%27%0A%20%20%20%20%20%20%20%20%20%20%20%20y.src%20%3D%20%27https%3A%2F%2Fjs.appboycdn.com%2Fweb-sdk%2F2.4%2Fappboy.min.js%27%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20y.src%20%3D%20%27https%3A%2F%2Fjs.appboycdn.com%2Fweb-sdk%2F5.1%2Fbraze.min.js%27%0A%20%20%20%20%20%20%20%20%20%20%20%20y.async%20%3D%201%0A%20%20%20%20%20%20%20%20%20%20%20%20%3B%28b%20%3D%20p.getElementsByTagName%28P%29%5B0%5D%29.parentNode.insertBefore%28y%2C%20b%29%0A%20%20%20%20%20%20%20%20%7D%29%28window%2C%20document%2C%20%27script%27%29%0A%0A%20%20%20%20%20%20%20%20%2F%2F%20appboy.display.automaticallyShowNewInAppMessages%28%29%0A%20%20%20%20%20%20%20%20%2F%2A%0A%20%20%20%20%20%20%20%20%2A%20If%20you%20have%20a%20unique%20identifier%20for%20this%20user%20%28e.g.%20they%20are%20logged%20into%20your%20site%29%20it%27s%20a%20good%20idea%20to%20call%0A%20%20%20%20%20%20%20%20%2A%20changeUser%20here.%0A%20%20%20%20%20%20%20%20%2A%20See%20https%3A%2F%2Fjs.appboycdn.com%2Fweb-sdk%2Flatest%2Fdoc%2Fmodule-appboy.html%23.changeUser%20for%20more%20information.%0A%20%20%20%20%20%20%20%20%2A%2F%0A%20%20%20%20%20%20%20%20%2F%2F%20appboy.changeUser%28userIdentifier%29%3B%0A%0A%20%20%20%20%20%20%20%20var%20brazeInit%20%3D%20false%0A%20%20%20%20%20%20%20%20function%20brazeInitIfNeed%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28%21brazeInit%20%26%26%20typeof%20appboy%20%21%3D%3D%20%27undefined%27%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20appboy.initialize%28%279009207d-1cb0-458c-b559-c0ce96370e22%27%2C%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20baseUrl%3A%20%27sdk.iad-03.braze.com%27%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20appboy.openSession%28%29%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20brazeInit%20%3D%20true%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20brazeInit%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20brazeInitIfNeed%28%29%0A%0A%20%20%20%20%20%20%20%20function%20uniqid%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20length%20%3D%208%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20timestamp%20%3D%20%2Bnew%20Date%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20_getRandomInt%20%3D%20function%28%20min%2C%20max%20%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20Math.floor%28%20Math.random%28%29%20%2A%20%28%20max%20-%20min%20%2B%201%20%29%20%29%20%2B%20min%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20ts%20%3D%20timestamp.toString%28%29%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20parts%20%3D%20ts.split%28%20%22%22%20%29.reverse%28%29%0A%20%20%20%20%20%20%20%20%20%20%20%20let%20id%20%3D%20%22%22%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20for%28%20let%20i%20%3D%200%3B%20i%20%3C%20length%3B%20%2B%2Bi%20%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20let%20index%20%3D%20_getRandomInt%28%200%2C%20parts.length%20-%201%20%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20id%20%2B%3D%20parts%5Bindex%5D%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20id%3B%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20getUserId%20%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28%21brazeInitIfNeed%28%29%29%20return%20false%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20let%20id%0A%20%20%20%20%20%20%20%20%20%20%20%20appboy.getUser%28%29.getUserId%28function%20%28userId%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20id%20%3D%20userId%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20console.log%28id%29%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20id%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20identifyUser%20%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28%21brazeInitIfNeed%28%29%29%20return%20false%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20userId%20%3D%20getUserId%28%29%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28userId%29%20return%20userId%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20newUserId%20%3D%20uniqid%28%29%0A%20%20%20%20%20%20%20%20%20%20%20%20appboy.changeUser%28newUserId%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20console.log%28%27Identificador%3A%20%27%20%2B%20newUserId%29%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20newUserId%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20setFirstName%20%28firstName%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28%21brazeInitIfNeed%28%29%29%20return%20false%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20appboy.changeUser%28firstName%29%0A%20%20%20%20%20%20%20%20%20%20%20%20appboy.getUser%28%29.setFirstName%28firstName%29%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20setEmail%20%28address%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28%21brazeInitIfNeed%28%29%29%20return%20false%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20appboy.changeUser%28address%29%0A%20%20%20%20%20%20%20%20%20%20%20%20appboy.getUser%28%29.setEmail%28address%29%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20fillUserFields%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28%21brazeInitIfNeed%28%29%29%20return%20false%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20userId%20%3D%20getUserId%28%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28userId%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20const%20elements%20%3D%20document.querySelectorAll%28%27.brazeUserId%27%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20elements.forEach%28element%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20element.value%20%3D%20userId%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20logCustomEvent%20%28key%2C%20value%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28%21brazeInitIfNeed%28%29%29%20return%20false%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28value%20%26%26%20typeof%20value%20%3D%3D%20%27object%27%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20appboy.logCustomEvent%28key%2C%20value%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20appboy.logCustomEvent%28key%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20setUserAttribute%20%28key%2C%20value%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20false%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28%21brazeInitIfNeed%28%29%29%20return%20false%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20appboy.getUser%28%29.setCustomUserAttribute%28key%2C%20value%29%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20addPageView%20%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%28%21brazeInitIfNeed%28%29%29%20return%20false%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20appboy.getUser%28%29.addToCustomAttributeArray%28%27pages%27%2C%20window.location.pathname%29%0A%20%20%20%20%20%20%20%20%20%20%20%20logCustomEvent%28%27pageview%27%2C%20%7B%20url%3A%20window.location.pathname%20%7D%29%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20pushAccepted%28%29%20%7B%7D%0A%20%20%20%20%20%20%20%20function%20pushDenied%28%29%20%7B%7D%0A%0A%20%20%20%20%20%20%20%20document.addEventListener%28%27DOMContentLoaded%27%2C%20function%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20setTimeout%28function%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20fillUserFields%28%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%201000%29%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20addPageView%28%29%3B%0A%20%20%20%20%20%20%20%20%7D%29%3B%0A%0A%20%20%20%20%20%20%20%20function%20addToSegmentBraze%28segmentName%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20Adicionar%20o%20usu%C3%A1rio%20ao%20segmento%0A%20%20%20%20%20%20%20%20%20%20%20%20appboy.getUser%28%29.addToCustomAttributeArray%28%27segments%27%2C%20segmentName%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20setCustomAttribute%28attrName%2C%20attrValue%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20Adicionar%20um%20custom%20attribute%0A%20%20%20%20%20%20%20%20%20%20%20%20appboy.getUser%28%29.setCustomUserAttribute%28attrName%2C%20attrValue%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%0A%0A%20%20%20%20%20%20%20%20function%20isValidEmail%28email%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20const%20emailRegex%20%3D%20%2F%5E%5B%5E%5Cs%40%5D%2B%40%5B%5E%5Cs%40%5D%2B%5C.%5B%5E%5Cs%40%5D%2B%24%2F%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20emailRegex.test%28email%29%3B%0A%20%20%20%20%20%20%20%20%7D"></script>
+
+    		<!-- Search & Filter: Head Assets Start -->
+		<meta name="search-filter-head-assets-start">
+		<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v28.2 - https://yoast.com/product/yoast-seo-wordpress/ -->
+	<title>Newsroom QuintoAndar</title>
+<style>.flying-press-lazy-bg{background-image:none!important;}</style>
+<link rel='preload' href='https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/includes/images/newsroom/logo-newsroom5a.svg' as='image' imagesrcset='' imagesizes='' fetchpriority='high'/>
+<link rel='preload' href='https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-scaled.png' as='image' imagesrcset='https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-scaled.png 2560w, https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-300x205.png 300w, https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-1024x699.png 1024w, https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-768x524.png 768w, https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-1536x1049.png 1536w' imagesizes='(max-width: 502px) 100vw, 502px' fetchpriority='high'/>
+<link rel='preload' href='https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/includes/fonts/OatmealPro2-SemiBold.otf' as='font' type='font/otf' fetchpriority='high' crossorigin='anonymous'><link rel='preload' href='https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/includes/fonts/OatmealPro2-Regular.otf' as='font' type='font/otf' fetchpriority='high' crossorigin='anonymous'>
+	<link rel="canonical" href="https://www.quintoandar.com.br/newsroom/" />
+	<link rel="next" href="https://www.quintoandar.com.br/newsroom/page/2/" />
+	<meta property="og:locale" content="pt_BR" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Newsroom QuintoAndar BR" />
+	<meta property="og:url" content="https://www.quintoandar.com.br/newsroom/" />
+	<meta property="og:site_name" content="Newsroom QuintoAndar BR" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https:\/\/schema.org","@graph":[{"@type":"CollectionPage","@id":"https:\/\/www.quintoandar.com.br\/newsroom\/","url":"https:\/\/www.quintoandar.com.br\/newsroom\/","name":"Newsroom QuintoAndar","isPartOf":{"@id":"https:\/\/www.quintoandar.com.br\/newsroom\/#website"},"breadcrumb":{"@id":"https:\/\/www.quintoandar.com.br\/newsroom\/#breadcrumb"},"inLanguage":"pt-BR"},{"@type":"BreadcrumbList","@id":"https:\/\/www.quintoandar.com.br\/newsroom\/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Início"}]},{"@type":"WebSite","@id":"https:\/\/www.quintoandar.com.br\/newsroom\/#website","url":"https:\/\/www.quintoandar.com.br\/newsroom\/","name":"Newsroom QuintoAndar","description":"","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/www.quintoandar.com.br\/newsroom\/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"pt-BR"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+
+<style id="wp-img-auto-sizes-contain-inline-css">img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */</style>
+<style id="wp-block-library-inline-css">:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style*=border-color]){border-style:solid}html :where([style*=border-top-color]){border-top-style:solid}html :where([style*=border-right-color]){border-right-style:solid}html :where([style*=border-bottom-color]){border-bottom-style:solid}html :where([style*=border-left-color]){border-left-style:solid}html :where([style*=border-width]){border-style:solid}html :where([style*=border-top-width]){border-top-style:solid}html :where([style*=border-right-width]){border-right-style:solid}html :where([style*=border-bottom-width]){border-bottom-style:solid}html :where([style*=border-left-width]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+/*wp_block_styles_on_demand_placeholder:6a7a235e34d19*/
+/*# sourceURL=wp-block-library-inline-css */</style>
+<style id="classic-theme-styles-inline-css">/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */</style>
+<style id="wp-block-styles-placeholder-inline-css">:root { --wp-internal-comment: "Placeholder for wp_hoist_late_printed_styles() to replace with the block styles printed at wp_footer." }
+/*# sourceURL=wp-block-styles-placeholder-inline-css */</style>
+<style id="wp-global-styles-placeholder-inline-css">:root { --wp-internal-comment: "Placeholder for wp_hoist_late_printed_styles() to replace with the global-styles printed at wp_footer." }
+/*# sourceURL=wp-global-styles-placeholder-inline-css */</style>
+<link rel='stylesheet' id='custom-theme-dist-main-css' href='https://www.quintoandar.com.br/newsroom/wp-content/cache/flying-press/46c825f26ee8.main.css' media='all' onload="this.media='all'" />
+<link rel='stylesheet' id='search-filter-frontend-css' href='https://www.quintoandar.com.br/newsroom/wp-content/cache/flying-press/1a735f0eb91b.app.css' media='all' />
+<link rel='stylesheet' id='search-filter-frontend-ugc-css' href='https://www.quintoandar.com.br/newsroom/wp-content/cache/flying-press/48d00af21abe.style.css' media='all' />
+<link rel='stylesheet' id='search-filter-frontend-component-combobox-css' href='https://www.quintoandar.com.br/newsroom/wp-content/cache/flying-press/28b8b508d6d4.combobox.css' media='all' />
+<link rel='stylesheet' id='search-filter-frontend-component-date-picker-css' href='https://www.quintoandar.com.br/newsroom/wp-content/cache/flying-press/b440e5b8e291.date-picker.css' media='all' />
+<link rel='stylesheet' id='search-filter-frontend-component-range-css' href='https://www.quintoandar.com.br/newsroom/wp-content/cache/flying-press/e4fcb2e8e026.range.css' media='all' />
+<script id="search-filter-frontend-js" src="https://www.quintoandar.com.br/newsroom/wp-content/plugins/search-filter-pro/assets-v1/frontend/app.js?ver=93506dcf2691"></script>
+<script id="search-filter-frontend-component-combobox-js" src="https://www.quintoandar.com.br/newsroom/wp-content/plugins/search-filter/assets-v1/frontend/components/combobox.js?ver=880f4f121694"></script>
+<script id="search-filter-frontend-component-checkbox-js" src="https://www.quintoandar.com.br/newsroom/wp-content/plugins/search-filter/assets-v1/frontend/components/checkbox.js?ver=b454f8c0b2ca"></script>
+<script id="search-filter-frontend-component-date-picker-js" src="https://www.quintoandar.com.br/newsroom/wp-content/plugins/search-filter/assets-v1/frontend/components/date-picker.js?ver=92b04ec66405"></script>
+<script id="search-filter-frontend-component-range-js" src="https://www.quintoandar.com.br/newsroom/wp-content/plugins/search-filter-pro/assets-v1/frontend/components/range.js?ver=7bf97cf386a4"></script>
+<link rel="https://api.w.org/" href="https://www.quintoandar.com.br/newsroom/wp-json/" /><link rel="icon" href="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/06/cropped-favicon-3-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/06/cropped-favicon-3-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/06/cropped-favicon-3-180x180.png" />
+<meta name="msapplication-TileImage" content="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/06/cropped-favicon-3-270x270.png" />
+		<meta name="search-filter-head-assets-end">
+				<!-- Search & Filter: Head Assets End -->
+		<script id="search-filter-dom-ready-head" type="text/javascript">
+			window.searchAndFilterPage = { head: document.head.outerHTML, body: null };
+		</script>
+		<script type="speculationrules">{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/*"},{"not":{"href_matches":["\/*.php","\/wp-(admin|includes|content|login|signup|json)(.*)?","\/*\\?(.+)","\/(cart|checkout|logout)(.*)?"]}}]},"eagerness":"moderate"}]}</script></head>
+
+<body class="home blog wp-theme-theme-newsroom dark:bg-brand-gray-darker" >
+
+    
+
+<!-- HEADER -->
+<div class="header-sensor no-print"></div>
+<header class="header header-bg bg-[#F8F9F5] dark:bg-brand-gray-darker py-[25px]">
+    <div class="container px-2 sm:px-[30px] header-bg py-[11px] dark:bg-brand-gray-darker">
+        <div class="flex sm:items-center justify-between items-center pr-[10px]">
+            <div class="menu-logo md:hidden flex gap-2">
+                <div>
+                    <a href="javascript:void(0)" class="menu-btn" aria-label="menu icon open">
+                        <span class="block w-7 h-7 brightness-[0] dark:brightness-[100]">
+                            <svg class="w-full h-full" width="35" height="36" viewBox="0 0 35 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.375 26.75V23.8333H30.625V26.75H4.375ZM4.375 19.4583V16.5417H30.625V19.4583H4.375ZM4.375 12.1667V9.25H30.625V12.1667H4.375Z" fill="#9B163F"></path>
+                            </svg>
+                        </span>
+                    </a>
+                    <a href="javascript:void(0)" class="hidden close-menu-btn" aria-label="menu icon close">
+                        <span class="block w-7 h-7 brightness-[0] dark:brightness-[100]">
+                            <svg class="w-full h-full" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_948_6418" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                    <rect width="24" height="24"></rect>
+                                </mask>
+                                <g mask="url(#mask0_948_6418)">
+                                    <path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z"></path>
+                                </g>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="header-logo h-[auto] md:mr-3">
+                <a href="https://www.quintoandar.com.br/newsroom">
+                    <img src="https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/includes/images/newsroom/logo-newsroom5a.svg" class="h-[auto] logotipo dark:invert md:max-xl:max-w-[200px] max-sm:max-w-[180px]" alt="Logotipo" width="249" height="19" loading="eager" fetchpriority="high" decoding="async">
+                </a>
+            </div>
+
+            <details class="dropdown cursor-pointer hidden max-sm:block">
+                <summary class="btn m-1 flex text-12 items-center dark:text-white">
+                    <svg class="mr-1 dark:invert" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <mask id="mask0_626_1610" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                            <rect width="24" height="24" fill="#818181" />
+                        </mask>
+                        <g mask="url(#mask0_626_1610)">
+                            <path d="M12 21.5C10.6975 21.5 9.46833 21.2503 8.3125 20.751C7.15667 20.2517 6.14867 19.5718 5.2885 18.7115C4.42817 17.8513 3.74833 16.8433 3.249 15.6875C2.74967 14.5317 2.5 13.3025 2.5 12C2.5 10.6872 2.74967 9.45542 3.249 8.30475C3.74833 7.15408 4.42817 6.14867 5.2885 5.2885C6.14867 4.42817 7.15667 3.74833 8.3125 3.249C9.46833 2.74967 10.6975 2.5 12 2.5C13.3128 2.5 14.5446 2.74967 15.6953 3.249C16.8459 3.74833 17.8513 4.42817 18.7115 5.2885C19.5718 6.14867 20.2517 7.15408 20.751 8.30475C21.2503 9.45542 21.5 10.6872 21.5 12C21.5 13.3025 21.2503 14.5317 20.751 15.6875C20.2517 16.8433 19.5718 17.8513 18.7115 18.7115C17.8513 19.5718 16.8459 20.2517 15.6953 20.751C14.5446 21.2503 13.3128 21.5 12 21.5ZM12 19.9788C12.5103 19.3019 12.9398 18.6192 13.2885 17.9307C13.6372 17.2422 13.9212 16.4897 14.1405 15.673H9.8595C10.0917 16.5153 10.3789 17.2808 10.7213 17.9693C11.0634 18.6578 11.4897 19.3276 12 19.9788ZM10.0635 19.7038C9.68017 19.1538 9.33592 18.5285 9.03075 17.828C8.72558 17.1273 8.48842 16.409 8.31925 15.673H4.927C5.45517 16.7115 6.1635 17.584 7.052 18.2905C7.9405 18.9968 8.94433 19.4679 10.0635 19.7038ZM13.9365 19.7038C15.0557 19.4679 16.0595 18.9968 16.948 18.2905C17.8365 17.584 18.5448 16.7115 19.073 15.673H15.6807C15.4794 16.4153 15.2262 17.1368 14.921 17.8375C14.616 18.5382 14.2878 19.1602 13.9365 19.7038ZM4.298 14.173H8.0155C7.95267 13.8013 7.90708 13.4369 7.87875 13.0798C7.85058 12.7227 7.8365 12.3628 7.8365 12C7.8365 11.6372 7.85058 11.2773 7.87875 10.9202C7.90708 10.5631 7.95267 10.1987 8.0155 9.827H4.298C4.20183 10.1667 4.12817 10.5198 4.077 10.8865C4.02567 11.2532 4 11.6243 4 12C4 12.3757 4.02567 12.7468 4.077 13.1135C4.12817 13.4802 4.20183 13.8333 4.298 14.173ZM9.51525 14.173H14.4848C14.5474 13.8013 14.5929 13.4402 14.6212 13.0895C14.6494 12.7388 14.6635 12.3757 14.6635 12C14.6635 11.6243 14.6494 11.2612 14.6212 10.9105C14.5929 10.5598 14.5474 10.1987 14.4848 9.827H9.51525C9.45258 10.1987 9.40708 10.5598 9.37875 10.9105C9.35058 11.2612 9.3365 11.6243 9.3365 12C9.3365 12.3757 9.35058 12.7388 9.37875 13.0895C9.40708 13.4402 9.45258 13.8013 9.51525 14.173ZM15.9845 14.173H19.702C19.7982 13.8333 19.8718 13.4802 19.923 13.1135C19.9743 12.7468 20 12.3757 20 12C20 11.6243 19.9743 11.2532 19.923 10.8865C19.8718 10.5198 19.7982 10.1667 19.702 9.827H15.9845C16.0473 10.1987 16.0929 10.5631 16.1212 10.9202C16.1494 11.2773 16.1635 11.6372 16.1635 12C16.1635 12.3628 16.1494 12.7227 16.1212 13.0798C16.0929 13.4369 16.0473 13.8013 15.9845 14.173ZM15.6807 8.327H19.073C18.5385 7.27567 17.835 6.40317 16.9625 5.7095C16.09 5.016 15.0813 4.54167 13.9365 4.2865C14.3198 4.8685 14.6608 5.50508 14.9595 6.19625C15.2583 6.88725 15.4987 7.5975 15.6807 8.327ZM9.8595 8.327H14.1405C13.9083 7.491 13.6163 6.72075 13.2645 6.01625C12.9125 5.31175 12.491 4.64675 12 4.02125C11.509 4.64675 11.0875 5.31175 10.7355 6.01625C10.3837 6.72075 10.0917 7.491 9.8595 8.327ZM4.927 8.327H8.31925C8.50125 7.5975 8.74167 6.88725 9.0405 6.19625C9.33917 5.50508 9.68017 4.8685 10.0635 4.2865C8.91217 4.54167 7.90192 5.01767 7.03275 5.7145C6.16342 6.41117 5.4615 7.282 4.927 8.327Z" fill="black" />
+                        </g>
+                    </svg>
+                    PT/BR
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+                        <path d="M3.83643 6.10044L8.68998 10.954L13.5435 6.10044L12.8364 5.39333L8.68998 9.53978L4.54353 5.39333L3.83643 6.10044Z" fill="#818181" />
+                    </svg>
+                </summary>
+                <ul class="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-1 shadow-lg absolute bg-[#f8f9f5]">
+                    <li class="flex text-12 items-center hover:bg-[#eceff9] dark:text-white">
+                        <a class="flex place-items-center" href="https://www.quintoandar.com.br/newsroom/en/">
+                            <svg class="mr-1 dark:invert" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <mask id="mask0_626_1610" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                    <rect width="24" height="24" fill="#818181" />
+                                </mask>
+                                <g mask="url(#mask0_626_1610)">
+                                    <path d="M12 21.5C10.6975 21.5 9.46833 21.2503 8.3125 20.751C7.15667 20.2517 6.14867 19.5718 5.2885 18.7115C4.42817 17.8513 3.74833 16.8433 3.249 15.6875C2.74967 14.5317 2.5 13.3025 2.5 12C2.5 10.6872 2.74967 9.45542 3.249 8.30475C3.74833 7.15408 4.42817 6.14867 5.2885 5.2885C6.14867 4.42817 7.15667 3.74833 8.3125 3.249C9.46833 2.74967 10.6975 2.5 12 2.5C13.3128 2.5 14.5446 2.74967 15.6953 3.249C16.8459 3.74833 17.8513 4.42817 18.7115 5.2885C19.5718 6.14867 20.2517 7.15408 20.751 8.30475C21.2503 9.45542 21.5 10.6872 21.5 12C21.5 13.3025 21.2503 14.5317 20.751 15.6875C20.2517 16.8433 19.5718 17.8513 18.7115 18.7115C17.8513 19.5718 16.8459 20.2517 15.6953 20.751C14.5446 21.2503 13.3128 21.5 12 21.5ZM12 19.9788C12.5103 19.3019 12.9398 18.6192 13.2885 17.9307C13.6372 17.2422 13.9212 16.4897 14.1405 15.673H9.8595C10.0917 16.5153 10.3789 17.2808 10.7213 17.9693C11.0634 18.6578 11.4897 19.3276 12 19.9788ZM10.0635 19.7038C9.68017 19.1538 9.33592 18.5285 9.03075 17.828C8.72558 17.1273 8.48842 16.409 8.31925 15.673H4.927C5.45517 16.7115 6.1635 17.584 7.052 18.2905C7.9405 18.9968 8.94433 19.4679 10.0635 19.7038ZM13.9365 19.7038C15.0557 19.4679 16.0595 18.9968 16.948 18.2905C17.8365 17.584 18.5448 16.7115 19.073 15.673H15.6807C15.4794 16.4153 15.2262 17.1368 14.921 17.8375C14.616 18.5382 14.2878 19.1602 13.9365 19.7038ZM4.298 14.173H8.0155C7.95267 13.8013 7.90708 13.4369 7.87875 13.0798C7.85058 12.7227 7.8365 12.3628 7.8365 12C7.8365 11.6372 7.85058 11.2773 7.87875 10.9202C7.90708 10.5631 7.95267 10.1987 8.0155 9.827H4.298C4.20183 10.1667 4.12817 10.5198 4.077 10.8865C4.02567 11.2532 4 11.6243 4 12C4 12.3757 4.02567 12.7468 4.077 13.1135C4.12817 13.4802 4.20183 13.8333 4.298 14.173ZM9.51525 14.173H14.4848C14.5474 13.8013 14.5929 13.4402 14.6212 13.0895C14.6494 12.7388 14.6635 12.3757 14.6635 12C14.6635 11.6243 14.6494 11.2612 14.6212 10.9105C14.5929 10.5598 14.5474 10.1987 14.4848 9.827H9.51525C9.45258 10.1987 9.40708 10.5598 9.37875 10.9105C9.35058 11.2612 9.3365 11.6243 9.3365 12C9.3365 12.3757 9.35058 12.7388 9.37875 13.0895C9.40708 13.4402 9.45258 13.8013 9.51525 14.173ZM15.9845 14.173H19.702C19.7982 13.8333 19.8718 13.4802 19.923 13.1135C19.9743 12.7468 20 12.3757 20 12C20 11.6243 19.9743 11.2532 19.923 10.8865C19.8718 10.5198 19.7982 10.1667 19.702 9.827H15.9845C16.0473 10.1987 16.0929 10.5631 16.1212 10.9202C16.1494 11.2773 16.1635 11.6372 16.1635 12C16.1635 12.3628 16.1494 12.7227 16.1212 13.0798C16.0929 13.4369 16.0473 13.8013 15.9845 14.173ZM15.6807 8.327H19.073C18.5385 7.27567 17.835 6.40317 16.9625 5.7095C16.09 5.016 15.0813 4.54167 13.9365 4.2865C14.3198 4.8685 14.6608 5.50508 14.9595 6.19625C15.2583 6.88725 15.4987 7.5975 15.6807 8.327ZM9.8595 8.327H14.1405C13.9083 7.491 13.6163 6.72075 13.2645 6.01625C12.9125 5.31175 12.491 4.64675 12 4.02125C11.509 4.64675 11.0875 5.31175 10.7355 6.01625C10.3837 6.72075 10.0917 7.491 9.8595 8.327ZM4.927 8.327H8.31925C8.50125 7.5975 8.74167 6.88725 9.0405 6.19625C9.33917 5.50508 9.68017 4.8685 10.0635 4.2865C8.91217 4.54167 7.90192 5.01767 7.03275 5.7145C6.16342 6.41117 5.4615 7.282 4.927 8.327Z" fill="black" />
+                                </g>
+                            </svg>
+                            EN/US</a>
+                    </li>
+                        <li class="flex text-12 mt-2 items-center dark:text-white hover:bg-[#eceff9]">
+                        <a class="flex place-items-center" href="https://www.quintoandar.com.br/newsroom/es/">
+                            <svg class="mr-1 dark:invert" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <mask id="mask0_626_1610" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                    <rect width="24" height="24" fill="#818181" />
+                                </mask>
+                                <g mask="url(#mask0_626_1610)">
+                                    <path d="M12 21.5C10.6975 21.5 9.46833 21.2503 8.3125 20.751C7.15667 20.2517 6.14867 19.5718 5.2885 18.7115C4.42817 17.8513 3.74833 16.8433 3.249 15.6875C2.74967 14.5317 2.5 13.3025 2.5 12C2.5 10.6872 2.74967 9.45542 3.249 8.30475C3.74833 7.15408 4.42817 6.14867 5.2885 5.2885C6.14867 4.42817 7.15667 3.74833 8.3125 3.249C9.46833 2.74967 10.6975 2.5 12 2.5C13.3128 2.5 14.5446 2.74967 15.6953 3.249C16.8459 3.74833 17.8513 4.42817 18.7115 5.2885C19.5718 6.14867 20.2517 7.15408 20.751 8.30475C21.2503 9.45542 21.5 10.6872 21.5 12C21.5 13.3025 21.2503 14.5317 20.751 15.6875C20.2517 16.8433 19.5718 17.8513 18.7115 18.7115C17.8513 19.5718 16.8459 20.2517 15.6953 20.751C14.5446 21.2503 13.3128 21.5 12 21.5ZM12 19.9788C12.5103 19.3019 12.9398 18.6192 13.2885 17.9307C13.6372 17.2422 13.9212 16.4897 14.1405 15.673H9.8595C10.0917 16.5153 10.3789 17.2808 10.7213 17.9693C11.0634 18.6578 11.4897 19.3276 12 19.9788ZM10.0635 19.7038C9.68017 19.1538 9.33592 18.5285 9.03075 17.828C8.72558 17.1273 8.48842 16.409 8.31925 15.673H4.927C5.45517 16.7115 6.1635 17.584 7.052 18.2905C7.9405 18.9968 8.94433 19.4679 10.0635 19.7038ZM13.9365 19.7038C15.0557 19.4679 16.0595 18.9968 16.948 18.2905C17.8365 17.584 18.5448 16.7115 19.073 15.673H15.6807C15.4794 16.4153 15.2262 17.1368 14.921 17.8375C14.616 18.5382 14.2878 19.1602 13.9365 19.7038ZM4.298 14.173H8.0155C7.95267 13.8013 7.90708 13.4369 7.87875 13.0798C7.85058 12.7227 7.8365 12.3628 7.8365 12C7.8365 11.6372 7.85058 11.2773 7.87875 10.9202C7.90708 10.5631 7.95267 10.1987 8.0155 9.827H4.298C4.20183 10.1667 4.12817 10.5198 4.077 10.8865C4.02567 11.2532 4 11.6243 4 12C4 12.3757 4.02567 12.7468 4.077 13.1135C4.12817 13.4802 4.20183 13.8333 4.298 14.173ZM9.51525 14.173H14.4848C14.5474 13.8013 14.5929 13.4402 14.6212 13.0895C14.6494 12.7388 14.6635 12.3757 14.6635 12C14.6635 11.6243 14.6494 11.2612 14.6212 10.9105C14.5929 10.5598 14.5474 10.1987 14.4848 9.827H9.51525C9.45258 10.1987 9.40708 10.5598 9.37875 10.9105C9.35058 11.2612 9.3365 11.6243 9.3365 12C9.3365 12.3757 9.35058 12.7388 9.37875 13.0895C9.40708 13.4402 9.45258 13.8013 9.51525 14.173ZM15.9845 14.173H19.702C19.7982 13.8333 19.8718 13.4802 19.923 13.1135C19.9743 12.7468 20 12.3757 20 12C20 11.6243 19.9743 11.2532 19.923 10.8865C19.8718 10.5198 19.7982 10.1667 19.702 9.827H15.9845C16.0473 10.1987 16.0929 10.5631 16.1212 10.9202C16.1494 11.2773 16.1635 11.6372 16.1635 12C16.1635 12.3628 16.1494 12.7227 16.1212 13.0798C16.0929 13.4369 16.0473 13.8013 15.9845 14.173ZM15.6807 8.327H19.073C18.5385 7.27567 17.835 6.40317 16.9625 5.7095C16.09 5.016 15.0813 4.54167 13.9365 4.2865C14.3198 4.8685 14.6608 5.50508 14.9595 6.19625C15.2583 6.88725 15.4987 7.5975 15.6807 8.327ZM9.8595 8.327H14.1405C13.9083 7.491 13.6163 6.72075 13.2645 6.01625C12.9125 5.31175 12.491 4.64675 12 4.02125C11.509 4.64675 11.0875 5.31175 10.7355 6.01625C10.3837 6.72075 10.0917 7.491 9.8595 8.327ZM4.927 8.327H8.31925C8.50125 7.5975 8.74167 6.88725 9.0405 6.19625C9.33917 5.50508 9.68017 4.8685 10.0635 4.2865C8.91217 4.54167 7.90192 5.01767 7.03275 5.7145C6.16342 6.41117 5.4615 7.282 4.927 8.327Z" fill="black" />
+                                </g>
+                            </svg>
+                            ES/ES</a>
+                    </li>
+                </ul>
+            </details>
+
+            <div class="flex">
+
+                <div class="header__nav md:flex hidden sm:items-center justify-end gap-8">
+                    <nav id="menu-menu-header" class="main-menu nav hidden sm:flex items-center gap-8 text-14 md:max-xl:text-11 md:max-xl:gap-2 font-medium dark:!text-white list-none"><li id="menu-item-5220" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-5220"><a href="/newsroom/" aria-current="page">Home</a></li>
+<li id="menu-item-5244" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5244"><a href="https://www.quintoandar.com.br/newsroom/noticias/">Notícias</a></li>
+<li id="menu-item-5243" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5243"><a href="https://www.quintoandar.com.br/newsroom/materiais-de-marca/">Materiais de marca</a></li>
+<li id="menu-item-5240" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5240"><a href="https://www.quintoandar.com.br/newsroom/estudos-e-pesquisas/">Estudos e Pesquisas</a></li>
+<li id="menu-item-5242" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5242"><a href="https://www.quintoandar.com.br/newsroom/sobre/">Sobre</a></li>
+<li id="menu-item-5241" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5241"><a href="https://www.quintoandar.com.br/newsroom/contato/">Contato</a></li>
+</nav>
+                    <details class="dropdown cursor-pointer">
+                        <summary class="btn m-1 flex text-12 items-center dark:text-white">
+                            <svg class="mr-1 dark:invert" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <mask id="mask0_626_1610" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                    <rect width="24" height="24" fill="#818181" />
+                                </mask>
+                                <g mask="url(#mask0_626_1610)">
+                                    <path d="M12 21.5C10.6975 21.5 9.46833 21.2503 8.3125 20.751C7.15667 20.2517 6.14867 19.5718 5.2885 18.7115C4.42817 17.8513 3.74833 16.8433 3.249 15.6875C2.74967 14.5317 2.5 13.3025 2.5 12C2.5 10.6872 2.74967 9.45542 3.249 8.30475C3.74833 7.15408 4.42817 6.14867 5.2885 5.2885C6.14867 4.42817 7.15667 3.74833 8.3125 3.249C9.46833 2.74967 10.6975 2.5 12 2.5C13.3128 2.5 14.5446 2.74967 15.6953 3.249C16.8459 3.74833 17.8513 4.42817 18.7115 5.2885C19.5718 6.14867 20.2517 7.15408 20.751 8.30475C21.2503 9.45542 21.5 10.6872 21.5 12C21.5 13.3025 21.2503 14.5317 20.751 15.6875C20.2517 16.8433 19.5718 17.8513 18.7115 18.7115C17.8513 19.5718 16.8459 20.2517 15.6953 20.751C14.5446 21.2503 13.3128 21.5 12 21.5ZM12 19.9788C12.5103 19.3019 12.9398 18.6192 13.2885 17.9307C13.6372 17.2422 13.9212 16.4897 14.1405 15.673H9.8595C10.0917 16.5153 10.3789 17.2808 10.7213 17.9693C11.0634 18.6578 11.4897 19.3276 12 19.9788ZM10.0635 19.7038C9.68017 19.1538 9.33592 18.5285 9.03075 17.828C8.72558 17.1273 8.48842 16.409 8.31925 15.673H4.927C5.45517 16.7115 6.1635 17.584 7.052 18.2905C7.9405 18.9968 8.94433 19.4679 10.0635 19.7038ZM13.9365 19.7038C15.0557 19.4679 16.0595 18.9968 16.948 18.2905C17.8365 17.584 18.5448 16.7115 19.073 15.673H15.6807C15.4794 16.4153 15.2262 17.1368 14.921 17.8375C14.616 18.5382 14.2878 19.1602 13.9365 19.7038ZM4.298 14.173H8.0155C7.95267 13.8013 7.90708 13.4369 7.87875 13.0798C7.85058 12.7227 7.8365 12.3628 7.8365 12C7.8365 11.6372 7.85058 11.2773 7.87875 10.9202C7.90708 10.5631 7.95267 10.1987 8.0155 9.827H4.298C4.20183 10.1667 4.12817 10.5198 4.077 10.8865C4.02567 11.2532 4 11.6243 4 12C4 12.3757 4.02567 12.7468 4.077 13.1135C4.12817 13.4802 4.20183 13.8333 4.298 14.173ZM9.51525 14.173H14.4848C14.5474 13.8013 14.5929 13.4402 14.6212 13.0895C14.6494 12.7388 14.6635 12.3757 14.6635 12C14.6635 11.6243 14.6494 11.2612 14.6212 10.9105C14.5929 10.5598 14.5474 10.1987 14.4848 9.827H9.51525C9.45258 10.1987 9.40708 10.5598 9.37875 10.9105C9.35058 11.2612 9.3365 11.6243 9.3365 12C9.3365 12.3757 9.35058 12.7388 9.37875 13.0895C9.40708 13.4402 9.45258 13.8013 9.51525 14.173ZM15.9845 14.173H19.702C19.7982 13.8333 19.8718 13.4802 19.923 13.1135C19.9743 12.7468 20 12.3757 20 12C20 11.6243 19.9743 11.2532 19.923 10.8865C19.8718 10.5198 19.7982 10.1667 19.702 9.827H15.9845C16.0473 10.1987 16.0929 10.5631 16.1212 10.9202C16.1494 11.2773 16.1635 11.6372 16.1635 12C16.1635 12.3628 16.1494 12.7227 16.1212 13.0798C16.0929 13.4369 16.0473 13.8013 15.9845 14.173ZM15.6807 8.327H19.073C18.5385 7.27567 17.835 6.40317 16.9625 5.7095C16.09 5.016 15.0813 4.54167 13.9365 4.2865C14.3198 4.8685 14.6608 5.50508 14.9595 6.19625C15.2583 6.88725 15.4987 7.5975 15.6807 8.327ZM9.8595 8.327H14.1405C13.9083 7.491 13.6163 6.72075 13.2645 6.01625C12.9125 5.31175 12.491 4.64675 12 4.02125C11.509 4.64675 11.0875 5.31175 10.7355 6.01625C10.3837 6.72075 10.0917 7.491 9.8595 8.327ZM4.927 8.327H8.31925C8.50125 7.5975 8.74167 6.88725 9.0405 6.19625C9.33917 5.50508 9.68017 4.8685 10.0635 4.2865C8.91217 4.54167 7.90192 5.01767 7.03275 5.7145C6.16342 6.41117 5.4615 7.282 4.927 8.327Z" fill="black" />
+                                </g>
+                            </svg>
+                            PT/BR
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+                                <path d="M3.83643 6.10044L8.68998 10.954L13.5435 6.10044L12.8364 5.39333L8.68998 9.53978L4.54353 5.39333L3.83643 6.10044Z" fill="#818181" />
+                            </svg>
+                        </summary>
+                        <ul class="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-1 shadow-lg absolute bg-[#f8f9f5]">
+                            <li class="flex text-12 items-center hover:bg-[#eceff9] dark:text-white">
+                                <a class="flex place-items-center" href="https://www.quintoandar.com.br/newsroom/en/">
+                                    <svg class="mr-1 dark:invert" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <mask id="mask0_626_1610" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                            <rect width="24" height="24" fill="#818181" />
+                                        </mask>
+                                        <g mask="url(#mask0_626_1610)">
+                                            <path d="M12 21.5C10.6975 21.5 9.46833 21.2503 8.3125 20.751C7.15667 20.2517 6.14867 19.5718 5.2885 18.7115C4.42817 17.8513 3.74833 16.8433 3.249 15.6875C2.74967 14.5317 2.5 13.3025 2.5 12C2.5 10.6872 2.74967 9.45542 3.249 8.30475C3.74833 7.15408 4.42817 6.14867 5.2885 5.2885C6.14867 4.42817 7.15667 3.74833 8.3125 3.249C9.46833 2.74967 10.6975 2.5 12 2.5C13.3128 2.5 14.5446 2.74967 15.6953 3.249C16.8459 3.74833 17.8513 4.42817 18.7115 5.2885C19.5718 6.14867 20.2517 7.15408 20.751 8.30475C21.2503 9.45542 21.5 10.6872 21.5 12C21.5 13.3025 21.2503 14.5317 20.751 15.6875C20.2517 16.8433 19.5718 17.8513 18.7115 18.7115C17.8513 19.5718 16.8459 20.2517 15.6953 20.751C14.5446 21.2503 13.3128 21.5 12 21.5ZM12 19.9788C12.5103 19.3019 12.9398 18.6192 13.2885 17.9307C13.6372 17.2422 13.9212 16.4897 14.1405 15.673H9.8595C10.0917 16.5153 10.3789 17.2808 10.7213 17.9693C11.0634 18.6578 11.4897 19.3276 12 19.9788ZM10.0635 19.7038C9.68017 19.1538 9.33592 18.5285 9.03075 17.828C8.72558 17.1273 8.48842 16.409 8.31925 15.673H4.927C5.45517 16.7115 6.1635 17.584 7.052 18.2905C7.9405 18.9968 8.94433 19.4679 10.0635 19.7038ZM13.9365 19.7038C15.0557 19.4679 16.0595 18.9968 16.948 18.2905C17.8365 17.584 18.5448 16.7115 19.073 15.673H15.6807C15.4794 16.4153 15.2262 17.1368 14.921 17.8375C14.616 18.5382 14.2878 19.1602 13.9365 19.7038ZM4.298 14.173H8.0155C7.95267 13.8013 7.90708 13.4369 7.87875 13.0798C7.85058 12.7227 7.8365 12.3628 7.8365 12C7.8365 11.6372 7.85058 11.2773 7.87875 10.9202C7.90708 10.5631 7.95267 10.1987 8.0155 9.827H4.298C4.20183 10.1667 4.12817 10.5198 4.077 10.8865C4.02567 11.2532 4 11.6243 4 12C4 12.3757 4.02567 12.7468 4.077 13.1135C4.12817 13.4802 4.20183 13.8333 4.298 14.173ZM9.51525 14.173H14.4848C14.5474 13.8013 14.5929 13.4402 14.6212 13.0895C14.6494 12.7388 14.6635 12.3757 14.6635 12C14.6635 11.6243 14.6494 11.2612 14.6212 10.9105C14.5929 10.5598 14.5474 10.1987 14.4848 9.827H9.51525C9.45258 10.1987 9.40708 10.5598 9.37875 10.9105C9.35058 11.2612 9.3365 11.6243 9.3365 12C9.3365 12.3757 9.35058 12.7388 9.37875 13.0895C9.40708 13.4402 9.45258 13.8013 9.51525 14.173ZM15.9845 14.173H19.702C19.7982 13.8333 19.8718 13.4802 19.923 13.1135C19.9743 12.7468 20 12.3757 20 12C20 11.6243 19.9743 11.2532 19.923 10.8865C19.8718 10.5198 19.7982 10.1667 19.702 9.827H15.9845C16.0473 10.1987 16.0929 10.5631 16.1212 10.9202C16.1494 11.2773 16.1635 11.6372 16.1635 12C16.1635 12.3628 16.1494 12.7227 16.1212 13.0798C16.0929 13.4369 16.0473 13.8013 15.9845 14.173ZM15.6807 8.327H19.073C18.5385 7.27567 17.835 6.40317 16.9625 5.7095C16.09 5.016 15.0813 4.54167 13.9365 4.2865C14.3198 4.8685 14.6608 5.50508 14.9595 6.19625C15.2583 6.88725 15.4987 7.5975 15.6807 8.327ZM9.8595 8.327H14.1405C13.9083 7.491 13.6163 6.72075 13.2645 6.01625C12.9125 5.31175 12.491 4.64675 12 4.02125C11.509 4.64675 11.0875 5.31175 10.7355 6.01625C10.3837 6.72075 10.0917 7.491 9.8595 8.327ZM4.927 8.327H8.31925C8.50125 7.5975 8.74167 6.88725 9.0405 6.19625C9.33917 5.50508 9.68017 4.8685 10.0635 4.2865C8.91217 4.54167 7.90192 5.01767 7.03275 5.7145C6.16342 6.41117 5.4615 7.282 4.927 8.327Z" fill="black" />
+                                        </g>
+                                    </svg>
+                                    EN/US</a>
+                            </li>
+                                <li class="flex text-12 mt-2 items-center dark:text-white hover:bg-[#eceff9]">
+                                <a class="flex place-items-center" href="https://www.quintoandar.com.br/newsroom/es/">
+                                    <svg class="mr-1 dark:invert" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <mask id="mask0_626_1610" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                            <rect width="24" height="24" fill="#818181" />
+                                        </mask>
+                                        <g mask="url(#mask0_626_1610)">
+                                            <path d="M12 21.5C10.6975 21.5 9.46833 21.2503 8.3125 20.751C7.15667 20.2517 6.14867 19.5718 5.2885 18.7115C4.42817 17.8513 3.74833 16.8433 3.249 15.6875C2.74967 14.5317 2.5 13.3025 2.5 12C2.5 10.6872 2.74967 9.45542 3.249 8.30475C3.74833 7.15408 4.42817 6.14867 5.2885 5.2885C6.14867 4.42817 7.15667 3.74833 8.3125 3.249C9.46833 2.74967 10.6975 2.5 12 2.5C13.3128 2.5 14.5446 2.74967 15.6953 3.249C16.8459 3.74833 17.8513 4.42817 18.7115 5.2885C19.5718 6.14867 20.2517 7.15408 20.751 8.30475C21.2503 9.45542 21.5 10.6872 21.5 12C21.5 13.3025 21.2503 14.5317 20.751 15.6875C20.2517 16.8433 19.5718 17.8513 18.7115 18.7115C17.8513 19.5718 16.8459 20.2517 15.6953 20.751C14.5446 21.2503 13.3128 21.5 12 21.5ZM12 19.9788C12.5103 19.3019 12.9398 18.6192 13.2885 17.9307C13.6372 17.2422 13.9212 16.4897 14.1405 15.673H9.8595C10.0917 16.5153 10.3789 17.2808 10.7213 17.9693C11.0634 18.6578 11.4897 19.3276 12 19.9788ZM10.0635 19.7038C9.68017 19.1538 9.33592 18.5285 9.03075 17.828C8.72558 17.1273 8.48842 16.409 8.31925 15.673H4.927C5.45517 16.7115 6.1635 17.584 7.052 18.2905C7.9405 18.9968 8.94433 19.4679 10.0635 19.7038ZM13.9365 19.7038C15.0557 19.4679 16.0595 18.9968 16.948 18.2905C17.8365 17.584 18.5448 16.7115 19.073 15.673H15.6807C15.4794 16.4153 15.2262 17.1368 14.921 17.8375C14.616 18.5382 14.2878 19.1602 13.9365 19.7038ZM4.298 14.173H8.0155C7.95267 13.8013 7.90708 13.4369 7.87875 13.0798C7.85058 12.7227 7.8365 12.3628 7.8365 12C7.8365 11.6372 7.85058 11.2773 7.87875 10.9202C7.90708 10.5631 7.95267 10.1987 8.0155 9.827H4.298C4.20183 10.1667 4.12817 10.5198 4.077 10.8865C4.02567 11.2532 4 11.6243 4 12C4 12.3757 4.02567 12.7468 4.077 13.1135C4.12817 13.4802 4.20183 13.8333 4.298 14.173ZM9.51525 14.173H14.4848C14.5474 13.8013 14.5929 13.4402 14.6212 13.0895C14.6494 12.7388 14.6635 12.3757 14.6635 12C14.6635 11.6243 14.6494 11.2612 14.6212 10.9105C14.5929 10.5598 14.5474 10.1987 14.4848 9.827H9.51525C9.45258 10.1987 9.40708 10.5598 9.37875 10.9105C9.35058 11.2612 9.3365 11.6243 9.3365 12C9.3365 12.3757 9.35058 12.7388 9.37875 13.0895C9.40708 13.4402 9.45258 13.8013 9.51525 14.173ZM15.9845 14.173H19.702C19.7982 13.8333 19.8718 13.4802 19.923 13.1135C19.9743 12.7468 20 12.3757 20 12C20 11.6243 19.9743 11.2532 19.923 10.8865C19.8718 10.5198 19.7982 10.1667 19.702 9.827H15.9845C16.0473 10.1987 16.0929 10.5631 16.1212 10.9202C16.1494 11.2773 16.1635 11.6372 16.1635 12C16.1635 12.3628 16.1494 12.7227 16.1212 13.0798C16.0929 13.4369 16.0473 13.8013 15.9845 14.173ZM15.6807 8.327H19.073C18.5385 7.27567 17.835 6.40317 16.9625 5.7095C16.09 5.016 15.0813 4.54167 13.9365 4.2865C14.3198 4.8685 14.6608 5.50508 14.9595 6.19625C15.2583 6.88725 15.4987 7.5975 15.6807 8.327ZM9.8595 8.327H14.1405C13.9083 7.491 13.6163 6.72075 13.2645 6.01625C12.9125 5.31175 12.491 4.64675 12 4.02125C11.509 4.64675 11.0875 5.31175 10.7355 6.01625C10.3837 6.72075 10.0917 7.491 9.8595 8.327ZM4.927 8.327H8.31925C8.50125 7.5975 8.74167 6.88725 9.0405 6.19625C9.33917 5.50508 9.68017 4.8685 10.0635 4.2865C8.91217 4.54167 7.90192 5.01767 7.03275 5.7145C6.16342 6.41117 5.4615 7.282 4.927 8.327Z" fill="black" />
+                                        </g>
+                                    </svg>
+                                    ES/ES</a>
+                            </li>
+                        </ul>
+                    </details>
+                    
+                </div>
+
+                <div class="flex max-sm:ml-auto sm:items-center gap-6">
+                    <div class="hidden sm:block">
+                        <div
+    x-data="{
+        isDark: false, // Inicialmente define como claro
+        init() {
+            this.isDark = this.getSavedTheme() === 'dark'; // Aplica o tema salvo no localStorage
+            this.applyTheme();
+        },
+        toggle() {
+            this.isDark = !this.isDark; // Alterna o tema
+            this.saveTheme(); // Salva a preferência no localStorage
+            this.applyTheme(); // Aplica a alteração do tema
+        },
+        getSavedTheme() {
+            return localStorage.getItem('color-theme') || 'light'; // Retorna o tema salvo ou claro por padrão
+        },
+        saveTheme() {
+            localStorage.setItem('color-theme', this.isDark ? 'dark' : 'light'); // Salva o tema no localStorage
+        },
+        applyTheme() {
+            document.documentElement.classList.toggle('dark', this.isDark); // Aplica a classe 'dark' conforme o tema
+            document.dispatchEvent(new CustomEvent('themeChanged', { detail: { isDark: this.isDark } })); // Notifica gráficos
+        }
+    }" x-init="init()"
+    class="dark-mode flex items-center justify-center"
+    x-id="['dark-mode']"
+>
+    <button aria-label="button slide dark mode" x-ref="toggle" @click="toggle();" type="button" role="switch" :aria-checked="isDark" :aria-labelledby="$id('dark-mode')" class="relative isolate inline-flex lg:ml-4 py-1 w-11 rounded-full text-white bg-black transition" aria-checked="false" aria-labelledby="dark-mode-1">
+        <span :class="isDark ? 'translate-x-6' : 'translate-x-1'" class="flex items-center justify-center h-4 w-4 bg-white rounded-full transition shadow-md z-20 translate-x-1" aria-hidden="true">
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="absolute right-1 size-4 z-10">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="absolute left-1 size-4 z-10">
+            <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM18.894 6.166a.75.75 0 0 0-1.06-1.06l-1.591 1.59a.75.75 0 1 0 1.06 1.061l1.591-1.59ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5H21a.75.75 0 0 1 .75.75ZM17.834 18.894a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 1 0-1.061 1.06l1.59 1.591ZM12 18a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-2.25A.75.75 0 0 1 12 18ZM7.758 17.303a.75.75 0 0 0-1.061-1.06l-1.591 1.59a.75.75 0 0 0 1.06 1.061l1.591-1.59ZM6 12a.75.75 0 0 1-.75.75H3a.75.75 0 0 1 0-1.5h2.25A.75.75 0 0 1 6 12ZM6.697 7.757a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 0 0-1.061 1.06l1.59 1.591Z"></path>
+        </svg>
+    </button>
+</div>
+                    </div>
+                    <a href="#" class="btn--search block w-auto sm:w-auto h-auto sm:h-auto" aria-label="Search icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                            <path d="M22.2918 23.9625L13.9181 15.5887C13.2535 16.1204 12.4892 16.5413 11.6253 16.8515C10.7613 17.1616 9.84197 17.3167 8.86724 17.3167C6.45259 17.3167 4.409 16.4804 2.73646 14.8079C1.06393 13.1353 0.227661 11.0917 0.227661 8.67708C0.227661 6.26243 1.06393 4.21883 2.73646 2.5463C4.409 0.873766 6.45259 0.0374985 8.86724 0.0374985C11.2819 0.0374985 13.3255 0.873766 14.998 2.5463C16.6706 4.21883 17.5068 6.26243 17.5068 8.67708C17.5068 9.6518 17.3518 10.5711 17.0416 11.4351C16.7315 12.2991 16.3106 13.0633 15.7789 13.7279L24.1527 22.1017L22.2918 23.9625ZM8.86724 14.6583C10.5287 14.6583 11.9409 14.0768 13.104 12.9138C14.267 11.7508 14.8485 10.3385 14.8485 8.67708C14.8485 7.01562 14.267 5.60338 13.104 4.44036C11.9409 3.27734 10.5287 2.69583 8.86724 2.69583C7.20579 2.69583 5.79355 3.27734 4.63053 4.44036C3.4675 5.60338 2.88599 7.01562 2.88599 8.67708C2.88599 10.3385 3.4675 11.7508 4.63053 12.9138C5.79355 14.0768 7.20579 14.6583 8.86724 14.6583Z" fill="#3957BD" />
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</header>
+<hr class="md:mb-[65px] mb-[25px] bg-[#F8F9F5]">
+
+
+<style></style>
+
+<nav class="drawer-nav dark:bg-brand-gray-darker">
+    <div class="drawer-nav__inner">
+        <div class="drawer-nav__menu">
+            <nav id="menu-menu-header-1" class="nav flex flex-col gap-6 text-18 font-medium"><a href="/newsroom/" aria-current="page">Home</a>
+<a href="https://www.quintoandar.com.br/newsroom/noticias/">Notícias</a>
+<a href="https://www.quintoandar.com.br/newsroom/materiais-de-marca/">Materiais de marca</a>
+<a href="https://www.quintoandar.com.br/newsroom/estudos-e-pesquisas/">Estudos e Pesquisas</a>
+<a href="https://www.quintoandar.com.br/newsroom/sobre/">Sobre</a>
+<a href="https://www.quintoandar.com.br/newsroom/contato/">Contato</a>
+</nav>        </div>
+
+        <div class="sm:hidden">
+            <div
+    x-data="{
+        isDark: false, // Inicialmente define como claro
+        init() {
+            this.isDark = this.getSavedTheme() === 'dark'; // Aplica o tema salvo no localStorage
+            this.applyTheme();
+        },
+        toggle() {
+            this.isDark = !this.isDark; // Alterna o tema
+            this.saveTheme(); // Salva a preferência no localStorage
+            this.applyTheme(); // Aplica a alteração do tema
+        },
+        getSavedTheme() {
+            return localStorage.getItem('color-theme') || 'light'; // Retorna o tema salvo ou claro por padrão
+        },
+        saveTheme() {
+            localStorage.setItem('color-theme', this.isDark ? 'dark' : 'light'); // Salva o tema no localStorage
+        },
+        applyTheme() {
+            document.documentElement.classList.toggle('dark', this.isDark); // Aplica a classe 'dark' conforme o tema
+            document.dispatchEvent(new CustomEvent('themeChanged', { detail: { isDark: this.isDark } })); // Notifica gráficos
+        }
+    }" x-init="init()"
+    class="dark-mode flex items-center justify-center"
+    x-id="['dark-mode']"
+>
+    <button aria-label="button slide dark mode" x-ref="toggle" @click="toggle();" type="button" role="switch" :aria-checked="isDark" :aria-labelledby="$id('dark-mode')" class="relative isolate inline-flex lg:ml-4 py-1 w-11 rounded-full text-white bg-black transition" aria-checked="false" aria-labelledby="dark-mode-1">
+        <span :class="isDark ? 'translate-x-6' : 'translate-x-1'" class="flex items-center justify-center h-4 w-4 bg-white rounded-full transition shadow-md z-20 translate-x-1" aria-hidden="true">
+        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="absolute right-1 size-4 z-10">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="absolute left-1 size-4 z-10">
+            <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM18.894 6.166a.75.75 0 0 0-1.06-1.06l-1.591 1.59a.75.75 0 1 0 1.06 1.061l1.591-1.59ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5H21a.75.75 0 0 1 .75.75ZM17.834 18.894a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 1 0-1.061 1.06l1.59 1.591ZM12 18a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-2.25A.75.75 0 0 1 12 18ZM7.758 17.303a.75.75 0 0 0-1.061-1.06l-1.591 1.59a.75.75 0 0 0 1.06 1.061l1.591-1.59ZM6 12a.75.75 0 0 1-.75.75H3a.75.75 0 0 1 0-1.5h2.25A.75.75 0 0 1 6 12ZM6.697 7.757a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 0 0-1.061 1.06l1.59 1.591Z"></path>
+        </svg>
+    </button>
+</div>
+        </div>
+    </div>
+</nav><div class="search">
+    <header class="search__header">
+        <div class="container">
+            <form
+                action="https://www.quintoandar.com.br/newsroom"
+                class="search-form">
+                <input type="text" name="s"
+                    class="block w-11/12 border-0 py-2 px-3 text-brand-gray-darker ring-1 ring-inset ring-brand-gray-dark placeholder:text-brand-gray-dark focus:ring-2 focus:ring-inset focus:ring-brand-primary"
+                    placeholder="Buscar..." aria-label="Buscar...">
+            </form>
+            <span class="icon-close text-newsroom-brand-primary">
+                <svg class="w-full h-full" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <mask id="mask0_948_6418" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+  <rect width="24" height="24"/>
+  </mask>
+  <g mask="url(#mask0_948_6418)">
+  <path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z"/>
+  </g>
+</svg>
+            </span>
+        </div>
+    </header>
+
+    <div class="search__body">
+        <div class="container" style="content-visibility: auto;contain-intrinsic-size: auto 155px;">
+            <div class="search__message default active">
+                <div class="block w-16 h-16 mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <path d="M59.0222 64L36.6222 41.6C34.8444 43.0222 32.8 44.1481 30.4889 44.9778C28.1778 45.8074 25.7185 46.2222 23.1111 46.2222C16.6519 46.2222 11.1852 43.9852 6.71111 39.5111C2.23704 35.037 0 29.5704 0 23.1111C0 16.6519 2.23704 11.1852 6.71111 6.71111C11.1852 2.23704 16.6519 0 23.1111 0C29.5704 0 35.037 2.23704 39.5111 6.71111C43.9852 11.1852 46.2222 16.6519 46.2222 23.1111C46.2222 25.7185 45.8074 28.1778 44.9778 30.4889C44.1481 32.8 43.0222 34.8444 41.6 36.6222L64 59.0222L59.0222 64ZM23.1111 39.1111C27.5556 39.1111 31.3333 37.5556 34.4444 34.4444C37.5556 31.3333 39.1111 27.5556 39.1111 23.1111C39.1111 18.6667 37.5556 14.8889 34.4444 11.7778C31.3333 8.66667 27.5556 7.11111 23.1111 7.11111C18.6667 7.11111 14.8889 8.66667 11.7778 11.7778C8.66667 14.8889 7.11111 18.6667 7.11111 23.1111C7.11111 27.5556 8.66667 31.3333 11.7778 34.4444C14.8889 37.5556 18.6667 39.1111 23.1111 39.1111Z" fill="#3957BD"/>
+                    </svg>
+                </div>
+                <div class="text-center text-newsroom-brand-primary font-bold text-18">Digite sua busca</div>
+            </div>
+            <div class="search__message loading">
+                <div class="icon">
+                    <div class="search__animation"></div>
+                </div>
+                <div class="text-center text-brand-gray-dark font-bold text-18">Buscando...</div>
+            </div>
+            <div class="search__message no-content">
+                <div class="text-center text-brand-gray-dark font-bold text-18">Nenhum resultado encontrado.</div>
+            </div>
+            <div class="results grid-4 pb-8 lg:pb-0">
+            </div>
+        </div>
+    </div>
+</div>
+<main id="main">
+<!-- Últimas notícias -->
+<section class="ultimas-noticias mb-16 md:mb-20">
+  <div class="container">
+    <h2 class="text-26 mb-9 text-primary font-semibold leading-9 dark:text-white">Últimas notícias</h2>
+    <div class="grid-12 max-sm:gap-4">
+      <div class="col-span-12">
+                                                      
+<div class="card vertical__xl relative grid-12 !gap-0 md:!gap-7">
+  <div class="card__thumbnail col-span-6">
+    <a href="https://www.quintoandar.com.br/newsroom/quintoandar-faz-campanha-nas-ruas-de-campinas-rio-de-janeiro-e-porto-alegre-para-reforcar-compromisso-com-proprietarios/">
+      <img width="502" height="343" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-scaled.png" class="img-fluid rounded wp-post-image" alt="" decoding="async" fetchpriority="high" srcset="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-scaled.png 2560w, https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-300x205.png 300w, https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-1024x699.png 1024w, https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-768x524.png 768w, https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/08/RJ_8-1536x1049.png 1536w" sizes="(max-width: 502px) 100vw, 502px"  loading="eager"/>    </a>
+  </div>
+
+  <div class="card__content col-span-6">
+    <div class="flex gap-[25px] items-center md:mt-10 mt-4">
+      <a href="https://www.quintoandar.com.br/newsroom/category/marca/"><span class="marca text-newsroom-white rounded-lg p-2 text-12 font-semibold">Marca</span></a>
+      <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white"> 10 de agosto de 2026</span>
+    </div>
+    <h2 class="title md:text-35 text-24 text-primary md:mt-8 mt-4 mb-4 md:leading-10 leading-8 font-semibold dark:text-white">
+      <a href="https://www.quintoandar.com.br/newsroom/quintoandar-faz-campanha-nas-ruas-de-campinas-rio-de-janeiro-e-porto-alegre-para-reforcar-compromisso-com-proprietarios/" title="QuintoAndar faz campanha nas ruas de Campinas,  Rio de Janeiro e Porto Alegre para reforçar compromisso  com proprietários">
+                  QuintoAndar faz campanha nas ruas de Campinas,  Rio de Janeiro e Porto Alegre para reforçar compromisso  com proprietários              </a>
+    </h2>
+    <p class="subtitle text-16 md:text-20 font-light leading-6 text-newsroom-gray dark:text-white md:leading-7 pt-1">
+      <a href="https://www.quintoandar.com.br/newsroom/quintoandar-faz-campanha-nas-ruas-de-campinas-rio-de-janeiro-e-porto-alegre-para-reforcar-compromisso-com-proprietarios/">
+                   Fase regional da ação ‘Garantia à Prova’ explora as singularidades dessas cidades e leva personalidades locais para conversar com locadores e atestar que, pela plataforma, o aluguel nunca atrasa.                
+      </a>
+    </p>
+  </div>
+</div>                                
+        
+          
+                      <div class="grid-12 mt-[60px]">
+                              <div class="col-span-4 mb-6">
+                  
+<div class="card vertical__no__image">
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/institucional-e-negocios/"><span class="institucional-e-negocios text-newsroom-white rounded-lg p-2 text-12 font-semibold">Institucional e negócios</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4">
+      <a href="https://www.quintoandar.com.br/newsroom/grupo-quintoandar-anuncia-benvi-nova-empresa-focada-em-gestao-de-contratos-adquiridos/" title="Grupo QuintoAndar anuncia Benvi, nova empresa focada em gestão de contratos adquiridos">Grupo QuintoAndar anuncia Benvi, nova empresa focada em gestão de contratos adquiridos</a>
+    </h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/grupo-quintoandar-anuncia-benvi-nova-empresa-focada-em-gestao-de-contratos-adquiridos/">Nova operação fica responsável pela administração de contratos de aluguel ativos obtidos de outras imobiliárias.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  6 de agosto de 2026</span>
+  </div>
+</div>                                  </div>
+                            <div class="col-span-4 mb-6">
+                  
+<div class="card vertical__no__image">
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/institucional-e-negocios/"><span class="institucional-e-negocios text-newsroom-white rounded-lg p-2 text-12 font-semibold">Institucional e negócios</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4">
+      <a href="https://www.quintoandar.com.br/newsroom/quintoandar-inaugura-nova-sede-e-anuncia-investimento-de-r-2-bilhoes-em-tecnologia/" title="QuintoAndar inaugura nova sede e anuncia investimento de R$ 2 bilhões em tecnologia">QuintoAndar inaugura nova sede e anuncia investimento de R$ 2 bilhões em tecnologia</a>
+    </h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-inaugura-nova-sede-e-anuncia-investimento-de-r-2-bilhoes-em-tecnologia/">Vila QuintoAndar foi projetada para apoiar o crescimento em escala, fortalecer a colaboração e ampliar a capacidade de transformar o futuro do morar na América Latina.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  19 de junho de 2026</span>
+  </div>
+</div>                                  </div>
+                            <div class="col-span-4 mb-6">
+                  
+<div class="card vertical__no__image">
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/marca/"><span class="marca text-newsroom-white rounded-lg p-2 text-12 font-semibold">Marca</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4">
+      <a href="https://www.quintoandar.com.br/newsroom/quintoandar-vira-sextoandar-como-simpatia-em-torcida-pela-selecao/" title="QuintoAndar vira SextoAndar como ‘simpatia’ em torcida pela Seleção">QuintoAndar vira SextoAndar como ‘simpatia’ em torcida pela Seleção</a>
+    </h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-vira-sextoandar-como-simpatia-em-torcida-pela-selecao/">Em nova campanha desenvolvida em parceria com a agência Fbiz, a empresa adota temporariamente nova identidade, celebrando costumes e superstições do povo brasileiro</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  15 de junho de 2026</span>
+  </div>
+</div>                                  </div>
+                                  </div>
+            <div class="text-end col-span-12"><a href="https://www.quintoandar.com.br/newsroom/noticias/" class="underline dark:text-white">Ver todas as notícias</a></div>
+      </div>
+    </div>
+
+    <hr class="mt-12">
+
+  </div>
+</section>
+
+
+<!-- Linksx3 -->
+<section class="linksx3 mb-16 md:mb-20">
+  <div class="container pb-12">
+    <div class="grid-12 divide-gray-300 gap-6">
+
+      <div class="col-span-3 ">
+
+        <p class="text-24 text-primary dark:text-white font-semibold mb-1">Materiais de marca</p>
+
+        <span class="text-16 text-newsroom-gray font-normal leading-5">Baixe nosso logo, informações dos porta-vozes e telas do produto.</span>
+
+        <a class="flex mt-3 text-16 text-newsroom-gray underline dark:text-white" href="https://www.quintoandar.com.br/newsroom/materiais-de-marca/">
+          Confira
+          <svg xmlns="http://www.w3.org/2000/svg" class="mt-1 ml-2" width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M5.625 3.375V4.5H12.7069L3.375 13.8319L4.16812 14.625L13.5 5.29312V12.375H14.625V3.375H5.625Z" fill="#6E6E64" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="col-span-3 col-start-5">
+
+        <p class="text-24 text-primary font-semibold mb-1 dark:text-white">Fale com a gente</p>
+
+        <span class="text-16 text-newsroom-gray font-normal leading-5">Escreva para o time de Comunicação em <strong>imprensa@quintoandar.com.br</strong></span>
+
+        <a class="flex mt-3 text-16 text-newsroom-gray underline dark:text-white" href="https://www.quintoandar.com.br/newsroom/contato/">
+          Confira
+          <svg xmlns="http://www.w3.org/2000/svg" class="mt-1 ml-2" width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M5.625 3.375V4.5H12.7069L3.375 13.8319L4.16812 14.625L13.5 5.29312V12.375H14.625V3.375H5.625Z" fill="#6E6E64" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="col-span-3 col-start-9">
+
+        <p class="text-24 text-primary font-semibold mb-1 dark:text-white">Estudos e pesquisas</p>
+
+        <span class="text-16 text-newsroom-gray font-normal leading-5">Descubra dados inéditos e relatórios exclusivos sobre o mercado imobiliário.</span>
+
+        <a class="flex mt-3 text-16 text-newsroom-gray underline dark:text-white" href="https://mkt.quintoandar.com.br/dados/" target="_blank">
+          Confira
+          <svg xmlns="http://www.w3.org/2000/svg" class="mt-1 ml-2" width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M5.625 3.375V4.5H12.7069L3.375 13.8319L4.16812 14.625L13.5 5.29312V12.375H14.625V3.375H5.625Z" fill="#6E6E64" />
+          </svg>
+        </a>
+      </div>
+
+
+
+
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- Quinto andar em numeros -->
+<section class="quinto-andar-em-numeros md:mb-24 mb-12 bg-newsroom-blue-primary mt-24">
+  <div class="container">
+    <div class="grid-12">
+      <div class="col-span-12 md:py-24 py-12">
+        <div class="md:flex justify-between mb-16 items-center">
+          <h2 class="md:text-56 text-45 text-newsroom-white font-normal md:leading-[4.5rem] leading-10 mb-[20px]">QuintoAndar em números</h2>
+          <a href="https://www.quintoandar.com.br/newsroom/sobre/" class="flex">
+            <p class="md:text-18 text-16 text-[#F8F9F5] font-semibold leading-5">Veja mais em Sobre o QuintoAndar</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M6.875 4.125V5.5H15.5306L4.125 16.9056L5.09437 17.875L16.5 6.46937V15.125H17.875V4.125H6.875Z" fill="#F8F9F5" />
+            </svg>
+          </a>
+        </div>
+        <div class="grid-12" style="content-visibility: auto;contain-intrinsic-size: auto 237px;">
+          <div class="col-span-4 md:border-r-[1px] md:pr-[40px] md:pb-[10px] border-[#5172B1]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M19.4994 35.9831L4.52148 18.7357L4.50803 18.7191C2.25267 15.9301 1.80165 12.0021 3.34333 8.73521C6.08613 2.91917 13.6072 1.85442 17.6936 6.8055L19.5 8.99348L21.3063 6.8055C25.3926 1.85472 32.9152 2.91896 35.6567 8.73544C37.1982 12.0023 36.7472 15.93 34.4935 18.7188L34.4799 18.7356L19.4994 35.9831ZM6.39051 17.1705L19.5005 32.2668L32.6106 17.1706C34.2564 15.121 34.5981 12.2033 33.4521 9.77523C31.4457 5.5184 26.095 4.83282 23.1862 8.35709L19.5 12.8222L15.8138 8.3572C12.9052 4.83311 7.55569 5.51757 5.54797 9.7749C4.40199 12.2031 4.74358 15.121 6.39051 17.1705Z" fill="#F8F9F5" />
+            </svg>
+            <p class="text-50 font-normal leading-[4.5rem] md:pb-5 pb-0 text-newsroom-white md:mt-9 mt-1">+3 milhões</p>
+            <span class="text-16 font-normal leading-5 mb-6 md:mb-0 text-newsroom-white block">é o número de pessoas que o QuintoAndar ajudou a amar o lugar onde vivem, seja alugando seja comprando um novo imóvel.</span>
+          </div>
+          <div class="col-span-4 md:border-r-[1px] md:pr-[40px] md:pl-[30px] md:pb-[10px] border-[#5172B1]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
+              <path d="M20.7188 13.4063H18.2813V24.375H20.7188V13.4063Z" fill="#F8F9F5" />
+              <path d="M23.1563 2.4375H15.8438V4.875H23.1563V2.4375Z" fill="#F8F9F5" />
+              <path d="M34.125 10.9688L32.3944 9.25031L29.6522 11.9925C27.4075 9.40026 24.2504 7.7725 20.8368 7.44742C17.4232 7.12235 14.0156 8.12496 11.3219 10.2469C8.62832 12.3689 6.8558 15.4471 6.37267 18.8419C5.88954 22.2368 6.73294 25.6873 8.72763 28.4764C10.7223 31.2656 13.7149 33.1791 17.0837 33.8192C20.4525 34.4594 23.9384 33.777 26.8171 31.9139C29.6959 30.0508 31.7461 27.1502 32.5419 23.8148C33.3377 20.4793 32.8178 16.9655 31.0903 14.0034L34.125 10.9688ZM19.5 31.6875C17.3306 31.6875 15.2099 31.0442 13.4061 29.8389C11.6023 28.6337 10.1964 26.9206 9.3662 24.9163C8.536 22.912 8.31878 20.7066 8.74201 18.5789C9.16525 16.4511 10.2099 14.4967 11.7439 12.9627C13.2779 11.4287 15.2324 10.384 17.3601 9.96076C19.4878 9.53753 21.6933 9.75475 23.6976 10.5849C25.7018 11.4151 27.4149 12.821 28.6202 14.6248C29.8254 16.4286 30.4688 18.5493 30.4688 20.7188C30.4688 23.6278 29.3131 26.4178 27.2561 28.4748C25.199 30.5319 22.4091 31.6875 19.5 31.6875Z" fill="#F8F9F5" />
+            </svg>
+            <p class="text-50 font-normal leading-[4.5rem] md:pb-5 pb-0 text-newsroom-white md:mt-9 mt-1">1 hora</p>
+            <span class="text-16 font-normal leading-5 mb-6 md:mb-0 text-newsroom-white block">é o tempo recorde de locação de um imóvel no QuintoAndar, um apartamento no bairro de Todos os Santos, no Rio de Janeiro.</span>
+          </div>
+          <div class="col-span-4 md:pl-[30px]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 39 39" fill="none">
+              <path d="M29.25 26.8125V21.9375H24.375V26.8125H29.25Z" fill="#F8F9F5" />
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M14.625 7.3125H24.375V4.875H26.8125V7.3125H34.125V34.125H4.875V7.3125H12.1875V4.875H14.625V7.3125ZM12.1875 9.75V14.625H14.625V9.75H24.375V14.625H26.8125V9.75H31.6875V17.0625H7.3125V9.75H12.1875ZM7.3125 31.6875V19.5H31.6875V31.6875H7.3125Z" fill="#F8F9F5" />
+            </svg>
+            <p class="text-50 font-normal leading-[4.5rem] md:pb-5 pb-0 text-newsroom-white md:mt-9 mt-1">+35 milhões</p>
+            <span class="text-16 font-normal leading-5 mb-6 md:mb-0 text-newsroom-white block">é o número de visitas a imóveis já agendadas, tanto para aluguel como para compra e venda, na plataforma do QuintoAndar.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- Gráfico -->
+<section class="dados-e-pesquisas  mb-[60px]">
+  <div class="container">
+    <div class="grid-12">
+      <div class="col-span-12" style="content-visibility: auto;contain-intrinsic-size: auto 474px;">
+        <!-- Chart.js -->
+
+<style>#divGrafico {
+    pointer-events: none;
+  }</style>
+
+<script src="https://www.quintoandar.com.br/newsroom/wp-content/cache/flying-press/chart.js" data-origin-src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="grafico-dados-pesquisa  px-0 md:px-5 py-5 h-full">
+  <div class="flex text-center gap-5 items-center hidden">
+    <h2 class="text-24 text-newsroom-brand-primary dark:text-white font-semibold leading-8">Top 3 bairros mais caros para alugar no Brasil</h2>
+  </div>
+  <div class="grid-12">
+
+    <div class="col-span-4 md:pr-16 block">
+      <h2 class="text-30 text-primary dark:text-white font-semibold leading-8 mb-7">Abrimos portas <br/>para a informação</h2>
+      <p class="text-newsroom-gray  font-regular">
+        As soluções do QuintoAndar analisam dados das nossas transações para oferecer insights valiosos sobre o mercado imobiliário.
+        <br/><br/>
+        Dessa forma, compradores, inquilinos e proprietários fazem as melhores escolhas, com muito mais segurança.</p>
+    </div>
+
+    <div class="col-span-8 border-[#C5C9BA] max-sm:p-4 p-[30px] border rounded">
+
+      <div class="h-80 w-full">
+        <p class="text-newsroom-gray dark:text-white text-18 mb-4">Top 3 bairros mais caros para alugar no Brasil</p>
+        <canvas id="divGrafico" class="pb-8" style="width: 100% !important; height: 100% !important;"></canvas>
+      </div>
+        <div class="flex justify-between items-center mt-8">
+          <div class="text-13 text-newsroom-gray dark:text-white max-w-[270px]">
+            Índice de Aluguel QuintoAndar Imovelweb          </div>
+            <a href="https://www.quintoandar.com.br/newsroom/indice-de-aluguel/" class="flex text-13 text-newsroom-gray dark:text-white underline">
+              Ver notícia completa
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M5.625 3.375V4.5H12.7069L3.375 13.8319L4.16812 14.625L13.5 5.29312V12.375H14.625V3.375H5.625Z" fill="#6E6E64"/>
+              </svg>
+            </a>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+    const labels = ["Leblon - Rio","Vila Ol\u00edmpia - SP","Jardim Europa - SP"];
+    const valores = ["116.4","114.1","113.5"];
+    const isMobile = window.innerWidth <= 768;
+
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Valor do m2 em R$',
+        data: valores,
+        fill: false,
+        borderColor: 'gray',
+        tension: 0.1,
+        borderRadius: 4,
+        backgroundColor: '#e6e6e6',
+        barPercentage: isMobile ? 0.5 : 0.25,
+        categoryPercentage: isMobile ? 1.5 : 3
+      }]
+    };
+
+    const config = {
+      type: 'bar',
+      data: data,
+      options: {
+        indexAxis: 'y',
+        scales: {
+          x: {
+            grid: {
+              display: false
+            },
+            border: {
+              display: false
+            },
+            ticks: {
+              display: false
+            }
+          },
+          y: {
+            grid: {
+              display: false
+            },
+            border: {
+              display: false
+            },
+            ticks: {
+              display: false
+            },
+            afterFit: function(scale) {
+              scale.paddingTop = isMobile ? 30 : 20;
+              scale.paddingBottom = isMobile ? 30 : 20;
+            }
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true
+          },
+          tooltip: {
+            enabled: true
+          }
+        },
+        layout: {
+       
+        },
+        animation: {
+          onComplete: function() {
+            const ctx = this.ctx;
+            const chartArea = this.chartArea;
+
+
+            ctx.save();
+            ctx.textBaseline = 'middle';
+            ctx.font = isMobile ? 'bold 11px Arial' : 'bold 14px Arial';
+            
+            this.data.datasets.forEach((dataset, i) => {
+              const meta = this.getDatasetMeta(i);
+              meta.data.forEach((bar, index) => {
+                const yPos = bar.y;
+                
+                // Labels
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#000';
+                const label = this.data.labels[index];
+                const xPosLabel = chartArea.left + (isMobile ? 10 : 20);
+                ctx.fillText(label, xPosLabel, yPos);
+                
+                // Valores
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#000';
+                const valor = 'R$ ' + dataset.data[index];
+                const xPosValor = bar.x - (isMobile ? 10 : 25);
+                ctx.fillText(valor, xPosValor, yPos);
+              });
+            });
+            ctx.restore();
+          }
+        }
+      }      
+    };
+    
+    const ctx = document.getElementById('divGrafico').getContext('2d');
+    new Chart(ctx, config);
+</script>      </div>
+    </div>
+
+    <hr class="mt-12 border-[#C5C9BA]">
+  </div>
+
+</section>
+
+<!-- Veja Mais -->
+<section class="veja-mais mb-[60px]">
+  <div class="container" style="content-visibility: auto;contain-intrinsic-size: auto 731px;">
+    <!-- Tabs Content -->
+  <div class="flex mb-12 justify-between" role="tablist">
+    <h2 class="text-30 text-primary font-semibold leading-9 mr-[45px] dark:text-white">Veja mais</h2>
+    <div class="buttons-tabs hidden md:flex">
+      <button class="text-14 font-normal leading-6 tab-button rounded-l-full border border-[#3957BD] px-10 py-3 bg-newsroom-blue-secondary text-white"
+        role="tab" aria-selected="true" data-tab="tab1">
+        Todas
+      </button>
+      <button class="text-14 font-normal leading-6 tab-button px-9 py-3 border-l-[0px] border border-[#C2C2C2] text-[#565656] dark:text-white"
+        role="tab" aria-selected="false" data-tab="tab2">
+        Institucional e negócios
+      </button>
+      <button class="text-14 font-normal leading-6 tab-button px-9 py-3 border-l-[0px] border border-[#C2C2C2] text-[#565656] dark:text-white"
+        role="tab" aria-selected="false" data-tab="tab3">
+        Marca
+      </button>
+      <button class="text-14 font-normal leading-6 tab-button px-9 py-3 border-l-[0px] border border-[#C2C2C2] text-[#565656] dark:text-white"
+        role="tab" aria-selected="false" data-tab="tab4">
+        Produtos e inovação
+      </button>
+      <button class="text-14 font-normal leading-6 tab-button px-9 border-l-[0px] border border-[#C2C2C2] py-3 text-[#565656] dark:text-white"
+        role="tab" aria-selected="false" data-tab="tab5">
+        Tendências e dados
+      </button>
+      <button class="text-14 font-normal leading-6 tab-button rounded-r-full px-9 border-l-[0px] border border-[#C2C2C2] py-3 text-[#565656] dark:text-white"
+        role="tab" aria-selected="false" data-tab="tab6">
+        Mercado imobiliário
+      </button>
+    </div>
+  </div>
+
+  <div class="tab-content mt-4" id="tab1">
+    <div class="grid-12">
+                              <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/quintoandar-cria-campanha-em-forma-de-experimento-social-para-evidenciar-seguranca-e-tranquilidade-de-proprietarios-clientes/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/05/Press-Release-1920x1080-1-393x239.png" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="Uma mulher com longos cabelos castanhos sorri com os braços cruzados em uma sala moderna e elegante com decoração azul, grandes lâmpadas e vegetação no alto. Um emblema do Pagamento Garantido com uma marca de verificação aparece no canto superior direito." loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/marca/"><span class="marca text-newsroom-white rounded-lg p-2 text-12 font-semibold">Marca</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-cria-campanha-em-forma-de-experimento-social-para-evidenciar-seguranca-e-tranquilidade-de-proprietarios-clientes/" title="QuintoAndar cria campanha em forma de experimento social para evidenciar segurança e tranquilidade de proprietários clientes">QuintoAndar cria campanha em forma de experimento social para evidenciar segurança e tranquilidade de proprietários clientes</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-cria-campanha-em-forma-de-experimento-social-para-evidenciar-seguranca-e-tranquilidade-de-proprietarios-clientes/">Ana Clara protagoniza campanha publicitária entre proprietários clientes e não clientes do QuintoAndar, que destaca o contraste entre os grupos e as vantagens de listar imóveis na plataforma.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  27 de maio de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/63-se-dizem-dispostos-a-pagar-uma-taxa-de-25-do-valor-do-aluguel-para-ter-acesso-a-servicos-digitais-revela-pesquisa-datafolha/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/05/Newsroom_Produtos_PlataformaQuintoAndar_3-393x239.png" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/tendencias-e-dados/"><span class="tendencias-e-dados text-newsroom-white rounded-lg p-2 text-12 font-semibold">Tendências e dados</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/63-se-dizem-dispostos-a-pagar-uma-taxa-de-25-do-valor-do-aluguel-para-ter-acesso-a-servicos-digitais-revela-pesquisa-datafolha/" title="63% se dizem dispostos a pagar uma taxa de 2,5% do valor do aluguel para ter acesso a serviços digitais, revela pesquisa Datafolha">63% se dizem dispostos a pagar uma taxa de 2,5% do valor do aluguel para ter acesso a serviços digitais, revela pesquisa Datafolha</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/63-se-dizem-dispostos-a-pagar-uma-taxa-de-25-do-valor-do-aluguel-para-ter-acesso-a-servicos-digitais-revela-pesquisa-datafolha/">Apenas 16% rejeitam desembolsar alguma quantia por um pacote que ofereça atendimento online 24 horas, vistorias digitais e outros serviços tecnológicos.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  21 de maio de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/quintoandar-vai-monitorar-pagamento-de-condominio-e-quitar-boletos-em-caso-de-inadimplencia-do-inquilino/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/06/Newsroom_Produtos_QPreco_1-393x239.png" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/produtos-e-inovacao/"><span class="produtos-e-inovacao text-newsroom-white rounded-lg p-2 text-12 font-semibold">Produtos e inovação</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-vai-monitorar-pagamento-de-condominio-e-quitar-boletos-em-caso-de-inadimplencia-do-inquilino/" title="QuintoAndar vai monitorar pagamento de condomínio e quitar boletos em caso de inadimplência do inquilino">QuintoAndar vai monitorar pagamento de condomínio e quitar boletos em caso de inadimplência do inquilino</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-vai-monitorar-pagamento-de-condominio-e-quitar-boletos-em-caso-de-inadimplencia-do-inquilino/">Com o Condomínio Garantido, a plataforma acompanha o pagamento mês a mês e quita automaticamente o boleto em caso de atraso, trazendo mais segurança e comodidade ao proprietário</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  7 de maio de 2026</span>
+  </div>
+</div>                      </div>
+          </div>
+  </div>
+
+  <div class="tab-content hidden mt-4" id="tab2">
+    <div class="grid-12">
+                              <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/quintoandar-anuncia-vp-de-engenharia-dedicado-a-inteligencia-artificial/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/04/Rafael-Lopez-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/institucional-e-negocios/"><span class="institucional-e-negocios text-newsroom-white rounded-lg p-2 text-12 font-semibold">Institucional e negócios</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-anuncia-vp-de-engenharia-dedicado-a-inteligencia-artificial/" title="QuintoAndar anuncia VP de Engenharia dedicado à Inteligência Artificial">QuintoAndar anuncia VP de Engenharia dedicado à Inteligência Artificial</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-anuncia-vp-de-engenharia-dedicado-a-inteligencia-artificial/">Equipe liderada pelo novo executivo será responsável por aprimorar a jornada de moradia de ponta a ponta e criar novas soluções.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  13 de abril de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/grupo-quintoandar-acelera-estrategia-de-ia-com-a-chegada-de-vitor-agnello-como-diretor-senior-de-produtos-para-suas-marcas-de-classificados/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/04/IMG_7683-Horizontal-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/institucional-e-negocios/"><span class="institucional-e-negocios text-newsroom-white rounded-lg p-2 text-12 font-semibold">Institucional e negócios</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/grupo-quintoandar-acelera-estrategia-de-ia-com-a-chegada-de-vitor-agnello-como-diretor-senior-de-produtos-para-suas-marcas-de-classificados/" title="Grupo QuintoAndar acelera estratégia de IA com a chegada de Vitor Agnello como diretor sênior de produtos para suas marcas de Classificados">Grupo QuintoAndar acelera estratégia de IA com a chegada de Vitor Agnello como diretor sênior de produtos para suas marcas de Classificados</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/grupo-quintoandar-acelera-estrategia-de-ia-com-a-chegada-de-vitor-agnello-como-diretor-senior-de-produtos-para-suas-marcas-de-classificados/">Movimento reforça a integração de talentos globais focados em Inteligência Artificial para impulsionar a inovação em todo o ecossistema do grupo.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  10 de abril de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/quintoandar-anuncia-investimento-de-r-100-milhoes-no-rio-de-janeiro-e-amplia-presenca-na-regiao-metropolitana/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/01/rio-de-janeiro-visao-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/institucional-e-negocios/"><span class="institucional-e-negocios text-newsroom-white rounded-lg p-2 text-12 font-semibold">Institucional e negócios</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-anuncia-investimento-de-r-100-milhoes-no-rio-de-janeiro-e-amplia-presenca-na-regiao-metropolitana/" title="QuintoAndar anuncia investimento de R$ 100 milhões no Rio de Janeiro e amplia presença na região metropolitana">QuintoAndar anuncia investimento de R$ 100 milhões no Rio de Janeiro e amplia presença na região metropolitana</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-anuncia-investimento-de-r-100-milhoes-no-rio-de-janeiro-e-amplia-presenca-na-regiao-metropolitana/">Plataforma aposta na experiência do cliente, impulsionada por tecnologia e dados, segurança financeira e crescimento na base de corretores parceiros para evoluir atuação na região.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  28 de janeiro de 2026</span>
+  </div>
+</div>                      </div>
+          </div>
+  </div>
+  <div class="tab-content hidden mt-4" id="tab3">
+    <div class="grid-12">
+                              <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/quintoandar-desafia-mercado-e-promete-pagar-ate-10x-o-valor-do-aluguel-para-proprietarios-que-tiverem-atraso-no-recebimento-em-maio/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/05/Nao-Promocao_1920x1080-393x239.png" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/marca/"><span class="marca text-newsroom-white rounded-lg p-2 text-12 font-semibold">Marca</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-desafia-mercado-e-promete-pagar-ate-10x-o-valor-do-aluguel-para-proprietarios-que-tiverem-atraso-no-recebimento-em-maio/" title="QuintoAndar desafia mercado e promete pagar até 10x o valor do aluguel para proprietários que tiverem atraso no recebimento em maio">QuintoAndar desafia mercado e promete pagar até 10x o valor do aluguel para proprietários que tiverem atraso no recebimento em maio</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-desafia-mercado-e-promete-pagar-ate-10x-o-valor-do-aluguel-para-proprietarios-que-tiverem-atraso-no-recebimento-em-maio/">Com apresentadora Ana Clara, nova campanha coloca à prova a robustez tecnológica do Pagamento Garantido, diferencial que consolidou o QuintoAndar como líder absoluto em administração de imóveis.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  7 de maio de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/e-mais-facil-gostar-quando-e-do-quintoandar-nova-campanha-desafia-o-nivel-de-exigencia-de-jacquin-e-susana-vieira/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/01/Foto-Divulgacao-Quinto-Andar-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/marca/"><span class="marca text-newsroom-white rounded-lg p-2 text-12 font-semibold">Marca</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/e-mais-facil-gostar-quando-e-do-quintoandar-nova-campanha-desafia-o-nivel-de-exigencia-de-jacquin-e-susana-vieira/" title="&#8216;É mais fácil gostar quando é do QuintoAndar&#8217;: nova campanha desafia o nível de exigência de Jacquin e Susana Vieira">&#8216;É mais fácil gostar quando é do QuintoAndar&#8217;: nova campanha desafia o nível de exigência de Jacquin e Susana Vieira</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/e-mais-facil-gostar-quando-e-do-quintoandar-nova-campanha-desafia-o-nivel-de-exigencia-de-jacquin-e-susana-vieira/">Com foco na qualidade e na exclusividade do portfólio, ação utiliza chef de cozinha e atriz para reforçar os atributos e diferenciais da marca em meio à alta temporada do mercado imobiliário.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  20 de janeiro de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/quintoandar-fica-em-1o-lugar-entre-imobiliarias-em-pesquisa-que-elege-as-marcas-mais-amadas-pelos-cariocas/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/12/pexels-aline-cardoso-1493182-2876407-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/marca/"><span class="marca text-newsroom-white rounded-lg p-2 text-12 font-semibold">Marca</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-fica-em-1o-lugar-entre-imobiliarias-em-pesquisa-que-elege-as-marcas-mais-amadas-pelos-cariocas/" title="QuintoAndar fica em 1º lugar entre imobiliárias em pesquisa que elege as marcas mais amadas pelos cariocas">QuintoAndar fica em 1º lugar entre imobiliárias em pesquisa que elege as marcas mais amadas pelos cariocas</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-fica-em-1o-lugar-entre-imobiliarias-em-pesquisa-que-elege-as-marcas-mais-amadas-pelos-cariocas/">Levantamento feito pelo jornal ‘O Globo’ em parceria com a TroianoBranding é realizado desde 2010.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  15 de dezembro de 2025</span>
+  </div>
+</div>                      </div>
+          </div>
+  </div>
+
+  <div class="tab-content hidden mt-4" id="tab4">
+    <div class="grid-12">
+                              <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/quintoandar-lanca-programa-para-reforcar-a-protecao-de-dados-de-proprietarios-e-imobiliarias/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/04/pexels-jakubzerdzicki-33305177-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/produtos-e-inovacao/"><span class="produtos-e-inovacao text-newsroom-white rounded-lg p-2 text-12 font-semibold">Produtos e inovação</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-lanca-programa-para-reforcar-a-protecao-de-dados-de-proprietarios-e-imobiliarias/" title="QuintoAndar lança programa para reforçar a proteção de dados de proprietários e imobiliárias">QuintoAndar lança programa para reforçar a proteção de dados de proprietários e imobiliárias</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-lanca-programa-para-reforcar-a-protecao-de-dados-de-proprietarios-e-imobiliarias/">Iniciativa ‘Programa de Proteção de Dados dos Imóveis’ blinda carteira de imobiliárias parceiras e imóveis anunciados na plataforma QuintoAndar, estabelecendo sanções financeiras e adotando medidas criminais para combater más condutas no mercado.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  15 de abril de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/quintoandar-leva-busca-de-imoveis-para-o-chatgpt/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/03/QA-OpenAI-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/produtos-e-inovacao/"><span class="produtos-e-inovacao text-newsroom-white rounded-lg p-2 text-12 font-semibold">Produtos e inovação</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-leva-busca-de-imoveis-para-o-chatgpt/" title="QuintoAndar leva busca de imóveis para o ChatGPT">QuintoAndar leva busca de imóveis para o ChatGPT</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/quintoandar-leva-busca-de-imoveis-para-o-chatgpt/">Empresa brasileira é a primeira imobiliária digital latino-americana a marcar presença oficial entre os apps no ChatGPT.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  17 de março de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/programa-anti-bypass-do-quintoandar-triplica-recuperacao-e-ja-mira-r-20-milhoes-ao-ano/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/09/Newsroom_Produtos_PlataformaQuintoAndar_1-393x239.png" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/produtos-e-inovacao/"><span class="produtos-e-inovacao text-newsroom-white rounded-lg p-2 text-12 font-semibold">Produtos e inovação</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/programa-anti-bypass-do-quintoandar-triplica-recuperacao-e-ja-mira-r-20-milhoes-ao-ano/" title="Programa anti-bypass do QuintoAndar triplica recuperação e já mira R$ 20 milhões ao ano">Programa anti-bypass do QuintoAndar triplica recuperação e já mira R$ 20 milhões ao ano</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/programa-anti-bypass-do-quintoandar-triplica-recuperacao-e-ja-mira-r-20-milhoes-ao-ano/">Companhia mostra impactos positivos em dois anos do programa que identifica desvio de transações, e abre os planos para continuar investindo na segurança e transparência do mercado imobiliário.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  13 de janeiro de 2026</span>
+  </div>
+</div>                      </div>
+          </div>
+  </div>
+
+  <div class="tab-content hidden mt-4" id="tab5">
+    <div class="grid-12">
+                              <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/45-dos-proprietarios-cariocas-se-colocam-em-risco-ao-assumir-contratos-diretos-de-locacao-mostra-estudo-do-quintoandar/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/04/pexels-zeca-souza-227261917-12039485-1-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/tendencias-e-dados/"><span class="tendencias-e-dados text-newsroom-white rounded-lg p-2 text-12 font-semibold">Tendências e dados</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/45-dos-proprietarios-cariocas-se-colocam-em-risco-ao-assumir-contratos-diretos-de-locacao-mostra-estudo-do-quintoandar/" title="45% dos proprietários cariocas se colocam em risco ao assumir contratos diretos de locação, mostra estudo do QuintoAndar">45% dos proprietários cariocas se colocam em risco ao assumir contratos diretos de locação, mostra estudo do QuintoAndar</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/45-dos-proprietarios-cariocas-se-colocam-em-risco-ao-assumir-contratos-diretos-de-locacao-mostra-estudo-do-quintoandar/">Para apoiar o mercado local, a Plataforma investe R$ 100 milhões e expande para mais de 100 novas regiões.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  15 de abril de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/raio-x-do-morar-em-sp-quintoandar-revela-os-bairros-com-mais-imoveis-com-piscina-ar-condicionado-e-outros-itens-exclusivos/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/04/piscina-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/tendencias-e-dados/"><span class="tendencias-e-dados text-newsroom-white rounded-lg p-2 text-12 font-semibold">Tendências e dados</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/raio-x-do-morar-em-sp-quintoandar-revela-os-bairros-com-mais-imoveis-com-piscina-ar-condicionado-e-outros-itens-exclusivos/" title="Raio X do morar em SP: QuintoAndar revela os bairros com mais imóveis com piscina, ar-condicionado e outros itens exclusivos">Raio X do morar em SP: QuintoAndar revela os bairros com mais imóveis com piscina, ar-condicionado e outros itens exclusivos</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/raio-x-do-morar-em-sp-quintoandar-revela-os-bairros-com-mais-imoveis-com-piscina-ar-condicionado-e-outros-itens-exclusivos/">Em plena alta temporada do mercado imobiliário, comodidades atraem interessados em comprar ou alugar um imóvel.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  8 de abril de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/bairros-das-zonas-oeste-e-sul-de-sp-encabecam-ranking-de-mais-caros-para-venda-de-imoveis-no-pais/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2026/03/ponte-estaiada-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/tendencias-e-dados/"><span class="tendencias-e-dados text-newsroom-white rounded-lg p-2 text-12 font-semibold">Tendências e dados</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/bairros-das-zonas-oeste-e-sul-de-sp-encabecam-ranking-de-mais-caros-para-venda-de-imoveis-no-pais/" title="Bairros das zonas Oeste e Sul de SP encabeçam ranking de mais caros para venda de imóveis no país">Bairros das zonas Oeste e Sul de SP encabeçam ranking de mais caros para venda de imóveis no país</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/bairros-das-zonas-oeste-e-sul-de-sp-encabecam-ranking-de-mais-caros-para-venda-de-imoveis-no-pais/">Levantamento do QuintoAndar mostra que, dos 10 mais valorizados, 7 estão nestas regiões. Os outros três ‘infiltrados’ na lista são do Rio de Janeiro.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  19 de março de 2026</span>
+  </div>
+</div>                      </div>
+          </div>
+  </div>
+
+  <div class="tab-content hidden mt-4" id="tab6">
+    <div class="grid-12">
+                              <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/imposto-de-renda-2025-dificuldade-para-declarar-seu-imovel-especialista-tira-suas-duvidas/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/06/imposto-de-renda-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/mercado-imobiliario/"><span class="mercado-imobiliario text-newsroom-white rounded-lg p-2 text-12 font-semibold">Mercado imobiliário</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/imposto-de-renda-2025-dificuldade-para-declarar-seu-imovel-especialista-tira-suas-duvidas/" title="Imposto de Renda 2025: dificuldade para declarar seu imóvel? Especialista tira suas dúvidas">Imposto de Renda 2025: dificuldade para declarar seu imóvel? Especialista tira suas dúvidas</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/imposto-de-renda-2025-dificuldade-para-declarar-seu-imovel-especialista-tira-suas-duvidas/">Saiba o que deve - e o que não deve - ser incluído na declaração à Receita Federal, segundo a especialista do QuintoAndar.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  4 de junho de 2025</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/o-que-faz-um-imovel-valorizar-entenda-os-fatores-que-influenciam-a-precificacao-e-como-a-tecnologia-auxilia-o-processo/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/03/predio-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/mercado-imobiliario/"><span class="mercado-imobiliario text-newsroom-white rounded-lg p-2 text-12 font-semibold">Mercado imobiliário</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/o-que-faz-um-imovel-valorizar-entenda-os-fatores-que-influenciam-a-precificacao-e-como-a-tecnologia-auxilia-o-processo/" title="O que faz um imóvel valorizar? Entenda os fatores que influenciam a precificação e como a tecnologia auxilia o processo">O que faz um imóvel valorizar? Entenda os fatores que influenciam a precificação e como a tecnologia auxilia o processo</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/o-que-faz-um-imovel-valorizar-entenda-os-fatores-que-influenciam-a-precificacao-e-como-a-tecnologia-auxilia-o-processo/">Localização, reformas e perfil da vizinhança impactam diretamente no preço de um imóvel; novas ferramentas tecnológicas ajudam a trazer mais previsibilidade e confiança para compradores e vendedores</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  10 de março de 2025</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            <div class="card vertical">
+<div class="card__thumbnail">
+    <a href="https://www.quintoandar.com.br/newsroom/alta-temporada-de-imoveis-saiba-dicas-essenciais-para-quem-vai-alugar-pela-primeira-vez/">
+      <img width="393" height="239" src="https://www.quintoandar.com.br/newsroom/wp-content/uploads/2025/02/predio-sp-393x239.jpg" class="img-fluid rounded-[5px] mb-5 wp-post-image" alt="" loading="lazy" decoding="async"  fetchpriority="low"/>    </a>
+  </div>
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/mercado-imobiliario/"><span class="mercado-imobiliario text-newsroom-white rounded-lg p-2 text-12 font-semibold">Mercado imobiliário</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4"><a href="https://www.quintoandar.com.br/newsroom/alta-temporada-de-imoveis-saiba-dicas-essenciais-para-quem-vai-alugar-pela-primeira-vez/" title="Alta temporada de imóveis: saiba dicas essenciais para quem vai alugar pela primeira vez">Alta temporada de imóveis: saiba dicas essenciais para quem vai alugar pela primeira vez</a></h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/alta-temporada-de-imoveis-saiba-dicas-essenciais-para-quem-vai-alugar-pela-primeira-vez/">Especialista do QuintoAndar reforça organização e outras dicas importantes ao assumir as responsabilidades do aluguel.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  24 de fevereiro de 2025</span>
+  </div>
+</div>                      </div>
+          </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Reset todos os botões
+        tabButtons.forEach(b => {
+          b.classList.remove('bg-newsroom-blue-secondary', 'text-white', 'border-[#3957BD]');
+          b.classList.add('text-[#565656]', 'border-[#C2C2C2]','dark:text-white');
+          b.setAttribute('aria-selected', 'false');
+        });
+
+        // Oculta todas as abas
+        tabContents.forEach(content => content.classList.add('hidden'));
+
+        // Ativa o botão atual
+        btn.classList.remove('text-[#565656]');
+        btn.classList.remove('border-[#C2C2C2]');
+        btn.classList.add('bg-newsroom-blue-secondary', 'text-white', 'border-[#3957BD]');
+        btn.setAttribute('aria-selected', 'true');
+
+        // Mostra o conteúdo da aba correspondente
+        const tabId = btn.getAttribute('data-tab');
+        document.getElementById(tabId).classList.remove('hidden');
+      });
+    });
+  </script>
+
+    <hr class="mt-12 border-[#C5C9BA]">
+  </div>
+
+</section>
+
+<!-- Loadmore -->
+<section class="pb-12 sm:pb-24 pt-0 md:pt-6">
+  <div class="container">
+    <h2 class="text-30 text-primary font-semibold leading-9 mb-12 dark:text-white">Outros conteúdos para você</h2>
+    <div class="grid-12 mb-[60px] gap-x-7" style="content-visibility: auto;contain-intrinsic-size: auto 265px;">
+                              <div class="col-span-4 mb-6">
+            
+<div class="card vertical__no__image">
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/tendencias-e-dados/"><span class="tendencias-e-dados text-newsroom-white rounded-lg p-2 text-12 font-semibold">Tendências e dados</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4">
+      <a href="https://www.quintoandar.com.br/newsroom/barro-preto-sao-pedro-e-santa-efigenia-sao-os-bairros-com-a-maior-valorizacao-em-belo-horizonte/" title="Barro Preto, São Pedro e Santa Efigênia são os bairros com a maior valorização em Belo Horizonte">Barro Preto, São Pedro e Santa Efigênia são os bairros com a maior valorização em Belo Horizonte</a>
+    </h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/barro-preto-sao-pedro-e-santa-efigenia-sao-os-bairros-com-a-maior-valorizacao-em-belo-horizonte/">Em um ano, localidades registram mais de 40% de aumento no valor do aluguel e veem mercado aquecido.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  12 de fevereiro de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            
+<div class="card vertical__no__image">
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/tendencias-e-dados/"><span class="tendencias-e-dados text-newsroom-white rounded-lg p-2 text-12 font-semibold">Tendências e dados</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4">
+      <a href="https://www.quintoandar.com.br/newsroom/mooca-e-tatuape-figuram-no-top-3-bairros-mais-procurados-por-quem-planeja-comprar-um-imovel-em-sp/" title="Mooca e Tatuapé figuram no top 3 bairros mais procurados por quem planeja comprar um imóvel em SP">Mooca e Tatuapé figuram no top 3 bairros mais procurados por quem planeja comprar um imóvel em SP</a>
+    </h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/mooca-e-tatuape-figuram-no-top-3-bairros-mais-procurados-por-quem-planeja-comprar-um-imovel-em-sp/">Levantamento do QuintoAndar mostra que o preço médio nas duas localidades é um dos principais atrativos.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  10 de fevereiro de 2026</span>
+  </div>
+</div>                      </div>
+                <div class="col-span-4 mb-6">
+            
+<div class="card vertical__no__image">
+  <div class="card__content">
+    <a href="https://www.quintoandar.com.br/newsroom/category/institucional-e-negocios/"><span class="institucional-e-negocios text-newsroom-white rounded-lg p-2 text-12 font-semibold">Institucional e negócios</span></a>
+    <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4">
+      <a href="https://www.quintoandar.com.br/newsroom/a-experiencia-do-cliente-e-uma-prioridade-de-toda-a-companhia-afirma-diretor-de-cx-do-quintoandar/" title="&#8216;A experiência do cliente é uma prioridade de toda a companhia&#8217;, afirma diretor de CX do QuintoAndar">&#8216;A experiência do cliente é uma prioridade de toda a companhia&#8217;, afirma diretor de CX do QuintoAndar</a>
+    </h2>
+    <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a href="https://www.quintoandar.com.br/newsroom/a-experiencia-do-cliente-e-uma-prioridade-de-toda-a-companhia-afirma-diretor-de-cx-do-quintoandar/">Felipe Abreu fala com exclusividade sobre como a companhia tem aperfeiçoado o atendimento e o impacto dessas ações.</a></p>
+    <span class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white">  28 de janeiro de 2026</span>
+  </div>
+</div>                      </div>
+          </div>
+  </div>
+
+  <div class="container">
+    
+<!-- grid-xxx controla colunagem -->
+<!-- qtd de posts controlada pelo feature-ajax-load-more -->
+
+<!-- Posts List -->
+<div class="load-more" x-data="loadMoreComponent()">
+            <div class="grid-3">
+            <template x-for="post in posts" :key="post.id">
+                <div class="card mb-[60px]">
+                    <hr :class="`mb-6 h-[2px] divider-${post.category.slug}`">
+                    <div class="card__content">
+                        <div class="flex gap-[25px] items-center">
+                            <a :href="post.category.link" x-text="post.category.name" :class="'cat ' + post.category.slug + ' text-newsroom-white rounded-lg p-2 text-12 font-semibold'" :title="post.category.name" style="color: "></a>
+                        </div>
+
+                        <h2 class="title text-16 md:text-20 font-semibold leading-6 py-1 text-primary dark:text-white mt-4">
+                            <a :href="post.permalink" :title="post.headline" x-text="post.headline"></a>
+                        </h2>
+                        <p class="subtitle text-14 md:text-16 font-normal leading-5 text-newsroom-gray dark:text-white mb-6 mt-5"><a :href="post.permalink" x-text="post.excerpt"></a></p>
+                        <span
+                            class="text-12 md:text-15 font-light text-newsroom-gray dark:text-white"
+                            x-text="(() => {
+     const date = new Date(post.date);
+     const formatted = date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+     return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+   })()">
+                        </span>
+                    </div>
+                </div>
+            </template>
+        </div>
+    
+            <div class="flex justify-center">
+            <div>
+                <button @click="loadMore()" x-show="!allPostsLoaded" type="button"
+                    class="inline-flex w-full items-center justify-center gap-x-3 px-14 h-11 font-regular text-17 text-[#696254] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 bg-white border border-[3] border-[#C5C9BA] rounded-full">
+                    <span x-text="loading ? 'Carregando' : 'Carregar mais notícias'"></span>
+                    <div x-show="loading" class="flex justify-center items-center">
+                        <div class="spinner"></div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function loadMoreComponent() {
+        return {
+            posts: [],
+            allPostsLoaded: false,
+            loading: false,
+            excludeIds: [5340,5328,5264,5259,5096,5086,5083,5029,5019,4955,5080,4945,4925,5042,4980,4940,5039,5009,4992,3710,3375,3378,4972,4969,4949],
+            customArgs: [],
+            tagId: "",
+            tag: "",
+            post_type: "post",
+            thumbnail_size: "large",
+
+            loadMore: function() {
+                if (typeof tab !== 'undefined' && tab) {
+                    this.customArgs['tag'] = tab;
+                }
+                this.loading = true;
+
+                // Get current offset
+                var offset = this.posts.length;
+
+                // Prepare data to be sent
+                var data = new URLSearchParams();
+                data.append('action', 'load_more_posts');
+                data.append('offset', offset);
+                data.append('exclude_ids', this.excludeIds.join(','));
+                //data.append('tag_id', this.tagId);
+                data.append('tag', this.tag);
+
+                data.append('thumbnail_size', this.thumbnail_size);
+                data.append('posts_per_page', this.posts_per_page);
+
+                if (typeof this.post_type === 'object') {
+                    this.post_type.forEach(function(pt) {
+                        data.append('post_type[]', pt);
+                    });
+                } else {
+                    data.append('post_type', this.post_type);
+                }
+
+                for (var key in this.customArgs) {
+                    if (this.customArgs.hasOwnProperty(key)) {
+                        data.append('query_params[' + key + ']', this.customArgs[key]);
+                    }
+                }
+
+                // Send AJAX request to our WordPress endpoint
+                var ajaxUrl = 'https://www.quintoandar.com.br/newsroom/wp-admin/admin-ajax.php';
+
+                fetch(ajaxUrl, {
+                        method: 'POST',
+                        body: data,
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(newPosts => {
+                        this.posts = this.posts.concat(newPosts);
+
+                        // If no new posts were loaded, set allPostsLoaded to true
+                        if (newPosts.length === 0) {
+                            this.allPostsLoaded = true;
+                        }
+
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error: ', error);
+                        this.loading = false;
+                    });
+            }
+        };
+    }
+</script>  </div>
+</section>
+
+
+</main>
+
+<script id="echarts-js" src="https://www.quintoandar.com.br/newsroom/wp-content/cache/flying-press/echarts.min.js" data-origin-src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script id="custom-theme-dist-main-js-extra">
+var my_ajax_object = {"ajax_url":"https://www.quintoandar.com.br/newsroom/wp-admin/admin-ajax.php"};
+//# sourceURL=custom-theme-dist-main-js-extra
+</script>
+<script defer id="custom-theme-dist-main-js" src="https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/dist/main.js?ver=0ed583c8820b"></script>
+<script id="load-more-relatorios-js-extra">
+var ajax_object = {"ajax_url":"https://www.quintoandar.com.br/newsroom/wp-admin/admin-ajax.php"};
+//# sourceURL=load-more-relatorios-js-extra
+</script>
+<script id="load-more-relatorios-js" src="https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/source/scripts/components/loadmore-relatorios.js?ver=af58999a5267"></script>
+<div id="search-filter-svg-template" aria-hidden="true" style="clip: rect(1px, 1px, 1px, 1px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute;	width: 1px !important; word-wrap: normal !important;"><svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   style="background-color:red"
+   viewBox="0 0 24 24"
+   stroke="currentColor"
+   version="1.1"
+   id="sf-svg-spinner-circle"
+>
+  
+    <g fill="none">
+      <g>
+        <circle
+           stroke-opacity="0.5"
+           cx="12.000001"
+           cy="12.000001"
+           r="10.601227"
+           style="stroke-width:2.79755;stroke-miterlimit:4;stroke-dasharray:none" />
+        <path
+           d="M 22.601226,12.000001 C 22.601226,6.1457686 17.854233,1.398775 12,1.398775"
+           style="stroke-width:2.79755;stroke-miterlimit:4;stroke-dasharray:none">
+		    <animateTransform
+             attributeName="transform"
+             type="rotate"
+             from="0 12 12"
+             to="360 12 12"
+             dur="1s"
+             repeatCount="indefinite" />
+		   </path>
+      </g>
+    </g>
+</svg>
+</div>		<script type="text/javascript" id="search-filter-data-js" data-search-filter-data="{&quot;fields&quot;:[],&quot;queries&quot;:[],&quot;shouldMount&quot;:true,&quot;restNonce&quot;:&quot;8db44f70b0&quot;,&quot;homeUrl&quot;:&quot;https:\/\/www.quintoandar.com.br\/newsroom&quot;,&quot;isPro&quot;:true,&quot;popoverNode&quot;:&quot;body&quot;,&quot;urlPrefix&quot;:&quot;_&quot;}">
+			window.searchAndFilterData = JSON.parse( document.getElementById( 'search-filter-data-js' ).getAttribute( 'data-search-filter-data' ) );
+		</script>
+		<script type="text/javascript" id="search-filter-api-url-js">
+			window.searchAndFilterApiUrl = '';
+		</script>
+				<script id="search-filter-dom-ready-body" type="text/javascript">
+			window.searchAndFilterPage.body = document.body.outerHTML;
+		</script>
+		
+
+<footer id="footer" class="bg-[#F8F9F5] md:py-12 pt-0 no-print">
+    
+        <div class="max-w-[1344px] mx-auto ">
+            <div class="grid-12 mb-14 flex" style="content-visibility: auto;contain-intrinsic-size: auto 304px;">
+                <div class="col-span-3 px-8 md-px-0 flex flex-wrap flex-col gap-2 md:order-1 order-2">
+                    <p class="text-15 font-semibold leading-6">Sobre nós</p>
+                    <div class="col-span-2 text-15 flex flex-wrap flex-col gap-2 text-black list-none"><li id="menu-item-5221" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5221"><a href="https://www.quintoandar.com.br/newsroom/sobre/">Conheça o QuintoAndar</a></li>
+<li id="menu-item-5232" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5232"><a href="https://mkt.quintoandar.com.br/seguranca/">Segurança no QuintoAndar</a></li>
+<li id="menu-item-5222" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5222"><a href="https://www.quintoandar.com.br/regioes-atendidas">Regiões atendidas</a></li>
+<li id="menu-item-5233" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5233"><a href="https://www.quintoandar.com.br/condominios">Condomínios</a></li>
+<li id="menu-item-5223" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5223"><a href="https://sobre.quintoandar.com.br/garantia">Conheça a Garantia QuintoAndar</a></li>
+<li id="menu-item-5224" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5224"><a href="https://help.quintoandar.com.br/hc/pt-br">Central de Ajuda</a></li>
+<li id="menu-item-5234" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5234"><a href="https://www.quintoandar.com.br/mapa-do-site">Mapa do Site</a></li>
+<li id="menu-item-5235" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5235"><a href="https://www.quintoandar.com.br/mapa-do-site/condominios">Mapa de Condomínios</a></li>
+<li id="menu-item-5236" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5236"><a href="https://mkt.quintoandar.com.br/relatorio-de-transparencia-e-igualdade-salarial/">Relatório de Transparência Salarial</a></li>
+</div>                </div>
+
+                <div class="col-span-3 px-8 md-px-0 flex flex-wrap flex-col gap-2 md:order-2 order-3">
+                    <p class="text-15 font-semibold leading-6">Produtos</p>
+                    <div class="col-span-2 text-15 flex flex-wrap flex-col gap-2 text-black list-none"><li id="menu-item-5237" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5237"><a href="https://indicaai.quintoandar.com.br/">Indique um imóvel</a></li>
+<li id="menu-item-5238" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5238"><a href="https://mkt.quintoandar.com.br/plataforma-de-estatisticas">Valor de aluguel por bairro</a></li>
+<li id="menu-item-5225" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5225"><a href="https://www.quintoandar.com.br/guias/">Guias</a></li>
+<li id="menu-item-5239" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5239"><a href="https://www.imovelweb.com.br/">Imovelweb</a></li>
+</div>                </div>
+
+                <div class="col-span-3 px-8 md-px-0 flex flex-wrap flex-col gap-2 md:order-3 order-4">
+                    <p class="text-15 font-semibold leading-6">Trabalhe com a gente</p>
+                    <div class="col-span-2 text-15 flex flex-wrap flex-col gap-2 text-black list-none"><li id="menu-item-5226" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5226"><a href="https://carreiras.quintoandar.com.br/">Carreiras</a></li>
+<li id="menu-item-5227" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5227"><a href="https://mkt.quintoandar.com.br/corretor">Corretagem</a></li>
+<li id="menu-item-5228" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5228"><a href="https://mkt.quintoandar.com.br/fotografos-quintoandar">Fotografia</a></li>
+<li id="menu-item-5229" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5229"><a href="https://mkt.quintoandar.com.br/vistoriadores-quintoandar">Vistorias</a></li>
+<li id="menu-item-5230" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5230"><a href="https://mkt.quintoandar.com.br/jornadadoparceirodereparos/">Parceria de Reparos</a></li>
+<li id="menu-item-5231" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5231"><a href="https://mkt.quintoandar.com.br/porteiroparceiro">Parceria com Portarias</a></li>
+</div>                </div>
+
+                <div class="col-span-3 bg-newsroom-blue-primary p-8 md:order-4 order-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="175" height="24" viewBox="0 0 175 24" fill="none">
+                        <path d="M13.6692 12.5039L11.2942 14.9239L19.4512 23.2599L21.8262 20.8399L13.6692 12.5039Z" fill="white"/>
+                        <path d="M0.000244141 0V23.305H10.3082V19.9H3.36124V3.406H19.5002V23.306H22.8612V0H0.000244141Z" fill="white"/>
+                        <path d="M47.9973 11.2041C47.9973 8.68454 46.9964 6.26818 45.2148 4.48659C43.4332 2.70499 41.0169 1.7041 38.4973 1.7041C35.9777 1.7041 33.5614 2.70499 31.7798 4.48659C29.9982 6.26818 28.9973 8.68454 28.9973 11.2041C28.956 12.4734 29.1718 13.7379 29.6317 14.9216C30.0916 16.1054 30.7862 17.1839 31.6736 18.0923C32.561 19.0008 33.623 19.7204 34.7956 20.2079C35.9683 20.6954 37.2274 20.9407 38.4973 20.9291C40.271 20.9714 42.0176 20.4881 43.5173 19.5401L46.2973 22.4091L48.5383 20.1231L45.8483 17.3891C47.2469 15.6317 48.0049 13.4501 47.9973 11.2041ZM41.0503 17.1201C40.2229 17.5532 39.2938 17.7547 38.3613 17.7031C34.7763 17.7031 32.4453 14.8351 32.4453 11.0701C32.4453 7.3951 34.7753 4.4371 38.3613 4.4371C41.9473 4.4371 44.2773 7.3951 44.2773 11.0701C44.2991 12.3522 43.9891 13.6182 43.3773 14.7451L40.6973 12.0111L38.4563 14.2971L38.5463 14.4311L41.0503 17.1201Z" fill="white"/>
+                        <path d="M58.1733 14.2971C58.1733 16.4481 56.9633 18.0621 55.1733 18.0621C53.6043 18.0621 52.8433 16.9421 52.8433 14.7461V7.21606H49.6133V15.1931C49.6133 18.8681 50.9583 20.8851 54.0953 20.8851C54.9919 20.8141 55.855 20.5128 56.601 20.0103C57.347 19.5079 57.9506 18.8213 58.3533 18.0171V20.5271H61.5803V7.21606H58.3533V14.2971H58.1733Z" fill="white"/>
+                        <path d="M66.8232 7.21606H63.5962V20.5721H66.8232V7.21606Z" fill="white"/>
+                        <path d="M66.8232 1.83789H63.5962V5.15389H66.8232V1.83789Z" fill="white"/>
+                        <path d="M76.4142 6.85693C75.5296 6.9094 74.6767 7.20491 73.9492 7.71093C73.2218 8.21694 72.6481 8.91384 72.2912 9.72493V7.21493H69.0642V20.5709H72.2912V13.4899C72.2912 11.3389 73.4112 9.72493 75.2912 9.72493C76.8602 9.72493 77.9802 10.8449 77.9802 13.0409V20.5699H81.2072V12.5489C81.1202 8.91893 79.5512 6.85693 76.4142 6.85693Z" fill="white"/>
+                        <path d="M86.2742 3.31592H83.0472V17.2539C83.0472 19.4049 84.1672 20.5699 86.2742 20.5699H89.8592V17.7019H87.1702C87.05 17.7097 86.9295 17.6918 86.8168 17.6493C86.7041 17.6068 86.6017 17.5408 86.5165 17.4556C86.4314 17.3704 86.3653 17.2681 86.3229 17.1553C86.2804 17.0426 86.2624 16.9221 86.2702 16.8019V10.0829H89.8552V7.34992H86.2702L86.2742 3.31592Z" fill="white"/>
+                        <path d="M97.2543 6.72294C93.2203 6.72294 90.5312 9.90493 90.5312 13.8039C90.5312 17.7029 93.2203 20.8849 97.2543 20.8849C101.288 20.8849 103.977 17.7029 103.977 13.8039C104.039 12.8884 103.91 11.9702 103.598 11.107C103.287 10.2439 102.8 9.45476 102.168 8.78935C101.537 8.12394 100.774 7.59676 99.9279 7.24108C99.0821 6.88541 98.1717 6.70898 97.2543 6.72294ZM97.2543 17.9229C95.3723 17.9229 93.8033 16.4439 93.8033 13.7999C93.8033 11.1559 95.3723 9.67694 97.2543 9.67694C99.1363 9.67694 100.705 11.1559 100.705 13.7999C100.705 16.5829 99.1313 17.9229 97.2543 17.9229Z" fill="white"/>
+                        <path d="M110.878 1.83789L103.842 20.4379H107.427L109.085 15.6379H116.704L118.362 20.4379H121.947L114.912 1.83789H110.878ZM110.116 13.0379L112.895 5.06089L115.674 13.0379H110.116Z" fill="white"/>
+                        <path d="M130.239 6.85693C129.355 6.9094 128.502 7.20491 127.774 7.71093C127.047 8.21694 126.473 8.91384 126.116 9.72493V7.21493H122.889V20.5709H126.116V13.4899C126.116 11.3389 127.236 9.72493 129.116 9.72493C130.685 9.72493 131.805 10.8449 131.805 13.0409V20.5699H135.032V12.5489C135.079 8.91893 133.376 6.85693 130.239 6.85693Z" fill="white"/>
+                        <path d="M146.822 9.50189C146.434 8.70432 145.829 8.03281 145.075 7.56494C144.322 7.09707 143.451 6.85195 142.564 6.85789C138.979 6.85789 136.514 10.1739 136.514 13.9389C136.514 17.8389 138.979 21.0199 142.564 21.0199C143.468 20.9978 144.35 20.7322 145.115 20.251C145.881 19.7698 146.502 19.0909 146.914 18.2859V20.5719H150.141V1.83789H146.914V9.50189H146.822ZM143.322 18.0619C142.816 18.0274 142.321 17.8933 141.867 17.6672C141.412 17.4412 141.007 17.1276 140.674 16.7446C140.341 16.3616 140.087 15.9166 139.926 15.4351C139.765 14.9536 139.701 14.4452 139.737 13.9389C139.737 11.5189 141.306 9.72589 143.322 9.72589C145.204 9.72589 146.907 11.5639 146.907 13.9389C146.947 14.4457 146.886 14.9554 146.727 15.4382C146.568 15.9211 146.315 16.3675 145.981 16.7513C145.648 17.1351 145.241 17.4487 144.786 17.6737C144.33 17.8987 143.834 18.0307 143.326 18.0619H143.322Z" fill="white"/>
+                        <path d="M157.981 6.7229C154.396 6.7229 152.289 8.8739 151.841 10.8459L155.068 11.4289C155.247 10.8421 155.619 10.3327 156.123 9.98307C156.628 9.63344 157.235 9.46392 157.847 9.5019C158.201 9.49255 158.552 9.55833 158.879 9.69489C159.205 9.83144 159.498 10.0357 159.74 10.2941C159.981 10.5525 160.165 10.8592 160.279 11.1939C160.394 11.5286 160.435 11.8838 160.402 12.2359V13.9359C159.88 13.452 159.265 13.0794 158.595 12.8406C157.925 12.6018 157.213 12.5019 156.502 12.5469C153.813 12.5469 151.572 14.1599 151.572 16.6699C151.572 19.3139 153.365 20.8829 156.143 20.8829C156.978 20.9189 157.808 20.7401 158.553 20.3634C159.299 19.9868 159.935 19.425 160.401 18.7319L160.311 20.4319H163.538V11.8719C163.718 8.6949 161.566 6.7229 157.981 6.7229ZM157.672 18.5099C155.879 18.5099 155.117 17.6099 155.117 16.6719C155.117 15.6409 155.879 14.7449 157.672 14.7449C159.241 14.7449 160.585 15.4169 160.585 16.4449C160.585 17.4729 159.325 18.5099 157.672 18.5099Z" fill="white"/>
+                        <path d="M173.129 6.99194C172.155 7.0665 171.229 7.45012 170.488 8.08698C169.746 8.72385 169.227 9.58074 169.006 10.5329H168.916L169.14 7.21694H165.824V20.5719H169.051V14.9719C169.051 11.2069 170.933 10.1719 172.86 10.1719H174.294V7.08194C174.115 7.08194 173.667 6.99194 173.129 6.99194Z" fill="white"/>
+                    </svg>
+                    <p class="my-6 text-[#F8F9F5] text-15 leading-6 ">O QuintoAndar investe em design, segurança e tecnologia de ponta para proporcionar uma experiência completa para quem busca um lugar para morar, ou quer anunciar imóveis.</p>
+                    <a class="flex items-center text-[#F8F9F5] text-15 leading-6" href="https://press.quintoandar.com.br/">Mais informações
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                            <path d="M9.00024 3.30566L8.28524 4.00216L12.0752 7.80566H2.00024V8.80566H12.0752L8.28524 12.5922L9.00024 13.3057L14.0002 8.30566L9.00024 3.30566Z" fill="#F8F9F5" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-[1344px] mx-auto">
+            <div class="flex flex-wrap justify-between px-8 md:px-0">
+
+                <div class="order-2 md:order-1" style="content-visibility: auto;contain-intrinsic-size: auto 233px;">
+                    <div class="md:flex gap-6 mb-7">
+                        <a class="flex items-center text-black font-semibold text-15 leading-6" href="https://mkt.quintoandar.com.br/aviso-de-privacidade" target="_blank">Politica de privacidade
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M9.00052 3L8.28552 3.6965L12.0755 7.5H2.00052V8.5H12.0755L8.28552 12.2865L9.00052 13L14.0005 8L9.00052 3Z" fill="black" />
+                            </svg>
+                        </a>
+                        <a class="flex items-center text-black font-semibold text-15 leading-6" href="https://www.quintoandar.com.br/termos" target="_blank">Termos e condições de uso
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M9.00052 3L8.28552 3.6965L12.0755 7.5H2.00052V8.5H12.0755L8.28552 12.2865L9.00052 13L14.0005 8L9.00052 3Z" fill="black" />
+                            </svg>
+                        </a>
+                        <a class="flex items-center text-black font-semibold text-15 leading-6" href="https://www.quintoandar.com.br/politica-de-cookies" target="_blank">Política de Cookies
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M9.00052 3L8.28552 3.6965L12.0755 7.5H2.00052V8.5H12.0755L8.28552 12.2865L9.00052 13L14.0005 8L9.00052 3Z" fill="black" />
+                            </svg>
+                        </a>
+                        <a class="flex items-center text-black font-semibold text-15 leading-6" href="https://www.quintoandar.com.br/manual-do-usuario" target="_blank">Manual do usuário
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M9.00052 3L8.28552 3.6965L12.0755 7.5H2.00052V8.5H12.0755L8.28552 12.2865L9.00052 13L14.0005 8L9.00052 3Z" fill="black" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="md:flex gap-4 mb-2">
+                        <p class="mb-2">GRPQA Ltda. CRECI-SP J24.344 | CRECI-MG J5851</p>
+                        <a class="flex items-center text-black font-semibold text-15 mb-4 leading-6" href="https://help.quintoandar.com.br/hc/pt-br/articles/231347328-O-QuintoAndar-tem-CRECI-?utm_source=helpcenter_home&utm_medium=search&utm_term=creci" target="_blank">Ver outros
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M9.00052 3L8.28552 3.6965L12.0755 7.5H2.00052V8.5H12.0755L8.28552 12.2865L9.00052 13L14.0005 8L9.00052 3Z" fill="black" />
+                            </svg>
+                        </a>
+                    </div>
+                    <span class="text-11 bg-[#EDEDED] inline-block mb-5 md:inline p-1">Versão: 16/06/2025 00:00</span>
+                </div>
+
+                <div class="order-1 md:order-2">
+                    <div class="flex gap-4 h-6 md:justify-end">
+                        <a href="https://www.facebook.com/quintoandar.com.br" target="_blank" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M20.0027 3H3.99774C3.7338 3.00196 3.48122 3.10769 3.29457 3.29433C3.10793 3.48097 3.00221 3.73355 3.00024 3.9975V20.0025C3.00221 20.2664 3.10793 20.519 3.29457 20.7057C3.48122 20.8923 3.7338 20.998 3.99774 21H12.6152V14.04H10.2752V11.3175H12.6152V9.315C12.6152 6.99 14.0327 5.7225 16.1177 5.7225C16.8152 5.7225 17.5127 5.7225 18.2102 5.8275V8.25H16.7777C15.6452 8.25 15.4277 8.79 15.4277 9.5775V11.31H18.1277L17.7752 14.0325H15.4277V21H20.0027C20.2667 20.998 20.5193 20.8923 20.7059 20.7057C20.8926 20.519 20.9983 20.2664 21.0002 20.0025V3.9975C20.9983 3.73355 20.8926 3.48097 20.7059 3.29433C20.5193 3.10769 20.2667 3.00196 20.0027 3Z" fill="black"/>
+                            </svg>
+                        </a>
+
+                        <a href="https://www.instagram.com/quintoandar" target="_blank" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M16.8044 8.27581C17.4009 8.27581 17.8844 7.79228 17.8844 7.19581C17.8844 6.59935 17.4009 6.11581 16.8044 6.11581C16.208 6.11581 15.7244 6.59935 15.7244 7.19581C15.7244 7.79228 16.208 8.27581 16.8044 8.27581Z" fill="black"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0002 7.37837C11.0862 7.37837 10.1926 7.64943 9.43259 8.15726C8.67257 8.66509 8.0802 9.3869 7.7304 10.2314C7.3806 11.0759 7.28907 12.0051 7.4674 12.9017C7.64573 13.7982 8.0859 14.6217 8.73225 15.268C9.37859 15.9144 10.2021 16.3545 11.0986 16.5329C11.9951 16.7112 12.9244 16.6197 13.7689 16.2699C14.6134 15.9201 15.3352 15.3277 15.843 14.5677C16.3508 13.8076 16.6219 12.9141 16.6219 12C16.6219 10.7743 16.135 9.59875 15.2682 8.73202C14.4015 7.86529 13.226 7.37837 12.0002 7.37837ZM12.0002 15C11.4069 15 10.8269 14.8241 10.3335 14.4944C9.84019 14.1648 9.45567 13.6963 9.22861 13.1481C9.00154 12.5999 8.94213 11.9967 9.05789 11.4148C9.17365 10.8328 9.45937 10.2983 9.87892 9.8787C10.2985 9.45914 10.833 9.17342 11.415 9.05767C11.9969 8.94191 12.6001 9.00132 13.1483 9.22838C13.6965 9.45545 14.165 9.83996 14.4947 10.3333C14.8243 10.8267 15.0002 11.4067 15.0002 12C15.0002 12.7957 14.6842 13.5587 14.1216 14.1213C13.559 14.684 12.7959 15 12.0002 15Z" fill="black"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.28954 3.05415C9.24947 3.01035 9.55599 3 12.0002 3C14.4445 3 14.751 3.01035 15.7106 3.05453C16.4572 3.06948 17.1959 3.21093 17.8952 3.47287C18.4932 3.70407 19.0362 4.05763 19.4895 4.51089C19.9428 4.96415 20.2965 5.50712 20.5277 6.105C20.7897 6.80422 20.9311 7.54279 20.9461 8.2893C20.9899 9.24922 21.0002 9.55575 21.0002 12C21.0002 14.4442 20.9899 14.7508 20.9465 15.7103C20.9315 16.457 20.7901 17.1957 20.5281 17.895C20.2969 18.493 19.9433 19.036 19.4899 19.4893C19.0366 19.9426 18.4936 20.2963 17.8956 20.5275C17.1963 20.7894 16.4576 20.9309 15.7109 20.9459C14.751 20.9896 14.4445 21 12.0002 21C9.55599 21 9.24947 20.9897 8.28992 20.9462C7.54328 20.9313 6.80458 20.7898 6.10524 20.5279C5.50729 20.2966 4.96425 19.943 4.51092 19.4897C4.05759 19.0364 3.70398 18.4933 3.47274 17.8954C3.2108 17.196 3.06935 16.4573 3.05439 15.7107C3.01059 14.7508 3.00024 14.4442 3.00024 12C3.00024 9.55575 3.01059 9.24923 3.05439 8.28968C3.06934 7.54304 3.21079 6.80434 3.47274 6.105C3.70398 5.50705 4.05759 4.96401 4.51092 4.51068C4.96425 4.05735 5.50729 3.70374 6.10524 3.4725C6.80446 3.21059 7.54303 3.06914 8.28954 3.05415ZM15.637 4.67415C14.688 4.6308 14.4033 4.62165 12.0002 4.62165C9.59717 4.62165 9.31247 4.6308 8.36349 4.67408C7.79278 4.68087 7.22748 4.78569 6.69227 4.98397C6.30414 5.13375 5.95165 5.3631 5.65748 5.65728C5.36331 5.95146 5.13397 6.30396 4.98422 6.6921C4.78594 7.22731 4.68111 7.79261 4.67432 8.36333C4.63097 9.3123 4.62182 9.597 4.62182 12.0001C4.62182 14.4031 4.63104 14.6879 4.67432 15.6368C4.68111 16.2075 4.78594 16.7728 4.98422 17.3081C5.13398 17.6962 5.36332 18.0487 5.65749 18.3428C5.95166 18.637 6.30414 18.8663 6.69227 19.0161C7.22748 19.2144 7.79278 19.3192 8.36349 19.326C9.31239 19.3694 9.59694 19.3785 12.0002 19.3785C14.4035 19.3785 14.6881 19.3693 15.637 19.326C16.2077 19.3192 16.773 19.2144 17.3082 19.0161C17.6963 18.8663 18.0488 18.637 18.343 18.3428C18.6372 18.0487 18.8665 17.6962 19.0163 17.3081C19.2146 16.7728 19.3194 16.2075 19.3262 15.6368C19.3695 14.6879 19.3787 14.4031 19.3787 12.0001C19.3787 9.597 19.3694 9.3123 19.3262 8.36333C19.3194 7.79261 19.2146 7.22731 19.0163 6.6921C18.8665 6.30398 18.6372 5.95149 18.343 5.65732C18.0488 5.36316 17.6963 5.13381 17.3082 4.98405C16.773 4.78577 16.2077 4.68094 15.637 4.67415Z" fill="black"/>
+                            </svg>
+                        </a>
+                    
+
+                        <a href="https://www.quintoandar.com.br/guias/" target="_blank" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <g clip-path="url(#clip0_790_1295)">
+                                    <path d="M5.622 14.7502C4.044 14.7502 3 13.4762 3 11.8792C3 10.2822 4.133 9.00023 5.637 9.00023C6.18248 8.99284 6.71574 9.16197 7.15726 9.48238C7.59878 9.8028 7.9249 10.2573 8.087 10.7782L7.421 10.9902C7.162 10.2822 6.533 9.67623 5.637 9.67623C4.496 9.67623 3.748 10.6762 3.748 11.8792C3.748 13.0902 4.429 14.0662 5.644 14.0662C6.651 14.0662 7.332 13.4762 7.399 12.6032H5.69V11.9582H8.11C8.184 13.6332 7.2 14.7502 5.622 14.7502ZM10.04 14.7502C9.18 14.7502 8.7 14.1522 8.7 13.0272V10.7002H9.373V12.9182C9.373 13.7522 9.699 14.1302 10.217 14.1302C10.832 14.1302 11.328 13.5082 11.328 12.7302V10.7002H11.995V14.6332H11.328L11.343 13.7682C11.18 14.1772 10.677 14.7512 10.04 14.7512M12.826 14.6322V10.6992H13.493V14.6322H12.826ZM12.678 9.53523C12.678 9.26023 12.9 9.02423 13.16 9.02423C13.419 9.02423 13.641 9.26023 13.641 9.53423C13.641 9.81023 13.419 10.0462 13.16 10.0462C12.9 10.0462 12.678 9.81023 12.678 9.53523ZM15.527 14.7502C14.697 14.7502 14.172 14.2702 14.172 13.5072C14.172 12.7522 14.816 12.2882 15.594 12.2882C16.209 12.2882 16.564 12.5632 16.742 12.7362V12.2012C16.742 11.5412 16.342 11.1552 15.838 11.1552C15.364 11.1552 14.964 11.4852 14.838 11.8872L14.216 11.7142C14.35 11.0922 14.979 10.5812 15.876 10.5812C16.734 10.5812 17.408 11.1082 17.408 12.1702V14.6322H16.742L16.757 14.0892C16.579 14.3892 16.164 14.7502 15.527 14.7502ZM14.868 13.5152C14.868 13.9002 15.187 14.1912 15.742 14.1912C16.305 14.1912 16.757 13.8382 16.757 13.4522C16.757 13.0592 16.275 12.8072 15.742 12.8072C15.164 12.8072 14.868 13.1222 14.868 13.5152ZM19.511 14.7502C18.586 14.7502 18.089 14.3172 17.956 13.6172L18.556 13.4442C18.682 13.9482 18.971 14.2232 19.526 14.2232C20.008 14.2232 20.296 13.9792 20.296 13.6412C20.296 12.7442 18.096 13.2872 18.096 11.7452C18.096 11.1002 18.601 10.5812 19.489 10.5812C20.415 10.5812 20.867 11.0372 21 11.7372L20.4 11.9102C20.274 11.4072 19.993 11.1002 19.49 11.1002C19.067 11.1002 18.741 11.3442 18.741 11.6982C18.741 12.6652 20.963 12.0602 20.963 13.6182C20.963 14.2942 20.393 14.7502 19.511 14.7502Z" fill="black"/>
+                                    <path d="M1 23.5V0.5M1 1H23.5M23 1V23.5M23 23H1" stroke="black"/>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_790_1295">
+                                    <rect width="24" height="24" fill="white"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+                        
+                        <a href="https://www.linkedin.com/company/2836850" target="_blank" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M19.6577 3.00002H4.34274C3.99379 2.99793 3.65788 3.13255 3.40696 3.37506C3.15603 3.61757 3.01004 3.9487 3.00024 4.29752V19.65C3.00812 19.9995 3.15351 20.3317 3.40486 20.5747C3.6562 20.8176 3.99322 20.9516 4.34274 20.9475H19.6577C20.0073 20.9516 20.3443 20.8176 20.5956 20.5747C20.847 20.3317 20.9924 19.9995 21.0002 19.65V4.29752C20.9904 3.9487 20.8445 3.61757 20.5935 3.37506C20.3426 3.13255 20.0067 2.99793 19.6577 3.00002ZM8.33274 18.3075H5.69274V9.75002H8.33274V18.3075ZM7.04274 8.55752C6.63741 8.55764 6.24811 8.39923 5.95801 8.11615C5.66791 7.83306 5.50003 7.44774 5.49024 7.04252C5.4829 6.83667 5.51804 6.63151 5.59346 6.43983C5.66889 6.24815 5.78298 6.07406 5.92863 5.92841C6.07428 5.78276 6.24837 5.66867 6.44005 5.59324C6.63173 5.51782 6.83689 5.48268 7.04274 5.49002C7.43488 5.51733 7.80205 5.69236 8.07017 5.9798C8.3383 6.26725 8.4874 6.64569 8.4874 7.03877C8.4874 7.43186 8.3383 7.8103 8.07017 8.09774C7.80205 8.38519 7.43488 8.56022 7.04274 8.58752V8.55752ZM18.3602 18.255H15.7502V14.07C15.7502 13.0725 15.7502 11.775 14.3552 11.775C12.9602 11.775 12.7502 12.87 12.7502 13.9725V18.21H10.0802V9.75002H12.5702V10.875H12.6227C12.878 10.4318 13.2501 10.0672 13.6985 9.82122C14.1469 9.5752 14.6543 9.45717 15.1652 9.48002C17.8577 9.48002 18.3602 11.28 18.3602 13.5675V18.255Z" fill="black"/>
+                            </svg>
+                        </a>
+
+                    </div>
+                    <div class="flex gap-4 md:mt-16 mt-6 mb-6 justify-end">
+                        <a href="https://www.quintoandar.com.br/img/landing/badge-google-play-1x.png" target="_blank">
+                            <img src="https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/includes/images/social-icons/playstore.webp" alt="Play Store" width="122" height="36" loading="lazy" fetchpriority="low">
+                        </a>
+                        <a href="https://apps.apple.com/br/app/quintoandar-aluguel-e-compra/id1109011232" target="_blank">
+                            <img src="https://www.quintoandar.com.br/newsroom/wp-content/themes/theme-newsroom/includes/images/social-icons/appstore.webp" alt="App Store Apple" width="108" height="36" loading="lazy" fetchpriority="low">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <div>
+    
+</footer>
+
+<script>!function(e){"function"==typeof define&&define.amd?define(e):e()}(function(){!function(){var e,t=!1,n=!1,r=Array.from(document.querySelectorAll("script[data-loading-method][data-src]")),o=r.filter(function(e){return"idle"===e.dataset.loadingMethod}),a=r.filter(function(e){return"user-interaction"===e.dataset.loadingMethod}),i=document.querySelectorAll("link[data-href]");if(r.length||i.length){var c=["readystatechange","DOMContentLoaded","load"],u={readystatechange:[],DOMContentLoaded:[],load:[]},l=!1,d=EventTarget.prototype.addEventListener;EventTarget.prototype.addEventListener=function(e,t,n){if(!l||!c.includes(e))return d.call(this,e,t,n);u[e].push({target:this,listener:t,options:n})};var s=[{event:"click",target:document},{event:"mousemove",target:document},{event:"keydown",target:document},{event:"touchstart",target:document},{event:"touchmove",target:document},{event:"scroll",target:window}],f=function(e){s.forEach(function(t){return t.target.addEventListener(t.event,e,{passive:!0})})},v=function(e){s.forEach(function(t){return t.target.removeEventListener(t.event,e)})};window.requestIdleCallback=window.requestIdleCallback||function(e){return setTimeout(function(){var t=Date.now();e({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-t))}})},1)};var g=[],h=function(e){return g.push(e)};document.addEventListener("click",h,{passive:!0}),o.length&&window.requestIdleCallback(function(){return m(o)}),a.length&&(f(y),e=setTimeout(y,1e4)),f(function e(){i.forEach(function(e){e.href=e.getAttribute("data-href"),e.removeAttribute("data-href")}),v(e)})}function m(e){e.forEach(function(e){var t=e.getAttribute("data-src");if(!t.includes("data:")){var n=document.createElement("link");n.rel="preload",n.as="script",n.href=t,document.head.appendChild(n)}}),function r(o){if(o>e.length-1)n||(window.jQuery&&t&&window.jQuery.holdReady(!1),c.forEach(function(e){u[e].forEach(function(t){var n=t.target,r=t.listener;try{var o=new Event(e,{bubbles:!0,cancelable:!0});r.call(n,o)}catch(t){console.error("Error executing "+e+" listener:",t)}}),u[e].length=0}),document.removeEventListener("click",h),g.forEach(function(e){var t;return null==(t=e.target)?void 0:t.dispatchEvent(new MouseEvent("click",{bubbles:!0,cancelable:!0,clientX:e.clientX,clientY:e.clientY}))}),g.length=0,n=!0);else{var a=e[o].getAttribute("data-src");window.jQuery&&"function"==typeof window.jQuery.holdReady&&!t&&(window.jQuery.holdReady(!0),t=!0),window.requestIdleCallback(function(){var e=document.createElement("script");l=!0;var t=setTimeout(function(){l&&(l=!1,r(o+1))},1500);e.onload=function(){clearTimeout(t),l=!1,r(o+1)},e.onerror=function(){clearTimeout(t),l=!1,r(o+1)},e.src=a,document.head.appendChild(e)})}}(0)}function y(){e&&clearTimeout(e),v(y),m(a)}}(),[{selector:"video[data-lazy-src],iframe[data-lazy-src]",callback:function(e){return function(t){if(t.isIntersecting){var n=t.target.getAttribute("data-lazy-src");t.target.setAttribute("src",n),e.unobserve(t.target)}}}},{selector:".flying-press-lazy-bg",callback:function(e){return function(t){t.isIntersecting&&(t.target.classList.remove("flying-press-lazy-bg"),e.unobserve(t.target))}}},{selector:'[style*="content-visibility"]',callback:function(e){return function(t){t.isIntersecting&&(t.target.style.removeProperty("content-visibility"),t.target.style.removeProperty("contain-intrinsic-size"),e.unobserve(t.target))}}}].forEach(function(e){var t=e.selector,n=e.callback,r=new IntersectionObserver(function(e){e.forEach(n(r))},{rootMargin:"300px"});document.querySelectorAll(t).forEach(function(e){return r.observe(e)})})});
+</script>
+</body>
+</html>
+<!-- Powered by FlyingPress for lightning-fast performance. Learn more: https://flyingpress.com. Cached at 1786389342 -->

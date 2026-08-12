@@ -1,0 +1,82 @@
+/* ============================================================
+   DESIGN TOKENS
+   Fonte única de verdade para cor, tipografia, espaçamento,
+   raio, sombra e movimento. Qualquer página do projeto que
+   importe este arquivo herda a mesma linguagem visual.
+   ============================================================ */
+:root{
+  /* --- Cor primária: Blueberry --- */
+  --primary-50:#EFF1FB;
+  --primary-100:#D6DDF5;
+  --primary-200:#AEBBEA;
+  --primary-300:#7D92DE;
+  --primary-400:#4C69D2;
+  --primary-500:#243B8F; /* base solicitada */
+  --primary-600:#1E3075;
+  --primary-700:#162559;
+  --primary-800:#101A3F;
+  --primary-900:#0A1128;
+
+  /* --- Cor secundária: Cream Sode --- */
+  --secondary-50:#FFFDF6;
+  --secondary-100:#FFF9EB;
+  --secondary-200:#FFF0C9; /* base solicitada */
+  --secondary-300:#FFE399;
+  --secondary-400:#FFD977;
+  --secondary-500:#FFC11F;
+  --secondary-600:#E8A800;
+  --secondary-700:#C99100;
+  --secondary-800:#8C6600;
+  --secondary-900:#4D3800;
+
+  /* --- Neutros (leve subtom azulado) --- */
+  --neutral-0:#FFFFFF;
+  --neutral-50:#F7F8FC;
+  --neutral-100:#EEF0F7;
+  --neutral-200:#E1E4EE;
+  --neutral-300:#C8CCDC;
+  --neutral-400:#9BA0B8;
+  --neutral-500:#6E7390;
+  --neutral-600:#4F5470;
+  --neutral-700:#383C54;
+  --neutral-800:#24273A;
+  --neutral-900:#15172A;
+
+  /* --- Semânticas (separadas da marca) --- */
+  --success-500:#1C8A5A;
+  --success-100:#E3F5EC;
+  --warning-500:#B9770E;
+  --warning-100:#FBF0DC;
+  --error-500:#D6394B;
+  --error-100:#FCEBED;
+  --info-500:#2B6FD1;
+  --info-100:#E9F1FC;
+
+  /* --- Gradiente de marca (assinatura visual) --- */
+  --gradient-brand: linear-gradient(135deg, var(--secondary-300) 0%, var(--primary-500) 100%);
+  --gradient-brand-soft: linear-gradient(135deg, var(--secondary-100) 0%, var(--primary-100) 100%);
+
+  /* --- Tipografia --- */
+  --font-display:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-ui:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* --- Espaçamento --- */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px;
+
+  /* --- Raios --- */
+  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:24px; --radius-pill:999px;
+
+  /* --- Sombras --- */
+  --shadow-sm: 0 1px 3px rgba(16,26,63,0.08), 0 1px 2px rgba(16,26,63,0.06);
+  --shadow-md: 0 8px 24px rgba(16,26,63,0.10), 0 2px 6px rgba(16,26,63,0.06);
+  --shadow-lg: 0 20px 48px rgba(16,26,63,0.16), 0 6px 16px rgba(16,26,63,0.08);
+  --shadow-focus: 0 0 0 4px rgba(76,105,210,0.25);
+
+  /* --- Movimento --- */
+  --dur-fast:120ms; --dur-base:200ms; --dur-slow:320ms;
+  --ease-standard: cubic-bezier(.4,0,.2,1);
+  --ease-emphasized: cubic-bezier(.2,0,0,1);
+
+  --container: 1240px;
+}

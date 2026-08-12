@@ -1,0 +1,332 @@
+/* Media queries */
+@media (min-width: 1024px) {
+
+    /* Elementos do website */
+    form {background: rgba(255, 255, 255, .5) !important;}
+
+    /* Buscador */
+    .buscador {margin: 100px 0; padding: 0 15px !important;}
+    .buscador .bg-buscador {background-image: none !important;}
+}
+
+/* Elementos do website */
+body, html {width: 100%; height: 100%;}
+header {background-color: #ffffff; z-index: 99999; font-weight: normal;}
+nav {background: transparent; background-color: rgba(29, 53, 97, .9);}
+section {background-color: #ffffff; padding: 50px 0; position: relative;}
+video {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    min-width: 100%; 
+    min-height: 100%;
+    z-index: -1;
+}
+form {padding: 15px 30px;}
+input, select, textarea, .custom-file-label {
+    box-shadow: inset 0 0 0 transparent !important;
+    outline: none;
+}
+.custom-file-input ~ .custom-file-label::after {
+    content: "Procurar";
+}
+iframe {height: 350px; width: 100%; outline: hidden;}
+footer {color: #ffffff;}
+
+/* Fonte do website */
+* {font-family: 'Questrial', sans-serif;}
+
+/* ConteÃºdo */
+.conteudo {margin-top: 0px;}
+
+/* Header */
+.header .btn-dark {
+    background-color: #1d3561 !important;
+    border-color: #1d3561 !important;
+}
+.header .btn-dark:hover, .header .btn-dark:target, .header .btn-dark:focus {
+    background-color: #172a4d !important;
+    border-color: #172a4d !important;
+    color: #ffffff !important;
+}
+.header .bg-dark {
+    background-color: #172a4d !important;
+}
+
+/* Navbar */
+.navbar {font-size: 1.1rem; font-weight: bold;}
+.navbar-brand {margin: 0;}
+.navbar span.nav-link, .navbar a.nav-link {
+    color: #ffffff !important;
+    transition: opacity .3s linear;
+}
+.navbar span.nav-link:hover, .navbar a.nav-link:hover,
+.navbar span.nav-link:focus, .navbar a.nav-link:focus {
+    opacity: .6 !important;
+}
+
+/* Buscador */
+.buscador {padding: 0;}
+.buscador .btn-dark {
+    background-color: #1d3561 !important;
+    border-color: #1d3561 !important;
+}
+.buscador .btn-dark:hover, .buscador .btn-dark:target, .buscador .btn-dark:focus {
+    background-color: #172a4d !important;
+    border-color: #172a4d !important;
+    color: #ffffff !important;
+}
+.buscador .bg-buscador {
+    padding: 0;
+    background: url('/webroot/img/busca-mobile.png');
+    background-size: cover;
+}
+
+.text-primary{
+	color: #1d3561 !important;
+}
+
+#resetPassword a{
+	text-decoration:none;
+	color:#000;
+}
+
+/* LanÃ§amentos */
+.lancamentos .card-header {background-color: #fefefe;}
+.lancamentos .card-body {height: 250px;}
+.lancamentos a#navGaleria-tab.nav-item.nav-link {color: #000000 !important;}
+.lancamentos form {padding: 0; background-color: #ffffff !important;}
+.lancamentos a.text-dark-lan {
+    transition: opacity .3s ease-in-out !important;
+    opacity: 1 !important;
+}
+.lancamentos a.text-dark-lan:hover {
+    opacity: .8 !important;
+    text-decoration: none !important;
+}
+
+/* Destaques */
+.destaques .label {
+    width: 100%;
+    bottom: 0;
+    padding: 0 15px 15px 15px;
+}
+.destaques a.text-dark {
+    transition: opacity .3s ease-in-out;
+    opacity: 1;
+}
+.destaques a.text-dark:hover {
+    opacity: .8;
+    text-decoration: none;
+}
+
+/* Pedro Granado TV */
+.tv {background-color: #f0f0f0;}
+
+/* ImÃ³veis EUA */
+.eua {color: #ffffff;}
+.eua .sponsor img {width: 100px;}
+
+/* Depoimentos */
+.depoimentos .card-header {background-color: #ffffff; border-bottom: none;}
+.depoimentos .card-header img {width: 100px; border-radius: 50%;}
+
+/* Redes */
+.redes {background-color: #f0f0f0;}
+
+/* Contato */
+.contato .bg-dark {background-color: #172a4d !important;}
+.contato .border-dark {border-color: #172a4d !important;}
+.contato .text-dark {color: #172a4d !important;}
+.contato img {
+	border-radius: 10px;
+}
+.contato form {padding: 0; background-color: #ffffff !important;}
+
+/* Footer */
+.footer {background-color: #012b53; color: #ffffff;}
+.footer .fone {font-size: 2rem; font-weight: bold;}
+
+/* Classes diversas */
+.btn:focus {
+    box-shadow: inset 0 0 0 transparent !important;
+}
+.thumb {
+    height: 268px;
+    background-size: cover !important;
+    background-position: center !important;
+}
+.link-imoveis {color: #000000 !important;}
+.dropdown-toggle::before {
+    display: none !important;
+}
+.menu-lancamentos {top: 200px; z-index: 1;}
+.accordion .card-header strong {
+	white-space: normal !important;
+}
+.alert-login {font-size: .9rem;}
+.form-personalizado {float: left;}
+
+/* PÃ¡ginas */
+.mapa-lancamentos .mapa {height: 650px;}
+.construtora .container-fluid {
+    height: 600px;
+    background-image: url('../img/construtora.jpg');
+    background-size: cover;
+    background-position: center;
+}
+.construtora .label {
+    width: 100%;
+    bottom: 0;
+    padding: 15px 15px 0 15px;
+    position: absolute;
+}
+.construtora a.text-dark {
+    transition: opacity .3s ease-in-out;
+    opacity: 1;
+}
+.construtora a.text-dark:hover {
+    opacity: .8;
+    cursor: pointer;
+}
+.construtora .thumb {
+    height: 400px;
+}
+.construtora form {padding: 0; background-color: #ffffff !important;}
+.vendas .btn-dark {
+    background-color: #1d3561 !important;
+    border-color: #1d3561 !important;
+}
+.vendas .btn-meus-favoritos {background-color: transparent !important;}
+.vendas .btn-dark:hover, .vendas .btn-dark:target, .vendas .btn-dark:focus {
+    background-color: #172a4d !important;
+    border-color: #172a4d !important;
+}
+.vendas .thumb {
+    transition: opacity .3s ease-in-out;
+}
+.vendas .thumb:hover {
+    opacity: .8;
+}
+.detalhes .comodos {font-size: 1.2rem; display: inline;}
+.detalhes form {padding: 0 !important; background-color: #ffffff !important;}
+.detalhes .btn-dark {
+    background-color: #1d3561 !important;
+    border-color: #1d3561 !important;
+}
+.detalhes .btn-dark:hover, .detalhes .btn-dark:target, .detalhes .btn-dark:focus {
+    background-color: #172a4d !important;
+    border-color: #172a4d !important;
+    color: #ffffff !important;
+}
+.detalhes .dropdown-menu {
+    border: 1px solid #d3d4d5;
+}
+.detalhes .btn-meus-favoritos {background-color: transparent !important;}
+.simulador-financiamento a {
+    transition: opacity .3s ease-in-out;
+}
+.simulador-financiamento a:hover {
+    opacity: .8;
+}
+.noticias .thumb {
+    background-size: cover;
+    background-position: center;
+    transition: opacity .3s ease-in-out;
+}
+.noticias .thumb:hover {
+    opacity: .8;
+}
+
+/* DÃºvidas Frequentes */
+.duvidas .accordion button {color: #000000; text-decoration: none;}
+
+/* Anuncie seu imÃ³vel / NÃ£o achei */
+.negocios form {padding: 0; background-color: #ffffff !important;}
+
+/* Institucional */
+.institucional form {padding: 0; background-color: #ffffff !important;}
+
+/* Trabalhe Conosco */
+.trabalhe-conosco form {padding: 0; background-color: #ffffff !important;}
+
+/* Favoritos */
+.favoritos .btn-dark {
+    background-color: #1d3561 !important;
+    border-color: #1d3561 !important;
+}
+.favoritos .btn-dark:hover, .favoritos .btn-dark:target, .favoritos .btn-dark:focus {
+    background-color: #172a4d !important;
+    border-color: #172a4d !important;
+    color: #ffffff !important;
+}
+.favoritos form {padding: 0; background-color: #ffffff !important;}
+
+/* PaginaÃ§Ã£o */
+.page-link {color: #1d3561 !important;}
+.active a.page-link {
+    background-color: #1d3561 !important;
+    border-color: #1d3561 !important;
+    color: #ffffff !important;
+}
+
+/* LightSlider */
+.lSSlideOuter .lSPager.lSGallery li img {
+    width: 100%;
+    height: 90px;
+    border-radius: 10px;
+}
+
+/* Share Plugin */
+.jssocials-share {margin: 2px 0 !important; padding: 0 15px !important;}
+.jssocials-share-link {width: 135px !important; text-decoration: none !important;}
+
+/* Selectpicker */
+.dropdown .bootstrap-select {width: 100% !important;}
+.inputpicker {
+    width: 100% !important;
+    height: 38px !important;
+    border: none;
+    border-radius: .25rem;
+    padding: 14px;
+    color: #999999 !important;
+    transition: background-color .2s linear;
+}
+.inputpicker:hover, .inputpicker:focus {
+    background-color: #dae0e5;
+    cursor: pointer;
+}
+.selectpicker {border-radius: .25rem;}
+
+/* Recaptcha */
+.g-recaptcha iframe {height: 78px !important;}
+
+
+.selo-digimobi-destaque{
+	position: absolute;
+    right: -4px;
+    top: -18px;
+    width: 111px !important;
+}
+
+.selo-digimobi{
+	position: absolute;
+    left: 3px;
+    top: -25px;
+    width: 130px !important;
+    z-index: 500;
+}
+
+.selo-digimobi-integra{
+	position: absolute;
+    right: 3px;
+    top: -25px;
+    width: 180px !important;
+    z-index: 500;
+}
+
+.btn-padrao {
+	color: white;
+	background-color: #94828a !important;
+	border-color: #94828a !important;
+}

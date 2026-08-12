@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR" style="height: 100%">
+
+<head>
+  <!--
+    vanilla-cookieconsent (inicializado pelo React em App.js) gerencia os
+    scripts abaixo via type="text/plain" data-category="...".
+    Eles só são executados após o consentimento da categoria correspondente.
+
+    O envio ao Google Analytics é feito via gtag (react-ga4) em
+    src/analytics/track.js, com GOOGLE_TAG_ID por ambiente (src/config.js).
+    O container GTM legado (GTM-5JHGXDLV) foi removido daqui em 2026-07-10:
+    era ineditável pelo time e apontava para uma property fixa.
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+  <style>
+    body>.skiptranslate {
+      display: none;
+    }
+
+    #google_translate_element {
+      display: none;
+    }
+
+    .skiptranslate.goog-te-gadget {
+      font-size: 0;
+      color: transparent;
+      display: inline;
+    }
+
+    .skiptranslate.goog-te-gadget>span>a {
+      font-size: 0;
+      color: transparent;
+      display: none;
+    }
+
+    .goog-te-banner-frame.skiptranslate {
+      display: none !important;
+    }
+
+    body {
+      top: 0px !important;
+    }
+
+    .dropdown {
+      position: fixed;
+      top: 25px;
+      right: 20px;
+      background-color: transparent;
+      z-index: 1203;
+    }
+
+    .dropbtn {
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      min-width: 160px;
+      z-index: 9999;
+      top: 21px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: grid;
+    }
+
+    .flagbtn {
+      width: 24px;
+      box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .flag {
+      width: 24px;
+    }
+
+    @media print {
+      #google_translate_element {
+        display: none;
+      }
+
+      body {
+        overflow: visible !important;
+      }
+    }
+  </style>
+  <title>G-CERTIFICA</title>
+  <script type="module" crossorigin src="/assets/index-BrBUajNU.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BWpb5eFF.css">
+</head>
+
+<body style="height: 100%; overflow-y: auto">
+  <div id="root" style="height: 100%"></div>
+
+  <div id="google_translate_element"></div>
+  <script type="text/plain" data-category="functionality">
+    let host = window.location.host;
+    const isRedeSociosPublica =
+      window.location.pathname.startsWith("/rede-socios");
+    if (host !== "stg_plataforma.gedanken.com.br" && !isRedeSociosPublica) {
+      const script = document.createElement("script");
+      script.id = "ze-snippet";
+      script.src =
+        "https://static.zdassets.com/ekr/snippet.js?key=8a0b1378-53e9-41d6-bc03-6c827af8f7be";
+      document.body.appendChild(script);
+
+      window.zESettings = {
+        webWidget: {
+          color: {
+            theme: "#00b050",
+            launcherText: "#ffffff",
+            text: "#ffffff",
+          },
+        },
+      };
+    }
+    if (
+      host === "platform.gcertifica.com.br" ||
+      host === "hplatform.gedanken.com.br" ||
+      host === "stg_plataforma.gedanken.com.br" ||
+      host === "alpha_plataforma.gedanken.com.br" ||
+      host === "localhost:3000"
+    ) {
+      const baseImagePath = window.location.origin + "/"; //caminho base do host atual
+      var element = document.createElement("div");
+      element.innerHTML = `<div class="dropdown">
+          <button  class="dropbtn" id="languageButton">
+                                <img class="flagbtn" src="${baseImagePath}brFlag.png" alt="Português" />
+                              </button >
+                              <div class="dropdown-content">
+                                <a href="#" onclick="changeLanguage('es')">
+                                  <img class="flag" src="${baseImagePath}esFlag.png" alt="Espanhol" />
+                                </a>
+                                <a href="#" onclick="changeLanguage('en')">
+                                  <img class="flag" src="${baseImagePath}usFlag.png" alt="Inglês" />
+                                </a>
+                                <a href="#" onclick="changeLanguage('pt')">
+                                  <img class="flag" src="${baseImagePath}brFlag.png" alt="Português" />
+                                </a>
+                              </div>
+                            </div>`;
+      var corpoPagina = document.body;
+      corpoPagina.appendChild(element);
+      function changeFlag(languageCode) {
+        //Atualize a bandeira e o idioma no botão principal
+        const languageButton = document.getElementById("languageButton");
+        const flagImage = languageButton.querySelector(".flagbtn");
+        if (languageCode === "en") {
+          flagImage.src = baseImagePath + "usFlag.png";
+        } else if (languageCode === "pt") {
+          flagImage.src = baseImagePath + "brFlag.png";
+        } else if (languageCode === "es") {
+          flagImage.src = baseImagePath + "esFlag.png";
+        }
+      }
+      var comboGoogleTradutor = null;
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            includedLanguages: "pt,es,en",
+            layout:
+              window.google.translate.TranslateElement.InlineLayout
+                .HORIZONTAL,
+            autoDisplay: false,
+            defaultLanguage: "pt",
+          },
+          "google_translate_element"
+        );
+        comboGoogleTradutor = document
+          .getElementById("google_translate_element")
+          .querySelector(".goog-te-combo");
+      }
+
+      function changeEvent(el) {
+        if (el.fireEvent) {
+          el.fireEvent("onchange");
+        } else {
+          var evObj = document.createEvent("HTMLEvents");
+
+          evObj.initEvent("change", false, true);
+          el.dispatchEvent(evObj);
+        }
+      }
+
+      function changeLanguage(sigla) {
+        changeFlag(sigla);
+        if (comboGoogleTradutor) {
+          comboGoogleTradutor.value = sigla;
+          changeEvent(comboGoogleTradutor);
+        }
+      }
+
+      const spanElement = window.document.querySelector(".goog-te-gadget");
+      if (spanElement) {
+        let spanTag = spanElement.querySelector("span");
+        spanTag.style.display = "none";
+      }
+
+      const cookieValue = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("googtrans="))
+        ?.split("=")[1];
+      if (cookieValue === undefined) document.cookie = "googtrans=/auto/pt";
+    }
+    const style = document.createElement("style");
+    style.type = "text/css";
+    style.innerHTML = `
+        @media print {
+          .dropdown {
+            display: none;
+          }
+        }
+      `;
+    document.head.appendChild(style);
+  </script>
+  <script type="text/plain" data-category="functionality"
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/plain" data-category="analytics">
+    const notallowedHostnames = [
+      "hplatform.gedanken.com.br",
+      "hplataforma.gedanken.com.br",
+      "stg_plataforma.gedanken.com.br",
+      "alpha_plataforma.gedanken.com.br",
+      "localhost",
+    ];
+    if (!notallowedHostnames.includes(window.location.hostname)) {
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", "mjqfqr0kpq");
+    }
+  </script>
+</body>
+
+</html>

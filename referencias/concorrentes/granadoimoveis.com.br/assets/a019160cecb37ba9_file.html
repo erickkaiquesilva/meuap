@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Theme init: runs synchronously before CSS parses, prevents flash -->
+    <script>
+      /* Storage is optional. Preserve the user's existing theme when available,
+         but fall back safely when browser storage is blocked. */
+      try {
+        var __kt = localStorage.getItem('kenlo-theme');
+        document.documentElement.setAttribute('data-theme', __kt === 'light' || __kt === 'dark' ? __kt : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    </script>
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32"  href="/favicon.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <title>Kenlo – Quem usa, lidera.</title>
+    <meta name="description" content="Plataforma líder do mercado imobiliário brasileiro. CRM, ERP, Sites e Marketplace para 8.500+ imobiliárias em 950+ cidades." />
+    <meta name="keywords" content="CRM imobiliário, ERP locação, sistema imobiliário, Kenlo, imobiliária, gestão imobiliária, software imobiliário, CRM para imobiliárias" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Kenlo" />
+    <!-- canonical is set dynamically per-page by CanonicalUrl.tsx -->
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kenlo – Quem usa, lidera." />
+    <meta property="og:description" content="CRM, ERP, Sites e Marketplace para imobiliárias e administradoras. 8.500+ imobiliárias confiam na Kenlo." />
+    <meta property="og:site_name" content="Kenlo" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:image" content="https://www.kenlo.com.br/kenlo-og-2026.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kenlo – A IA que move o mercado imobiliário." />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kenlo – Quem usa, lidera." />
+    <meta name="twitter:description" content="CRM, ERP, Sites e Marketplace para imobiliárias e administradoras." />
+    <meta name="twitter:image" content="https://www.kenlo.com.br/kenlo-og-2026.jpg" />
+    <meta name="twitter:image:alt" content="Kenlo – A IA que move o mercado imobiliário." />
+
+    <!-- Structured Data is now rendered by React components (JsonLd.tsx) -->
+
+    <!-- Preconnect: critical origins (max 4) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- CloudFront and Plausible preconnects removed — CloudFront not used on homepage after hero fix; Plausible not in active use -->
+    <link rel="dns-prefetch" href="https://blog.kenlo.com.br" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://connect.facebook.net" />
+
+    <!-- Fonts: preload the hero LCP font file directly (Plus Jakarta variable, latin subset
+         covers pt-BR accents; one file serves weights 500/700/800), then load the Plus Jakarta
+         CSS on the render path (NOT media=print) so the @font-face is discovered immediately.
+         The H1 hero headline is the LCP element — keeping its font off the critical path
+         delayed LCP into the font-swap (CrUX: LCP 2.5–4s on mobile). -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yygg_vb.woff2" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet" />
+    <!-- JetBrains Mono is only used for small mono labels (not LCP) — keep it deferred -->
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet" /></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" /></noscript>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){
+    if(/(?:^|[?&])preview(?:=|&|$)/.test(w.location.search || '')){w[l]=w[l]||[];return;}
+    w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;j.onerror=function(){j.remove();};f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MV8987KB');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- GA4 + Google Ads are loaded exclusively via GTM (Tag do Google G-90CJT55RVR
+         and Tag do Google AW-16831862687, Initialization – All Pages).
+         Direct gtag.js loads were removed to eliminate double pageview/conversion counting. -->
+
+    <!-- Critical CSS: loading spinner + theme-aware loading screen -->
+    <style>
+      @keyframes kspin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+      /* :not(.spd-deck-root) — a proposta compartilhada (/p/:slug) tem tema
+         próprio (kenlo-ppt-theme) e não pode herdar o tema do site. */
+      #root>div:not(.spd-deck-root){background:#fff;color:#111}
+      html[data-theme='dark'] #root>div:not(.spd-deck-root){background:#0d0d12;color:#f0f0f0}
+      html[data-theme='dark'] #root>div:not(.spd-deck-root) img{filter:brightness(0.85)}
+    </style>
+    <script type="module" crossorigin src="/assets/index-DUqI2Xqe.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/trpc-BtFi7N2u.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-iKZZcAVI.js">
+    <link rel="modulepreload" crossorigin href="/assets/router-DxCBaFpQ.js">
+    <link rel="preload" as="style" href="/assets/index-mq_dc-NT.css" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/assets/index-mq_dc-NT.css"></noscript>
+  <link rel="canonical" href="https://www.kenlo.com.br" data-spa-canonical />
+<meta property="og:url" content="https://www.kenlo.com.br" data-spa-canonical />
+</head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MV8987KB"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div id="root">
+      <!-- Loading screen: shown before React mounts -->
+      <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem">
+        <img src="/favicon-96.png" alt="Kenlo" style="width:56px;height:56px" />
+        <div style="width:1.5rem;height:1.5rem;border:3px solid rgba(41,142,230,0.3);border-top-color:#298EE6;border-radius:50%;animation:kspin .7s linear infinite"></div>
+      </div>
+    </div>
+
+    <!-- Umami analytics - deferred; only loaded when configured with a real endpoint -->
+    <script>
+      (function() {
+        var _ep  = '%VITE_ANALYTICS_ENDPOINT%';
+        var _wid = '%VITE_ANALYTICS_WEBSITE_ID%';
+        // Skip when env vars weren't substituted at build time or point to localhost placeholder
+        if (!_ep || _ep.indexOf('localhost') !== -1 || _ep.indexOf('%VITE_') !== -1 || !_wid || _wid === 'local') return;
+        function loadUmami() {
+          var s = document.createElement('script');
+          s.defer = true;
+          s.src = _ep + '/umami';
+          s.dataset.websiteId = _wid;
+          s.onerror = function() { s.remove(); };
+          document.body.appendChild(s);
+        }
+        if (typeof requestIdleCallback !== 'undefined') {
+          requestIdleCallback(loadUmami);
+        } else {
+          setTimeout(loadUmami, 2000);
+        }
+      })();
+    </script>
+
+    <!-- Disable Leadster's built-in GA4 (G-43W2WYML5H) -->
+    <script>window.disableLeadsterGa4 = true;</script>
+
+    <!-- Leadster XHR interception: capture email + name + phone for Meta CAPI Lead event -->
+    <!-- MUST run BEFORE Leadster loads so the patched XHR is used by Leadster -->
+    <script>
+    (function() {
+      // Accumulate lead data across Leadster steps
+      var _kenloLeadData = { nome: null, telefone: null, conversionType: null };
+
+      // Classifica a conversão do bot pelo qualificador respondido, espelhando
+      // os campos dos formulários das LPs:
+      //   'contrato' -> qualificador de Locação ("contratos sob gestão")
+      //   'tamanho'  -> qualificador de Imob ("tamanho da equipe" / usuários)
+      // Varre chaves + valores do passo do bot procurando esses sinais.
+      // OBS: os rótulos exatos vivem no painel do Leadster — se o fluxo mudar,
+      // ajustar apenas esta função (ou fixar no rótulo exato do campo).
+      function detectConversionType(data) {
+        var blob = '';
+        try { blob = JSON.stringify(data).toLowerCase(); } catch (e) { return null; }
+        if (blob.indexOf('contrato') !== -1) return 'contrato';
+        if (
+          blob.indexOf('tamanho') !== -1 ||
+          blob.indexOf('equipe') !== -1 ||
+          blob.indexOf('usuario') !== -1 ||
+          blob.indexOf('usuário') !== -1 ||
+          blob.indexOf('corretor') !== -1
+        ) return 'tamanho';
+        return null;
+      }
+
+      var origOpen = XMLHttpRequest.prototype.open;
+      var origSend = XMLHttpRequest.prototype.send;
+
+      XMLHttpRequest.prototype.open = function(method, url) {
+        this._kenloUrl = typeof url === 'string' ? url : url.toString();
+        this._kenloMethod = method;
+        return origOpen.apply(this, arguments);
+      };
+
+      XMLHttpRequest.prototype.send = function(body) {
+        if (
+          this._kenloMethod === 'POST' &&
+          this._kenloUrl &&
+          this._kenloUrl.indexOf('app.leadster.com.br/api/chatbot/leads') !== -1 &&
+          typeof body === 'string'
+        ) {
+          try {
+            var parsed = JSON.parse(body);
+            var data = parsed && parsed.message && parsed.message.data;
+            if (data) {
+              // Accumulate name from earlier step
+              if (typeof data.Nome === 'string' && data.Nome.trim()) {
+                _kenloLeadData.nome = data.Nome.trim();
+              }
+              // Accumulate phone from earlier step (field may be "WhatsApp" or "Telefone")
+              var phone = data.WhatsApp || data.Telefone || data.Celular || data.Phone;
+              if (typeof phone === 'string' && phone.trim()) {
+                _kenloLeadData.telefone = phone.trim();
+              }
+              // Accumulate conversion type (contrato/tamanho) from qualifier step
+              if (!_kenloLeadData.conversionType) {
+                var ct = detectConversionType(data);
+                if (ct) {
+                  _kenloLeadData.conversionType = ct;
+                }
+              }
+              // When email arrives, fire the event with all accumulated data
+              if (typeof data.Email === 'string' && data.Email.indexOf('@') !== -1) {
+                var email = data.Email.trim().toLowerCase();
+                window.dispatchEvent(new CustomEvent('kenlo:leadster-email', {
+                  detail: {
+                    email: email,
+                    firstName: _kenloLeadData.nome || undefined,
+                    phone: _kenloLeadData.telefone || undefined,
+                    conversionType: _kenloLeadData.conversionType || undefined
+                  }
+                }));
+                // Reset for next conversation
+                _kenloLeadData = { nome: null, telefone: null, conversionType: null };
+              }
+            }
+          } catch(e) { /* ignore non-JSON bodies */ }
+        }
+        return origSend.apply(this, arguments);
+      };
+
+      console.log('[Kenlo] Leadster XHR interception installed');
+    })();
+    </script>
+
+    <!-- Leadster chatbot — requisito de conversão: carregar imediatamente.
+         Não atrasar por timeout, interação, idle ou otimização de PageSpeed
+         sem validação prévia de Marketing/Growth. -->
+    <script>
+      (function(w,d,src,id) {
+        var loading = null;
+        var loaded = false;
+
+        function loadLeadster() {
+          if (loaded) return Promise.resolve();
+          if (loading) return loading;
+          loading = new Promise(function(resolve, reject) {
+            try {
+              var existing = d.querySelector('script[data-kenlo-leadster]');
+              if (existing) {
+                existing.addEventListener('load', function() {
+                  loaded = true;
+                  resolve();
+                }, { once: true });
+                return;
+              }
+
+              var head = d.head || d.getElementsByTagName('head')[0];
+              var script = d.createElement('script');
+              script.src = src;
+              script.charset = 'UTF-8';
+              script.defer = true;
+              script.dataset.kenloLeadster = 'true';
+              script.addEventListener('load', function() {
+                loaded = true;
+                resolve();
+              }, { once: true });
+              script.addEventListener('error', function() {
+                script.remove();
+                loading = null;
+                reject(new Error('Leadster failed to load'));
+              }, { once: true });
+              w.neuroleadId = id;
+              head.appendChild(script);
+            } catch (error) {
+              loading = null;
+              reject(error);
+            }
+          });
+          return loading;
+        }
+
+        w.loadKenloLeadster = loadLeadster;
+        loadLeadster().catch(function() {});
+      })(window, document, 'https://cdn.leadster.com.br/neurolead/neurolead.min.js', 'xdSBEw1wMyKgSGp42HvRZCz7F');
+    </script>
+    <style>
+      .nld-chatbot .nld-brand {
+        visibility: hidden!important;
+        display: none!important;
+      }
+      .nld-chatbot .nld-conversation {
+        max-height: 500px!important;
+      }
+    </style>
+
+  <div id="hero-prerender" aria-hidden="true" style="position:fixed;inset:0;z-index:9998;background:#0c0c14;pointer-events:none;transition:opacity 0.3s ease"></div></body>
+</html>

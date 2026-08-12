@@ -1,0 +1,23 @@
+/* ============================================================
+   CHAVE — DESIGN SYSTEM
+   Ponto de entrada único da folha de estilos. Importe apenas
+   este arquivo em qualquer página do projeto:
+
+     <link rel="stylesheet" href="/assets/css/main.css">
+
+   Ordem de carregamento importa: tokens e base primeiro,
+   componentes depois, responsivo por último (para sobrepor
+   corretamente as regras de cada breakpoint).
+   ============================================================ */
+@import url('./tokens.css');
+@import url('./base.css');
+@import url('./animations.css');
+@import url('./components.css');
+
+/* Opcional: estilos usados apenas na própria página de documentação
+   do design system (topbar do doc, showcase de cores/tipografia,
+   grids de ícones, cards de demonstração etc.). Não é necessário
+   nas demais páginas do site — remova este import se preferir. */
+@import url('./documentation.css');
+
+@import url('./responsive.css');
