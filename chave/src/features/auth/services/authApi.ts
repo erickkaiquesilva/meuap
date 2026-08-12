@@ -1,0 +1,22 @@
+import { apiClient } from '@/core/api/client'
+import type { User } from '../types/auth'
+
+export async function apiLogin(
+  email: string,
+  password: string,
+): Promise<{ token: string; user: User }> {
+  const { data } = await apiClient.post<{ token: string; user: User }>(
+    '/api/auth/login',
+    { email, password },
+  )
+  return data
+}
+
+export async function apiLogout(): Promise<void> {
+  await apiClient.post('/api/auth/logout')
+}
+
+export async function apiGetMe(): Promise<User> {
+  const { data } = await apiClient.get<User>('/api/auth/me')
+  return data
+}

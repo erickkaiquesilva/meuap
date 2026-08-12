@@ -146,6 +146,22 @@
   color: var(--primary-500);
 }
 
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.userName {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--neutral-700);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @media (max-width: 760px) {
   .desktopNav {
     display: none;

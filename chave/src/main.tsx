@@ -8,6 +8,7 @@ import '@/index.css'
 import { queryClient } from '@/core/query/queryClient'
 import { router } from '@/core/router/routes'
 import { isMock } from '@/core/api/config'
+import { AuthProvider } from '@/features/auth/context/AuthContext'
 
 async function bootstrap() {
   if (isMock) {
@@ -21,7 +22,9 @@ async function bootstrap() {
   createRoot(root).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </QueryClientProvider>
     </StrictMode>,
   )

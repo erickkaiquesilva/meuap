@@ -1,8 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useAuth } from '@/features/auth/context/AuthContext'
 import styles from './Header.module.css'
 
 export function Header() {
+  const { isAuthenticated, user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  async function handleLogout() {
+    await logout()
+    navigate('/', { replace: true })
+  }
   const [menuOpen, setMenuOpen] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
@@ -45,9 +53,18 @@ export function Header() {
           <NavLink to="/imoveis?op=sale" className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}>
             Comprar
           </NavLink>
-          <Link to="/entrar" className="btn btn-primary btn-sm">
-            Entrar
-          </Link>
+          {isAuthenticated ? (
+            <div className={styles.userMenu}>
+              <span className={styles.userName}>{user?.name}</span>
+              <button type="button" className="btn btn-outline btn-sm" onClick={handleLogout}>
+                Sair
+              </button>
+            </div>
+          ) : (
+            <Link to="/entrar" className="btn btn-primary btn-sm">
+              Entrar
+            </Link>
+          )}
         </nav>
 
         {/* Mobile hamburger */}
@@ -88,9 +105,20 @@ export function Header() {
           <NavLink to="/imoveis?op=sale" className={styles.drawerLink} onClick={closeMenu}>
             Comprar
           </NavLink>
-          <NavLink to="/entrar" className={styles.drawerLink} onClick={closeMenu}>
-            Entrar
-          </NavLink>
+          {isAuthenticated ? (
+            <button
+              type="button"
+              className={styles.drawerLink}
+              onClick={() => { handleLogout(); closeMenu() }}
+              style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}
+            >
+              Sair ({user?.name})
+            </button>
+          ) : (
+            <NavLink to="/entrar" className={styles.drawerLink} onClick={closeMenu}>
+              Entrar
+            </NavLink>
+          )}
         </nav>
       </div>
     </header>

@@ -1,9 +1,5 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-
-// Placeholder until AuthContext is wired in T018
-function useAuth() {
-  return { isAuthenticated: false, isLoading: false }
-}
+import { useAuth } from '@/features/auth/context/AuthContext'
 
 export function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useAuth()
