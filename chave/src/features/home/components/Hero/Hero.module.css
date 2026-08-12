@@ -1,0 +1,52 @@
+.hero {
+  background: linear-gradient(150deg, var(--primary-300) 0%, var(--primary-700) 60%, var(--primary-900) 100%);
+  padding: var(--sp-9) var(--sp-5) 0;
+  text-align: center;
+  position: relative;
+  overflow: visible;
+}
+
+.content {
+  max-width: 640px;
+  margin: 0 auto var(--sp-7);
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  color: var(--neutral-0);
+  line-height: 1.15;
+  margin-bottom: var(--sp-3);
+  letter-spacing: -0.5px;
+}
+
+.highlight {
+  color: var(--secondary-400);
+  font-style: normal;
+}
+
+.sub {
+  font-family: var(--font-ui);
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+}
+
+.searchWrapper {
+  max-width: 840px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  transform: translateY(var(--sp-7));
+}
+
+@media (max-width: 760px) {
+  .hero {
+    padding: var(--sp-8) var(--sp-4) 0;
+  }
+
+  .sub {
+    font-size: 15px;
+  }
+}

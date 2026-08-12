@@ -1,5 +1,6 @@
 .header {
-  background: var(--neutral-0);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--neutral-200);
   position: sticky;
   top: 0;
@@ -10,7 +11,7 @@
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 var(--sp-5);
-  height: 60px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,7 +20,7 @@
 .logo {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 20px;
+  font-size: 22px;
   color: var(--primary-500);
   text-decoration: none;
   letter-spacing: -0.5px;
@@ -29,7 +30,8 @@
   color: var(--secondary-500);
 }
 
-.nav {
+/* Desktop nav */
+.desktopNav {
   display: flex;
   align-items: center;
   gap: var(--sp-5);
@@ -45,12 +47,111 @@
 }
 
 .navLink:hover,
-.navLink.active {
+.active {
+  color: var(--primary-500);
+}
+
+/* Hamburger button */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-fast);
+}
+
+.hamburger:hover {
+  background: var(--neutral-100);
+}
+
+.bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--neutral-700);
+  border-radius: 2px;
+  transition: transform var(--dur-base) var(--ease-emphasized), opacity var(--dur-base);
+  transform-origin: center;
+}
+
+.barOpen1 {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.barOpen2 {
+  opacity: 0;
+}
+
+.barOpen3 {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 17, 40, 0.5);
+  z-index: 90;
+  animation: fadeIn var(--dur-base) var(--ease-standard);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Drawer */
+.drawer {
+  position: fixed;
+  top: 64px;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: var(--neutral-0);
+  z-index: 95;
+  padding: var(--sp-5);
+  transform: translateX(100%);
+  transition: transform var(--dur-slow) var(--ease-emphasized);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.drawerLink {
+  display: block;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--neutral-700);
+  text-decoration: none;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-md);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.drawerLink:hover {
+  background: var(--primary-50);
   color: var(--primary-500);
 }
 
 @media (max-width: 760px) {
-  .navLink {
+  .desktopNav {
     display: none;
+  }
+
+  .hamburger {
+    display: flex;
   }
 }

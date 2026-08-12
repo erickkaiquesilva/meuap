@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import '@/assets/ds/main.css'
+import '@/index.css'
 import { queryClient } from '@/core/query/queryClient'
 import { router } from '@/core/router/routes'
 import { isMock } from '@/core/api/config'

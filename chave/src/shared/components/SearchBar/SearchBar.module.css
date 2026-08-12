@@ -1,0 +1,103 @@
+.wrapper {
+  background: var(--neutral-0);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-5);
+  box-shadow: var(--shadow-lg);
+}
+
+.tabs {
+  display: flex;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+  border-bottom: 2px solid var(--neutral-100);
+  padding-bottom: 0;
+}
+
+.tab {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 14px;
+  padding: var(--sp-2) var(--sp-5);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--neutral-500);
+  transition: color var(--dur-base), border-color var(--dur-base);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.tabActive {
+  color: var(--primary-500);
+  border-bottom-color: var(--primary-500);
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  gap: var(--sp-3);
+  align-items: end;
+}
+
+.fieldItem label {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fieldLabel {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.searchBtn {
+  height: 52px;
+  padding: 0 var(--sp-5);
+  border-radius: var(--radius-md) !important;
+  white-space: nowrap;
+}
+
+/* Compact variant — used in listings sticky bar */
+.compact {
+  box-shadow: none;
+  padding: var(--sp-3) 0;
+  border-radius: 0;
+}
+
+.compact .tabs {
+  margin-bottom: var(--sp-3);
+}
+
+.compact .fields {
+  gap: var(--sp-2);
+}
+
+@media (max-width: 1080px) {
+  .fields {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .searchBtn {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .fields {
+    grid-template-columns: 1fr;
+  }
+
+  .searchBtn {
+    grid-column: 1;
+    width: 100%;
+  }
+}
