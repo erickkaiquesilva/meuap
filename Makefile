@@ -1,10 +1,12 @@
 # ==============================================================
 #  Chave — Makefile
+#  Execute a partir da raiz do projeto (meuap/)
 #  Uso: make <target>
 #  Exemplo: make start
 # ==============================================================
 
-SHELL := /bin/bash
+SHELL    := /bin/bash
+APP_DIR  := chave
 .DEFAULT_GOAL := help
 
 # Cores ANSI
@@ -16,14 +18,14 @@ YELLOW := \033[0;33m
 RED    := \033[0;31m
 CYAN   := \033[0;36m
 
-# Detecta se node_modules existe
-NODE_MODULES := node_modules/.package-lock.json
+# Caminho para node_modules dentro de chave/
+NODE_MODULES := $(APP_DIR)/node_modules/.package-lock.json
 
 # ==============================================================
 #  TARGETS
 # ==============================================================
 
-.PHONY: help start install test coverage build build-staging lint check-node check-env clean
+.PHONY: help start install test test-run coverage build build-staging lint check-node clean
 
 ## Exibe esta ajuda
 help:
@@ -61,26 +63,12 @@ check-node:
 ## Instala dependências se necessário
 install: check-node
 	@if [ ! -f "$(NODE_MODULES)" ]; then \
-		printf "$(CYAN)→ Instalando dependências...$(RESET)\n"; \
-		npm install; \
+		printf "$(CYAN)→ Instalando dependências em $(APP_DIR)/...$(RESET)\n"; \
+		cd $(APP_DIR) && npm install; \
 		printf "$(GREEN)✓ Dependências instaladas.$(RESET)\n"; \
 	else \
 		printf "$(GREEN)✓ Dependências já instaladas.$(RESET)\n"; \
 	fi
-
-## Verifica e prepara o arquivo .env para o ambiente escolhido
-define ensure-env
-	@if [ ! -f ".env.$(1)" ]; then \
-		if [ -f ".env.example" ]; then \
-			printf "$(YELLOW)⚠ .env.$(1) não encontrado. Criando a partir de .env.example...$(RESET)\n"; \
-			cp .env.example .env.$(1); \
-			printf "$(YELLOW)  → Edite .env.$(1) antes de continuar em produção!$(RESET)\n"; \
-		else \
-			printf "$(RED)✗ .env.example não encontrado. Crie o arquivo .env.$(1) manualmente.$(RESET)\n"; \
-			exit 1; \
-		fi; \
-	fi
-endef
 
 ## Inicia o servidor de desenvolvimento (pergunta o ambiente)
 start: install
@@ -95,33 +83,33 @@ start: install
 	echo ""; \
 	case "$$CHOICE" in \
 		1|mock) \
-			if [ ! -f ".env.mock" ]; then \
+			if [ ! -f "$(APP_DIR)/.env.mock" ]; then \
 				printf "$(YELLOW)⚠ .env.mock não encontrado. Criando a partir de .env.example...$(RESET)\n"; \
-				cp .env.example .env.mock 2>/dev/null || true; \
+				cp $(APP_DIR)/.env.example $(APP_DIR)/.env.mock 2>/dev/null || true; \
 			fi; \
 			printf "$(GREEN)→ Subindo em ambiente $(BOLD)MOCK$(RESET)$(GREEN) (MSW ativo, sem backend)$(RESET)\n\n"; \
-			npm run dev:mock \
+			cd $(APP_DIR) && npm run dev:mock \
 			;; \
 		2|staging) \
-			if [ ! -f ".env.staging" ]; then \
+			if [ ! -f "$(APP_DIR)/.env.staging" ]; then \
 				printf "$(YELLOW)⚠ .env.staging não encontrado. Criando a partir de .env.example...$(RESET)\n"; \
-				cp .env.example .env.staging 2>/dev/null || true; \
-				printf "$(YELLOW)  → Edite .env.staging com os valores de staging antes de continuar.$(RESET)\n\n"; \
+				cp $(APP_DIR)/.env.example $(APP_DIR)/.env.staging 2>/dev/null || true; \
+				printf "$(YELLOW)  → Edite chave/.env.staging com os valores de staging.$(RESET)\n\n"; \
 			fi; \
 			printf "$(GREEN)→ Subindo em ambiente $(BOLD)STAGING$(RESET)\n\n"; \
-			npm run dev:staging \
+			cd $(APP_DIR) && npm run dev:staging \
 			;; \
 		3|production) \
-			if [ ! -f ".env.production" ]; then \
+			if [ ! -f "$(APP_DIR)/.env.production" ]; then \
 				printf "$(YELLOW)⚠ .env.production não encontrado. Criando a partir de .env.example...$(RESET)\n"; \
-				cp .env.example .env.production 2>/dev/null || true; \
-				printf "$(YELLOW)  → Edite .env.production com os valores reais antes de continuar.$(RESET)\n\n"; \
+				cp $(APP_DIR)/.env.example $(APP_DIR)/.env.production 2>/dev/null || true; \
+				printf "$(YELLOW)  → Edite chave/.env.production com os valores reais.$(RESET)\n\n"; \
 			fi; \
 			printf "$(YELLOW)⚠ Você está subindo em $(BOLD)PRODUCTION$(RESET)$(YELLOW) localmente.$(RESET)\n"; \
 			read -rp "  Confirma? [s/N]: " CONFIRM; \
 			if [[ "$$CONFIRM" =~ ^[sS]$$ ]]; then \
 				printf "$(GREEN)→ Subindo em ambiente $(BOLD)PRODUCTION$(RESET)\n\n"; \
-				npm run dev; \
+				cd $(APP_DIR) && npm run dev; \
 			else \
 				printf "$(YELLOW)Cancelado.$(RESET)\n"; \
 			fi \
@@ -135,37 +123,37 @@ start: install
 ## Roda testes em modo watch
 test: install
 	@printf "$(CYAN)→ Iniciando testes em modo watch...$(RESET)\n\n"
-	@npm run test
+	@cd $(APP_DIR) && npm run test
 
 ## Roda testes uma vez (para CI)
 test-run: install
 	@printf "$(CYAN)→ Rodando suite de testes...$(RESET)\n\n"
-	@npm run test:run
+	@cd $(APP_DIR) && npm run test:run
 
 ## Gera relatório de cobertura de testes
 coverage: install
 	@printf "$(CYAN)→ Gerando cobertura de testes...$(RESET)\n\n"
-	@npm run test:coverage
+	@cd $(APP_DIR) && npm run test:coverage
 
 ## Build de produção
 build: install
 	@printf "$(CYAN)→ Build de produção...$(RESET)\n\n"
-	@npm run build
-	@printf "$(GREEN)✓ Build concluído em dist/$(RESET)\n"
+	@cd $(APP_DIR) && npm run build
+	@printf "$(GREEN)✓ Build concluído em chave/dist/$(RESET)\n"
 
 ## Build de staging
 build-staging: install
 	@printf "$(CYAN)→ Build de staging...$(RESET)\n\n"
-	@npm run build:staging
-	@printf "$(GREEN)✓ Build de staging concluído em dist/$(RESET)\n"
+	@cd $(APP_DIR) && npm run build:staging
+	@printf "$(GREEN)✓ Build de staging concluído em chave/dist/$(RESET)\n"
 
 ## Roda o linter
 lint: install
 	@printf "$(CYAN)→ Rodando linter...$(RESET)\n\n"
-	@npm run lint
+	@cd $(APP_DIR) && npm run lint
 
 ## Remove node_modules e dist
 clean:
-	@printf "$(YELLOW)→ Removendo node_modules e dist...$(RESET)\n"
-	@rm -rf node_modules dist
+	@printf "$(YELLOW)→ Removendo chave/node_modules e chave/dist...$(RESET)\n"
+	@rm -rf $(APP_DIR)/node_modules $(APP_DIR)/dist
 	@printf "$(GREEN)✓ Limpeza concluída.$(RESET)\n"
