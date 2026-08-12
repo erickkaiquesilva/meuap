@@ -9,3 +9,12 @@
 - feat-T005: MSW v2 mock layer — 12 mock properties, 10 neighbourhoods, auth and property handlers for browser and Node
 - feat-T006: Vitest + React Testing Library setup with renderWithProviders helper and first Button smoke tests
 - feat-T007: initial documentation (architecture.md, components.md, technical-debt.md, Changelog.md)
+- feat-T008: Header with sticky behaviour, desktop nav and mobile drawer with focus trap and Escape close
+- feat-T009: Hero section with gradient background, headline, subtext and floating SearchBar
+- feat-T010: SearchBar component — operation tabs, city/neighbourhood/price/bedrooms filters, URL-driven navigation
+- feat-T011: PropertyCard — photo with lazy-load, placeholder gradient, badge, favourite toggle, specs row
+- feat-T012: FeaturedGrid — React Query integration, skeleton loading, error state with retry
+- feat-T013: Neighborhoods — static section with 6 neighbourhood cards linking to filtered listings
+- feat-T014: Testimonials — 3 static testimonials with star rating and avatar initials
+- feat-T015: CTABanner — gradient banner with WhatsApp link from VITE_WA_NUMBER env var
+- feat-T016: HomePage integration — all sections composed; zero TypeScript errors; build successful

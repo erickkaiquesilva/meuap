@@ -1,0 +1,122 @@
+.section {
+  padding: calc(var(--sp-9) + var(--sp-7)) var(--sp-5) var(--sp-8);
+}
+
+.inner {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--sp-6);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 800;
+  color: var(--neutral-800);
+}
+
+.link {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-500);
+  text-decoration: none;
+  transition: color var(--dur-base);
+}
+
+.link:hover {
+  color: var(--primary-600);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-5);
+}
+
+/* Skeleton */
+.skeleton {
+  background: var(--neutral-0);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.skeletonPhoto {
+  aspect-ratio: 4 / 3;
+  background: var(--neutral-100);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeletonBody {
+  padding: var(--sp-4);
+}
+
+.skeletonLine {
+  height: 14px;
+  background: var(--neutral-100);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--sp-2);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeletonLineLg {
+  width: 60%;
+  height: 20px;
+}
+
+.skeletonLineSm {
+  width: 80%;
+}
+
+.skeletonSpecs {
+  display: flex;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+.skeletonSpec {
+  height: 12px;
+  width: 56px;
+  background: var(--neutral-100);
+  border-radius: var(--radius-sm);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Error state */
+.error {
+  text-align: center;
+  padding: var(--sp-8) var(--sp-5);
+  color: var(--neutral-600);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 1080px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .section {
+    padding-top: calc(var(--sp-9) + var(--sp-8));
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
