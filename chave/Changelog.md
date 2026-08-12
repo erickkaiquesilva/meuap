@@ -25,3 +25,8 @@
 - feat-T019: ProtectedRoute wired to real AuthContext — redirects unauthenticated users preserving redirect param
 - feat-T017: Login page — validated form (email + password), show/hide password toggle, server error display, redirect after login
 - feat-T017: Header updated to show user name and logout button when authenticated
+- feat-T021: ListingsPage layout — two-column (sidebar + grid) on desktop, single column on mobile
+- feat-T022: FilterPanel — operation tabs, city/neighborhood selects, type/bedroom chips, max price select; mobile bottom drawer
+- feat-T023: PropertyGrid — responsive grid, shimmer skeleton (6 cards), empty and error states
+- feat-T024: listingsApi + useListings hook (React Query) + useListingsFilters (URL-driven state)
+- feat-T025: SortSelect (5 options) + Pagination component with ellipsis logic

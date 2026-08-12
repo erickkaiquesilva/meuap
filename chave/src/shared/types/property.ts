@@ -34,6 +34,7 @@ export interface SearchFilters {
   maxPrice?: string
   bedrooms?: string
   type?: string
+  minPrice?: string
   sort?: string
   page?: string
 }

@@ -1,0 +1,107 @@
+.page {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-5);
+}
+
+/* ── Page header ── */
+.pageHeader {
+  margin-bottom: var(--sp-5);
+}
+
+.pageTitle {
+  font: 800 28px/1.1 var(--font-display);
+  color: var(--neutral-900);
+  letter-spacing: -0.5px;
+}
+
+.pageBreadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font: 400 13px/1 var(--font-ui);
+  color: var(--neutral-500);
+  margin-bottom: var(--sp-3);
+}
+
+.pageBreadcrumb a {
+  color: var(--neutral-500);
+  text-decoration: none;
+}
+
+.pageBreadcrumb a:hover {
+  color: var(--primary-600);
+}
+
+/* ── Main layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+.sidebar {
+  position: sticky;
+  top: 80px;
+}
+
+.content {
+  min-width: 0;
+}
+
+/* ── Results bar ── */
+.resultsBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-4);
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+.resultsCount {
+  font: 600 14px/1 var(--font-ui);
+  color: var(--neutral-600);
+}
+
+.resultsCount strong {
+  color: var(--neutral-900);
+}
+
+/* Mobile filter bar shown above grid */
+.mobileFilters {
+  display: none;
+  margin-bottom: var(--sp-4);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .mobileFilters {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--sp-4) var(--sp-4);
+  }
+
+  .pageTitle {
+    font-size: 22px;
+  }
+
+  .resultsBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-3);
+  }
+}
