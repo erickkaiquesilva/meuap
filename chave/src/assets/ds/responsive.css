@@ -1,0 +1,55 @@
+/* ============================================================
+   RESPONSIVO
+   Carregado por último em main.css para garantir precedência
+   de cascata sobre os estilos-base de cada componente.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important; scroll-behavior:auto !important;
+  }
+}
+
+@media (max-width:1080px){
+  .listing-grid, .neighborhood-grid, .testi-grid{ grid-template-columns:repeat(2,1fr); }
+  .value-grid{ grid-template-columns:repeat(2,1fr); }
+  .footer-grid{ grid-template-columns:1fr 1fr; }
+  .anim-demo-grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:900px){
+  .site-hero .container{ grid-template-columns:1fr; }
+  .hero-art{ order:-1; max-width:360px; margin:0 auto; }
+  .floating-chip{ display:none; }
+  .search-fields{ grid-template-columns:1fr 1fr; }
+  .search-fields .btn-primary{ grid-column:1/-1; width:100%; }
+  .font-pairing{ grid-template-columns:1fr; }
+  .token-cols{ grid-template-columns:1fr; gap:var(--sp-5); }
+  .search-card{ margin-top:var(--sp-5); padding:var(--sp-4); }
+}
+@media (max-width:760px){
+  .nav-links, .ds-nav{ display:none; }
+  .nav-actions .btn-ghost{ display:none; }
+  .doc-hero h1{ font-size:34px; }
+  .section-head h2{ font-size:26px; }
+  .hero-copy h1{ font-size:32px; }
+  .listing-grid, .neighborhood-grid, .value-grid, .testi-grid, .anim-demo-grid{ grid-template-columns:1fr; }
+  .footer-grid{ grid-template-columns:1fr; gap:var(--sp-5); }
+  .popover-wrap .popover{ width:220px; }
+  .demo-row{ align-items:stretch; }
+  .col-demo-row > *{ grid-column:span 12 !important; }
+  .grid-demo-track{ grid-template-columns:repeat(4,1fr); }
+  .grid-demo-track > div:nth-child(n+5){ display:none; }
+  .gallery-grid{ grid-template-columns:repeat(2,1fr); }
+  .icon-grid{ grid-template-columns:repeat(3,1fr); }
+  .cta-banner{ flex-direction:column; text-align:center; padding:var(--sp-6); }
+  .cta-banner p{ max-width:none; }
+  .swatch-strip{ grid-template-columns:repeat(6,1fr); }
+  .search-card{ margin-top:var(--sp-5); padding:var(--sp-4); }
+  section{ padding:var(--sp-7) 0; }
+  .site-hero{ padding-top:var(--sp-6); }
+
+  .gallery-mosaic{ grid-template-columns:1fr; grid-template-rows:auto; aspect-ratio:4/3; }
+  .gallery-mosaic .gm-tile:not(.gm-main){ display:none; }
+  .gallery-mosaic .gm-main{ grid-row:auto; }
+}

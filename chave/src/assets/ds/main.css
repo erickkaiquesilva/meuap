@@ -1,0 +1,7 @@
+/* Design System — entry point
+   Import order matters: tokens must be first so all other files can reference them. */
+@import './tokens.css';
+@import './base.css';
+@import './components.css';
+@import './animations.css';
+@import './responsive.css';

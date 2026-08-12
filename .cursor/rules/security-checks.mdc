@@ -1,0 +1,72 @@
+---
+description: Security checklist — no hardcoded secrets, safe env handling, XSS/auth guardrails
+alwaysApply: true
+---
+
+# Security Checks — Chave Project
+
+Run this checklist at the end of every ticket before committing.
+
+## Secrets & Environment Variables
+
+**NEVER hardcode secrets, tokens, API keys, or phone numbers in source code.**
+
+```typescript
+// ❌ BAD — never do this
+const waNumber = '44999999999'
+const apiKey = 'sk-abc123...'
+
+// ✅ GOOD — always use environment variables
+const waNumber = import.meta.env.VITE_WA_NUMBER
+const apiUrl = import.meta.env.VITE_API_URL
+```
+
+### .env Rules
+
+- `.env.example` → commit with placeholder values only
+- `.env`, `.env.production`, `.env.staging`, `.env.mock` → **never commit** (must be in `.gitignore`)
+- `VITE_*` variables are exposed to the browser bundle — never put private keys or server secrets in them
+
+### Before Every Commit — Scan for Secrets
+
+```bash
+# Check for common secret patterns accidentally staged
+git diff --cached | grep -iE "(api_key|apikey|secret|password|token|Bearer\s+[A-Za-z0-9\-_]{20,}|sk-[A-Za-z0-9]{20,})"
+```
+
+If any match is found, **do not commit** — move the value to the appropriate `.env.*` file.
+
+## Authentication
+
+- JWT tokens must **never** be logged to console or sent to analytics
+- Never log `email` + `password` together anywhere
+- On HTTP 401 response → trigger automatic logout
+- `autocomplete="current-password"` required on password fields (enables password managers)
+
+## Client-Side Safety
+
+```typescript
+// ❌ BAD — XSS risk
+element.innerHTML = userInput
+
+// ✅ GOOD — safe
+element.textContent = userInput
+// or in React: just {userInput} (React escapes by default)
+```
+
+- Never use `dangerouslySetInnerHTML` unless the content is explicitly sanitized
+- External links must always have `rel="noopener noreferrer"` when `target="_blank"`
+
+```tsx
+// ✅ GOOD
+<a href={url} target="_blank" rel="noopener noreferrer">Link</a>
+```
+
+## End-of-Ticket Security Checklist
+
+- [ ] No API keys, tokens, or phone numbers hardcoded in source files
+- [ ] All secrets come from `import.meta.env.VITE_*`
+- [ ] `.env` files with real values are NOT staged (`git status` check)
+- [ ] No `console.log` with sensitive data (passwords, tokens, PII)
+- [ ] External links have `rel="noopener noreferrer"`
+- [ ] No `dangerouslySetInnerHTML` without sanitization
