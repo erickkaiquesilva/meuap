@@ -110,34 +110,31 @@ export function LoginPage() {
             />
           </Field>
 
-          <div>
+          <div className={styles.passwordFieldGroup}>
             <Field
               label="Senha"
               htmlFor="login-password"
               error={passwordError}
             >
-              <div className={styles.passwordWrapper}>
-                <Input
-                  id="login-password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => { setPassword(e.target.value); setPasswordError('') }}
-                  onBlur={() => setPasswordError(validatePassword(password))}
-                  placeholder="Mínimo 6 caracteres"
-                  autoComplete="current-password"
-                  aria-describedby={passwordError ? 'login-password-err' : undefined}
-                  disabled={isSubmitting}
-                />
-                <button
-                  type="button"
-                  className={styles.passwordToggle}
-                  aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-                  onClick={() => setShowPassword((v) => !v)}
-                  tabIndex={0}
-                >
-                  <EyeIcon open={showPassword} />
-                </button>
-              </div>
+              <Input
+                id="login-password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setPasswordError('') }}
+                onBlur={() => setPasswordError(validatePassword(password))}
+                placeholder="Mínimo 6 caracteres"
+                autoComplete="current-password"
+                aria-describedby={passwordError ? 'login-password-err' : undefined}
+                disabled={isSubmitting}
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                onClick={() => setShowPassword((v) => !v)}
+              >
+                <EyeIcon open={showPassword} />
+              </button>
             </Field>
 
             <div className={styles.forgotRow}>
