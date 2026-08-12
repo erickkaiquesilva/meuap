@@ -18,3 +18,6 @@
 - feat-T014: Testimonials — 3 static testimonials with star rating and avatar initials
 - feat-T015: CTABanner — gradient banner with WhatsApp link from VITE_WA_NUMBER env var
 - feat-T016: HomePage integration — all sections composed; zero TypeScript errors; build successful
+- feat-T008: Makefile at project root with interactive environment selector (mock / staging / production), install, test, build, lint and clean targets
+- fix-T008: Makefile moved from chave/ to project root (meuap/); internal paths updated to target chave/ subdirectory
+- fix-T016: guard fetchFeaturedProperties and fetchNeighborhoods against non-array API responses (Vite SPA fallback returns HTML on unknown /api/* routes)
