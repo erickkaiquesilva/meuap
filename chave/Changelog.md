@@ -21,3 +21,7 @@
 - feat-T008: Makefile at project root with interactive environment selector (mock / staging / production), install, test, build, lint and clean targets
 - fix-T008: Makefile moved from chave/ to project root (meuap/); internal paths updated to target chave/ subdirectory
 - fix-T016: guard fetchFeaturedProperties and fetchNeighborhoods against non-array API responses (Vite SPA fallback returns HTML on unknown /api/* routes)
+- feat-T018: AuthContext with JWT in localStorage — AuthProvider, useAuth hook, login/logout/session-restore via /api/auth/me
+- feat-T019: ProtectedRoute wired to real AuthContext — redirects unauthenticated users preserving redirect param
+- feat-T017: Login page — validated form (email + password), show/hide password toggle, server error display, redirect after login
+- feat-T017: Header updated to show user name and logout button when authenticated
