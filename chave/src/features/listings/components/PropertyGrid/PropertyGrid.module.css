@@ -1,0 +1,102 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-5);
+}
+
+/* ── Skeleton ── */
+.skeleton {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1.5px solid var(--neutral-200);
+}
+
+.skeletonPhoto {
+  height: 200px;
+  background: linear-gradient(90deg, var(--neutral-100) 25%, var(--neutral-50) 50%, var(--neutral-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.skeletonBody {
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.skeletonLine {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--neutral-100) 25%, var(--neutral-50) 50%, var(--neutral-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.skeletonLine.short {
+  width: 60%;
+}
+
+.skeletonLine.medium {
+  width: 80%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Empty state ── */
+.empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-9) var(--sp-5);
+  text-align: center;
+  gap: var(--sp-4);
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--neutral-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral-400);
+}
+
+.emptyTitle {
+  font: 700 18px/1.2 var(--font-display);
+  color: var(--neutral-800);
+}
+
+.emptySubtitle {
+  font: 400 14px/1.5 var(--font-ui);
+  color: var(--neutral-500);
+  max-width: 320px;
+}
+
+/* ── Error state ── */
+.error {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-8) var(--sp-5);
+  gap: var(--sp-4);
+  text-align: center;
+}
+
+.errorTitle {
+  font: 700 16px/1.2 var(--font-display);
+  color: var(--neutral-800);
+}
+
+.errorSubtitle {
+  font: 400 14px/1.5 var(--font-ui);
+  color: var(--neutral-500);
+}
