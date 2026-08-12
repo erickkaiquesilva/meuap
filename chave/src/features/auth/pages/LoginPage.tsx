@@ -127,7 +127,6 @@ export function LoginPage() {
                   autoComplete="current-password"
                   aria-describedby={passwordError ? 'login-password-err' : undefined}
                   disabled={isSubmitting}
-                  style={{ paddingRight: '44px' }}
                 />
                 <button
                   type="button"
@@ -141,8 +140,8 @@ export function LoginPage() {
               </div>
             </Field>
 
-            <div className={styles.forgotLink}>
-              <Link to="/recuperar-senha">Esqueceu a senha?</Link>
+            <div className={styles.forgotRow}>
+              <Link to="/recuperar-senha" className={styles.forgotLink}>Esqueceu a senha?</Link>
             </div>
           </div>
 
