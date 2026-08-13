@@ -1,15 +1,43 @@
-import { Link } from 'react-router-dom'
 import { useListings, useListingsFilters } from '../hooks/useListings'
 import { FilterPanel } from '../components/FilterPanel/FilterPanel'
-import { PropertyGrid } from '../components/PropertyGrid/PropertyGrid'
-import { SortSelect } from '../components/SortSelect/SortSelect'
+import { PropertyList } from '../components/PropertyList/PropertyList'
+import { SearchContextBar } from '../components/SearchContextBar/SearchContextBar'
 import { Pagination } from '../components/Pagination/Pagination'
 import type { SearchFilters } from '@/shared/types/property'
 import styles from './ListingsPage.module.css'
 
 function countActiveFilters(filters: SearchFilters): number {
-  return [filters.op, filters.city, filters.neighborhood, filters.type, filters.maxPrice, filters.bedrooms]
-    .filter(Boolean).length
+  return [
+    filters.op,
+    filters.city,
+    filters.neighborhood,
+    filters.type,
+    filters.maxPrice,
+    filters.minPrice,
+    filters.bedrooms,
+    filters.bathrooms,
+    filters.parkingSpots,
+    filters.minArea,
+    filters.maxArea,
+    filters.amenities,
+  ].filter(Boolean).length
+}
+
+function buildLocationLabel(filters: SearchFilters): string {
+  if (filters.neighborhood && filters.city) {
+    return `${filters.neighborhood}, ${filters.city}`
+  }
+  if (filters.city) return filters.city
+  if (filters.op === 'sale') return 'Imóveis à venda'
+  if (filters.op === 'rent') return 'Imóveis para alugar'
+  return 'Imóveis'
+}
+
+function resultNoun(filters: SearchFilters): string {
+  if (filters.type === 'house') return 'casa'
+  if (filters.type === 'commercial') return 'imóvel comercial'
+  if (filters.type === 'studio') return 'kitnet/studio'
+  return 'apartamento'
 }
 
 export function ListingsPage() {
@@ -22,23 +50,17 @@ export function ListingsPage() {
   const properties = data?.data ?? []
   const activeCount = countActiveFilters(filters)
 
-  const opLabel = filters.op === 'sale' ? 'Comprar' : filters.op === 'rent' ? 'Alugar' : 'Imóveis'
-  const cityLabel = filters.city ? ` em ${filters.city}` : ''
-  const pageTitle = `${opLabel}${cityLabel}`
-
   return (
     <div className={styles.page}>
-      {/* Breadcrumb */}
-      <div className={styles.pageHeader}>
-        <nav className={styles.pageBreadcrumb} aria-label="Caminho">
-          <Link to="/">Início</Link>
-          <span aria-hidden="true">›</span>
-          <span aria-current="page">Imóveis</span>
-        </nav>
-        <h1 className={styles.pageTitle}>{pageTitle}</h1>
-      </div>
+      <SearchContextBar
+        locationLabel={buildLocationLabel(filters)}
+        total={total}
+        isLoading={isLoading}
+        resultNoun={resultNoun(filters)}
+        sort={filters.sort ?? 'relevant'}
+        onSortChange={(val) => setFilters({ sort: val })}
+      />
 
-      {/* Mobile filter bar (renders inside FilterPanel on mobile) */}
       <div className={styles.mobileFilters}>
         <FilterPanel
           filters={filters}
@@ -49,7 +71,6 @@ export function ListingsPage() {
       </div>
 
       <div className={styles.layout}>
-        {/* Desktop sidebar */}
         <aside className={styles.sidebar}>
           <FilterPanel
             filters={filters}
@@ -59,35 +80,14 @@ export function ListingsPage() {
           />
         </aside>
 
-        {/* Main content */}
         <div className={styles.content}>
-          {/* Results bar */}
-          <div className={styles.resultsBar}>
-            <p className={styles.resultsCount}>
-              {isLoading ? (
-                'Buscando imóveis…'
-              ) : (
-                <>
-                  <strong>{total}</strong>{' '}
-                  {total === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}
-                </>
-              )}
-            </p>
-            <SortSelect
-              value={filters.sort ?? 'relevant'}
-              onChange={(val) => setFilters({ sort: val })}
-            />
-          </div>
-
-          {/* Grid */}
-          <PropertyGrid
+          <PropertyList
             properties={properties}
             isLoading={isLoading}
             isError={isError}
             onRetry={() => refetch()}
           />
 
-          {/* Pagination */}
           <Pagination
             page={page}
             totalPages={totalPages}

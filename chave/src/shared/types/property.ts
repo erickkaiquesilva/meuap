@@ -36,9 +36,19 @@ export interface SearchFilters {
   city?: string
   neighborhood?: string
   maxPrice?: string
-  bedrooms?: string
-  type?: string
   minPrice?: string
+  bedrooms?: string
+  bathrooms?: string
+  parkingSpots?: string
+  minArea?: string
+  maxArea?: string
+  /** Comma-separated amenity labels that must all be present */
+  amenities?: string
+  /**
+   * Property type filter.
+   * Special value `studio` = apartment with area ≤ 40 m² (kitnet/studio).
+   */
+  type?: string
   sort?: string
   page?: string
 }

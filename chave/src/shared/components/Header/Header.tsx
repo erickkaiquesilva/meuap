@@ -1,21 +1,41 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/features/auth/context/AuthContext'
 import styles from './Header.module.css'
+
+const CITIES = ['Maringá', 'Sarandi']
 
 export function Header() {
   const { isAuthenticated, user, logout } = useAuth()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const currentCity = searchParams.get('city') ?? ''
 
   async function handleLogout() {
     await logout()
     navigate('/', { replace: true })
   }
+
+  function handleCityChange(city: string) {
+    if (!city) {
+      navigate('/imoveis')
+      return
+    }
+    const params = new URLSearchParams(searchParams)
+    params.set('city', city)
+    params.delete('neighborhood')
+    params.set('page', '1')
+    navigate(`/imoveis?${params.toString()}`)
+  }
+
+  function handleAnnounceClick() {
+    window.alert('Em breve você poderá anunciar seu imóvel na Chave.')
+  }
+
   const [menuOpen, setMenuOpen] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
 
-  // Close on Escape
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape' && menuOpen) {
@@ -27,7 +47,6 @@ export function Header() {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [menuOpen])
 
-  // Prevent body scroll when drawer open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -45,7 +64,6 @@ export function Header() {
           chave<span className={styles.dot}>.</span>
         </Link>
 
-        {/* Desktop nav */}
         <nav aria-label="Menu principal" className={styles.desktopNav}>
           <NavLink to="/imoveis?op=rent" className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}>
             Alugar
@@ -53,6 +71,25 @@ export function Header() {
           <NavLink to="/imoveis?op=sale" className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}>
             Comprar
           </NavLink>
+          <button type="button" className={styles.navButton} onClick={handleAnnounceClick}>
+            Anunciar
+          </button>
+
+          <label className={styles.citySelectWrap}>
+            <span className={styles.srOnly}>Cidade</span>
+            <select
+              className={styles.citySelect}
+              value={currentCity}
+              onChange={(e) => handleCityChange(e.target.value)}
+              aria-label="Selecionar cidade"
+            >
+              <option value="">Todas as cidades</option>
+              {CITIES.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </label>
+
           {isAuthenticated ? (
             <div className={styles.userMenu}>
               <span className={styles.userName}>{user?.name}</span>
@@ -72,7 +109,6 @@ export function Header() {
           )}
         </nav>
 
-        {/* Mobile hamburger */}
         <button
           ref={triggerRef}
           className={styles.hamburger}
@@ -87,7 +123,6 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile overlay */}
       {menuOpen && (
         <div
           className={styles.overlay}
@@ -96,7 +131,6 @@ export function Header() {
         />
       )}
 
-      {/* Mobile drawer */}
       <div
         id="mobile-menu"
         ref={drawerRef}
@@ -110,6 +144,28 @@ export function Header() {
           <NavLink to="/imoveis?op=sale" className={styles.drawerLink} onClick={closeMenu}>
             Comprar
           </NavLink>
+          <button
+            type="button"
+            className={styles.drawerLink}
+            onClick={() => { handleAnnounceClick(); closeMenu() }}
+            style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}
+          >
+            Anunciar
+          </button>
+          <label className={styles.drawerCity}>
+            <span>Cidade</span>
+            <select
+              className={styles.citySelect}
+              value={currentCity}
+              onChange={(e) => { handleCityChange(e.target.value); closeMenu() }}
+              aria-label="Selecionar cidade"
+            >
+              <option value="">Todas as cidades</option>
+              {CITIES.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </label>
           {isAuthenticated ? (
             <button
               type="button"

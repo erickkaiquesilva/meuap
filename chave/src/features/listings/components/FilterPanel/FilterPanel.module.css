@@ -107,7 +107,7 @@
   box-shadow: var(--shadow-focus);
 }
 
-/* ── Price range ── */
+/* ── Price / area range ── */
 .priceRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -115,8 +115,55 @@
   align-items: center;
 }
 
-.priceSep {
-  display: none;
+.input {
+  width: 100%;
+  border: 1.5px solid var(--neutral-300);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  font: 500 14px/1 var(--font-ui);
+  color: var(--neutral-800);
+  background: #fff;
+  outline: none;
+  transition: border-color var(--dur-fast);
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: var(--primary-400);
+  box-shadow: var(--shadow-focus);
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* ── Checkboxes ── */
+.checkList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.checkItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font: 500 13px/1.2 var(--font-ui);
+  color: var(--neutral-700);
+  cursor: pointer;
+}
+
+.checkItem input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary-500);
+  cursor: pointer;
 }
 
 /* ── Mobile drawer ── */

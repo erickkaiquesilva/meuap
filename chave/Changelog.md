@@ -45,3 +45,9 @@
 - feat: LoginPage — fundo animado com cards flutuantes de imóveis (7 cards, animação CSS keyframe, responsivo: cards ocultos em mobile); tamanho uniforme 360×260px
 - feat: PropertyHero — redesenho completo da galeria de detalhes do imóvel: hero full-viewport (100vw) colado ao header; painel de info à esquerda (460px) com título, preço e CTAs WhatsApp/Agendar visita; strip de fotos à direita com largura/altura uniformes (flex: 1), gap zero, separador 2px branco, setas de navegação e pills (Fotos/Vídeo/Mapa); lightbox com navegação por teclado (←/→/Esc); breadcrumb movido para abaixo do hero; PropertyInfo sem h1 duplicado
 - fix: PropertyHero — padding: 0 sobrescreve regra global section{padding:sp-8} que causava gap entre header e hero; page sem padding-top para hero colado ao topo
+- feat: ContactCard — composição de custos (Aluguel, IPTU, Seguro Incêndio, Taxa de serviço) + total; botões WhatsApp e Imprimir/PDF mantidos
+- feat-T039: SearchContextBar — localização, contador de resultados, ordenação e botão Criar alerta (stub)
+- feat-T040: FilterPanel avançado — faixa de preço min/máx, tipo (incl. kitnet/studio), quartos/banheiros/vagas, área, comodidades e condomínio; MSW honra novos query params
+- feat-T041: ListingPropertyCard — layout lista com carrossel de fotos, badge, favorito, preço + total com taxas, specs e endereço
+- feat-T042: PropertyList vertical + ListingsPage reorganizada (sidebar sticky + lista + paginação)
+- feat-T043: Header — seletor de cidade e link Anunciar (stub); Changelog STORY-07 Fase 1

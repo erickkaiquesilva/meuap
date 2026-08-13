@@ -17,27 +17,42 @@ const NEIGHBORHOODS: Record<string, string[]> = {
 const TYPE_OPTIONS = [
   { value: 'apartment', label: 'Apartamento' },
   { value: 'house', label: 'Casa' },
+  { value: 'studio', label: 'Kitnet/Studio' },
   { value: 'commercial', label: 'Comercial' },
 ]
 
-const MAX_PRICE_OPTIONS = [
-  { value: '', label: 'Qualquer' },
-  { value: '800', label: 'R$ 800' },
-  { value: '1200', label: 'R$ 1.200' },
-  { value: '1800', label: 'R$ 1.800' },
-  { value: '2500', label: 'R$ 2.500' },
-  { value: '400000', label: 'R$ 400k' },
-  { value: '600000', label: 'R$ 600k' },
-  { value: '900000', label: 'R$ 900k' },
+const CHIP_OPTIONS = ['1', '2', '3', '4']
+
+const AMENITY_OPTIONS = [
+  { value: 'Mobiliado', label: 'Mobiliado' },
+  { value: 'Aceita pet', label: 'Aceita pet' },
+  { value: 'Perto de metrô', label: 'Perto de metrô' },
 ]
 
-const BEDROOM_OPTIONS = ['1', '2', '3', '4']
+const CONDO_OPTIONS = [
+  { value: 'Piscina', label: 'Piscina' },
+  { value: 'Academia', label: 'Academia' },
+  { value: 'Playground', label: 'Playground' },
+  { value: 'Portaria 24h', label: 'Portaria 24h' },
+]
 
 interface FilterPanelProps {
   filters: SearchFilters
   onFilterChange: (next: Partial<SearchFilters>) => void
   onReset: () => void
   activeCount: number
+}
+
+function parseAmenities(raw?: string): string[] {
+  return raw ? raw.split(',').filter(Boolean) : []
+}
+
+function toggleAmenity(current: string | undefined, value: string): string | undefined {
+  const list = parseAmenities(current)
+  const next = list.includes(value)
+    ? list.filter((a) => a !== value)
+    : [...list, value]
+  return next.length > 0 ? next.join(',') : undefined
 }
 
 function FilterForm({
@@ -50,17 +65,40 @@ function FilterForm({
   onApply?: () => void
 }) {
   const [city, setCity] = useState(filters.city ?? '')
+  const [minPrice, setMinPrice] = useState(filters.minPrice ?? '')
+  const [maxPrice, setMaxPrice] = useState(filters.maxPrice ?? '')
+  const [minArea, setMinArea] = useState(filters.minArea ?? '')
+  const [maxArea, setMaxArea] = useState(filters.maxArea ?? '')
 
   useEffect(() => {
     setCity(filters.city ?? '')
-  }, [filters.city])
+    setMinPrice(filters.minPrice ?? '')
+    setMaxPrice(filters.maxPrice ?? '')
+    setMinArea(filters.minArea ?? '')
+    setMaxArea(filters.maxArea ?? '')
+  }, [filters.city, filters.minPrice, filters.maxPrice, filters.minArea, filters.maxArea])
 
   function handleCityChange(val: string) {
     setCity(val)
     onFilterChange({ city: val || undefined, neighborhood: undefined })
   }
 
+  function commitPrice() {
+    onFilterChange({
+      minPrice: minPrice || undefined,
+      maxPrice: maxPrice || undefined,
+    })
+  }
+
+  function commitArea() {
+    onFilterChange({
+      minArea: minArea || undefined,
+      maxArea: maxArea || undefined,
+    })
+  }
+
   const neighborhoods = city ? NEIGHBORHOODS[city] ?? [] : []
+  const selectedAmenities = parseAmenities(filters.amenities)
 
   return (
     <>
@@ -115,51 +153,138 @@ function FilterForm({
         </div>
       )}
 
+      {/* Price range */}
+      <div className={styles.section}>
+        <span className={styles.sectionLabel}>Faixa de preço (R$)</span>
+        <div className={styles.priceRow}>
+          <input
+            className={styles.input}
+            type="number"
+            inputMode="numeric"
+            min={0}
+            placeholder="Mín"
+            aria-label="Preço mínimo"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            onBlur={commitPrice}
+            onKeyDown={(e) => { if (e.key === 'Enter') commitPrice() }}
+          />
+          <input
+            className={styles.input}
+            type="number"
+            inputMode="numeric"
+            min={0}
+            placeholder="Máx"
+            aria-label="Preço máximo"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            onBlur={commitPrice}
+            onKeyDown={(e) => { if (e.key === 'Enter') commitPrice() }}
+          />
+        </div>
+      </div>
+
       {/* Type */}
       <div className={styles.section}>
-        <span className={styles.sectionLabel}>Tipo</span>
-        <div className={styles.chips}>
+        <span className={styles.sectionLabel}>Tipo de imóvel</span>
+        <div className={styles.checkList} role="group" aria-label="Tipo de imóvel">
           {TYPE_OPTIONS.map((t) => (
-            <button
-              key={t.value}
-              type="button"
-              className={`chip ${filters.type === t.value ? 'active' : ''}`}
-              onClick={() => onFilterChange({ type: filters.type === t.value ? undefined : t.value })}
-            >
+            <label key={t.value} className={styles.checkItem}>
+              <input
+                type="checkbox"
+                checked={filters.type === t.value}
+                onChange={() => onFilterChange({ type: filters.type === t.value ? undefined : t.value })}
+              />
               {t.label}
-            </button>
+            </label>
           ))}
         </div>
       </div>
 
-      {/* Max price */}
+      {/* Bedrooms / Bathrooms / Parking */}
+      {([
+        { key: 'bedrooms' as const, label: 'Quartos' },
+        { key: 'bathrooms' as const, label: 'Banheiros' },
+        { key: 'parkingSpots' as const, label: 'Vagas' },
+      ]).map(({ key, label }) => (
+        <div key={key} className={styles.section}>
+          <span className={styles.sectionLabel}>{label}</span>
+          <div className={styles.chips}>
+            {CHIP_OPTIONS.map((n) => (
+              <button
+                key={n}
+                type="button"
+                className={`chip ${filters[key] === n ? 'active' : ''}`}
+                onClick={() => onFilterChange({ [key]: filters[key] === n ? undefined : n })}
+              >
+                {n}+
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* Area */}
       <div className={styles.section}>
-        <span className={styles.sectionLabel}>Valor máximo</span>
-        <select
-          className={styles.select}
-          value={filters.maxPrice ?? ''}
-          onChange={(e) => onFilterChange({ maxPrice: e.target.value || undefined })}
-          aria-label="Valor máximo"
-        >
-          {MAX_PRICE_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value}>{o.label}</option>
-          ))}
-        </select>
+        <span className={styles.sectionLabel}>Área (m²)</span>
+        <div className={styles.priceRow}>
+          <input
+            className={styles.input}
+            type="number"
+            inputMode="numeric"
+            min={0}
+            placeholder="Mín"
+            aria-label="Área mínima"
+            value={minArea}
+            onChange={(e) => setMinArea(e.target.value)}
+            onBlur={commitArea}
+            onKeyDown={(e) => { if (e.key === 'Enter') commitArea() }}
+          />
+          <input
+            className={styles.input}
+            type="number"
+            inputMode="numeric"
+            min={0}
+            placeholder="Máx"
+            aria-label="Área máxima"
+            value={maxArea}
+            onChange={(e) => setMaxArea(e.target.value)}
+            onBlur={commitArea}
+            onKeyDown={(e) => { if (e.key === 'Enter') commitArea() }}
+          />
+        </div>
       </div>
 
-      {/* Bedrooms */}
+      {/* Amenities */}
       <div className={styles.section}>
-        <span className={styles.sectionLabel}>Quartos</span>
-        <div className={styles.chips}>
-          {BEDROOM_OPTIONS.map((b) => (
-            <button
-              key={b}
-              type="button"
-              className={`chip ${filters.bedrooms === b ? 'active' : ''}`}
-              onClick={() => onFilterChange({ bedrooms: filters.bedrooms === b ? undefined : b })}
-            >
-              {b}+
-            </button>
+        <span className={styles.sectionLabel}>Comodidades</span>
+        <div className={styles.checkList} role="group" aria-label="Comodidades">
+          {AMENITY_OPTIONS.map((a) => (
+            <label key={a.value} className={styles.checkItem}>
+              <input
+                type="checkbox"
+                checked={selectedAmenities.includes(a.value)}
+                onChange={() => onFilterChange({ amenities: toggleAmenity(filters.amenities, a.value) })}
+              />
+              {a.label}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Condo features */}
+      <div className={styles.section}>
+        <span className={styles.sectionLabel}>Condomínio</span>
+        <div className={styles.checkList} role="group" aria-label="Características do condomínio">
+          {CONDO_OPTIONS.map((a) => (
+            <label key={a.value} className={styles.checkItem}>
+              <input
+                type="checkbox"
+                checked={selectedAmenities.includes(a.value)}
+                onChange={() => onFilterChange({ amenities: toggleAmenity(filters.amenities, a.value) })}
+              />
+              {a.label}
+            </label>
           ))}
         </div>
       </div>
@@ -167,7 +292,7 @@ function FilterForm({
       {onApply && (
         <div className={styles.drawerApply}>
           <button type="button" className="btn btn-primary" style={{ width: '100%' }} onClick={onApply}>
-            Ver resultados
+            Aplicar filtros
           </button>
         </div>
       )}
@@ -180,23 +305,18 @@ export function FilterPanel({ filters, onFilterChange, onReset, activeCount }: F
 
   return (
     <>
-      {/* Desktop sidebar panel */}
       <aside className={styles.panel} aria-label="Filtros">
         <div className={styles.panelHeader}>
           <span className={styles.panelTitle}>Filtros</span>
           {activeCount > 0 && (
             <button type="button" className={styles.resetBtn} onClick={onReset}>
-              Limpar {activeCount > 0 ? `(${activeCount})` : ''}
+              Limpar ({activeCount})
             </button>
           )}
         </div>
-        <FilterForm
-          filters={filters}
-          onFilterChange={onFilterChange}
-        />
+        <FilterForm filters={filters} onFilterChange={onFilterChange} />
       </aside>
 
-      {/* Mobile filter bar */}
       <div className={styles.mobileBar} role="toolbar" aria-label="Filtros rápidos">
         <button
           type="button"
@@ -233,7 +353,6 @@ export function FilterPanel({ filters, onFilterChange, onReset, activeCount }: F
         )}
       </div>
 
-      {/* Mobile drawer */}
       {drawerOpen && (
         <>
           <div className={styles.drawerOverlay} aria-hidden="true" onClick={() => setDrawerOpen(false)} />
