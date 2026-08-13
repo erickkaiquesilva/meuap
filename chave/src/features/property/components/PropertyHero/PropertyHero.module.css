@@ -1,19 +1,125 @@
-/* ── Full-width photo strip ─────────────────────────────────── */
-.strip {
+/* ── Full-bleed hero wrapper ─────────────────────────────────── */
+/*  Breaks out of the page's horizontal padding (--sp-5 = 24px)   */
+.hero {
+  display: flex;
+  align-items: stretch;
+  height: 420px;
+  margin-left: calc(-1 * var(--sp-5));
+  margin-right: calc(-1 * var(--sp-5));
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: var(--sp-6);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+}
+
+/* ── Left: info card ─────────────────────────────────────────── */
+.infoCard {
+  flex: 0 0 280px;
+  background: var(--neutral-0);
+  padding: var(--sp-5) var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  overflow: hidden;
+  border-right: 1px solid var(--neutral-100);
+}
+
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+
+.title {
+  font: 700 18px/1.3 var(--font-display);
+  color: var(--neutral-900);
+  margin: 0;
+  /* Clamp to 3 lines so it doesn't overflow */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.address {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-1);
+  font: 400 12px/1.4 var(--font-ui);
+  color: var(--neutral-500);
+  margin: 0;
+}
+
+/* Quick specs row */
+.specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2) var(--sp-2);
+}
+
+.spec {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 12px/1 var(--font-ui);
+  color: var(--neutral-600);
+}
+
+/* Price block */
+.priceBlock {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto; /* push price + CTAs to bottom */
+}
+
+.priceLabel {
+  font: 500 11px/1 var(--font-ui);
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.price {
+  font: 700 22px/1 var(--font-display);
+  color: var(--primary-600);
+}
+
+.priceSuffix {
+  font: 400 12px/1 var(--font-ui);
+  color: var(--neutral-400);
+}
+
+/* CTA buttons */
+.ctas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.ctaBtn {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+/* ── Right: photo strip ──────────────────────────────────────── */
+.photosArea {
+  flex: 1;
   position: relative;
   display: flex;
-  gap: 0;
   overflow: hidden;
-  height: 340px;
-  border-radius: var(--radius-xl);
-  margin-bottom: var(--sp-6);
   background: var(--neutral-200);
 }
 
 /* ── Photo cells ─────────────────────────────────────────────── */
 .photoCell {
-  position: relative;
   flex-shrink: 0;
+  position: relative;
   border: none;
   padding: 0;
   cursor: pointer;
@@ -21,7 +127,7 @@
   background: var(--neutral-100);
 }
 
-/* 2px white hairline between photos — no gap, just a visual separator */
+/* 2px white hairline separator — no gap, just a visual seam */
 .photoCell + .photoCell {
   border-left: 2px solid #fff;
 }
@@ -35,7 +141,7 @@
 }
 
 .photoCell:hover img {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .photoCell:focus-visible {
@@ -43,49 +149,63 @@
   outline-offset: -2px;
 }
 
-/* Main photo: wider */
+/* Main photo: larger */
 .photoCellMain {
-  flex: 0 0 44%;
+  flex: 0 0 48%;
 }
 
-/* Side photos: share the rest equally */
+/* Side photos: share remaining space equally */
 .photoCellSide {
   flex: 1;
 }
 
-/* ── Overlay: share + heart (top-left) ───────────────────────── */
+/* ── Glass button (shared: action icons + nav arrows) ────────── */
+.glassBtn {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--neutral-700);
+  transition: background var(--dur-fast);
+  flex-shrink: 0;
+}
+
+.glassBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 1);
+}
+
+.glassBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.glassBtn:focus-visible {
+  outline: 2px solid var(--primary-400);
+  outline-offset: 2px;
+}
+
+/* ── Action icons overlay (top-left of photo area) ───────────── */
 .actionIcons {
   position: absolute;
   top: var(--sp-3);
   left: var(--sp-3);
-  z-index: 2;
+  z-index: 3;
   display: flex;
   gap: var(--sp-2);
 }
 
-.iconBtn {
-  background: rgba(255, 255, 255, 0.88) !important;
-  backdrop-filter: blur(4px);
-  border-color: transparent !important;
-  color: var(--neutral-700) !important;
-  padding: var(--sp-2) !important;
-  min-width: 34px;
-  min-height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.iconBtn:hover {
-  background: rgba(255, 255, 255, 1) !important;
-}
-
-/* ── Overlay: pill buttons (bottom-left of first photo) ──────── */
+/* ── Pills overlay (bottom-left of photo area) ───────────────── */
 .pills {
   position: absolute;
   bottom: var(--sp-3);
   left: var(--sp-3);
-  z-index: 2;
+  z-index: 3;
   display: flex;
   gap: var(--sp-2);
 }
@@ -93,25 +213,25 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-1);
+  gap: 5px;
   background: rgba(0, 0, 0, 0.52);
   backdrop-filter: blur(6px);
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-full);
   padding: 6px 12px;
-  font: 600 12px/1 var(--font-ui);
+  font: 600 11px/1 var(--font-ui);
   cursor: pointer;
-  transition: background var(--dur-fast);
   white-space: nowrap;
+  transition: background var(--dur-fast);
 }
 
 .pill:hover:not(:disabled) {
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .pill:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: default;
 }
 
@@ -120,36 +240,14 @@
   outline-offset: 2px;
 }
 
-/* ── Navigation arrows (bottom-right) ───────────────────────── */
+/* ── Navigation arrows overlay (bottom-right) ────────────────── */
 .navArrows {
   position: absolute;
   bottom: var(--sp-3);
   right: var(--sp-3);
-  z-index: 2;
+  z-index: 3;
   display: flex;
   gap: var(--sp-2);
-}
-
-.navBtn {
-  background: rgba(255, 255, 255, 0.88) !important;
-  backdrop-filter: blur(4px);
-  border-color: transparent !important;
-  color: var(--neutral-700) !important;
-  padding: var(--sp-2) !important;
-  min-width: 34px;
-  min-height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.navBtn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 1) !important;
-}
-
-.navBtn:disabled {
-  opacity: 0.4;
-  cursor: default;
 }
 
 /* ── Lightbox ────────────────────────────────────────────────── */
@@ -167,8 +265,6 @@
   position: relative;
   display: flex;
   align-items: center;
-  max-width: 90vw;
-  max-height: 90vh;
 }
 
 .lightboxImg {
@@ -197,11 +293,17 @@
   z-index: 1;
 }
 
-.lbArrow:hover { background: rgba(255, 255, 255, 0.28); }
-.lbArrow:focus-visible { outline: 2px solid var(--primary-400); outline-offset: 2px; }
+.lbArrow:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
 
-.lbPrev { left: -58px; }
-.lbNext { right: -58px; }
+.lbArrow:focus-visible {
+  outline: 2px solid var(--primary-400);
+  outline-offset: 2px;
+}
+
+.lbPrev { left: -56px; }
+.lbNext { right: -56px; }
 
 .lbClose {
   position: fixed;
@@ -220,8 +322,9 @@
   transition: background var(--dur-fast);
 }
 
-.lbClose:hover { background: rgba(255, 255, 255, 0.28); }
-.lbClose:focus-visible { outline: 2px solid var(--primary-400); outline-offset: 2px; }
+.lbClose:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
 
 .lbCounter {
   position: fixed;
@@ -233,28 +336,82 @@
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .strip {
-    height: 240px;
+@media (max-width: 960px) {
+  .hero {
+    flex-direction: column;
+    height: auto;
     border-radius: var(--radius-lg);
   }
 
-  /* On tablet show only 3 photos */
-  .photoCellSide:nth-child(4) {
-    display: none;
+  .infoCard {
+    flex: none;
+    border-right: none;
+    border-bottom: 1px solid var(--neutral-100);
+    padding: var(--sp-4);
+    gap: var(--sp-2);
+  }
+
+  .title {
+    font-size: 16px;
+    -webkit-line-clamp: 2;
+  }
+
+  .specs {
+    grid-template-columns: repeat(4, auto);
+    gap: var(--sp-2);
+  }
+
+  .priceBlock {
+    margin-top: 0;
+  }
+
+  .ctas {
+    flex-direction: row;
+    margin-top: var(--sp-1);
+  }
+
+  .ctaBtn {
+    width: auto;
+    flex: 1;
+  }
+
+  .photosArea {
+    height: 280px;
   }
 }
 
 @media (max-width: 480px) {
-  .strip {
-    height: 200px;
+  .hero {
+    /* Match mobile page padding (--sp-4 = 16px) */
+    margin-left: calc(-1 * var(--sp-4));
+    margin-right: calc(-1 * var(--sp-4));
     border-radius: var(--radius-md);
     margin-bottom: var(--sp-4);
   }
 
+  .infoCard {
+    padding: var(--sp-4) var(--sp-4);
+  }
+
+  .specs {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ctas {
+    flex-direction: column;
+  }
+
+  .ctaBtn {
+    width: 100%;
+  }
+
+  .photosArea {
+    height: 220px;
+  }
+
   /* On mobile show only 2 photos */
-  .photoCellSide:nth-child(3),
-  .photoCellSide:nth-child(4) {
+  .photoCellSide:nth-child(4),
+  .photoCellSide:nth-child(5) {
     display: none;
   }
 

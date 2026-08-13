@@ -1,18 +1,5 @@
 import type { Property } from '@/shared/types/property'
-import { Badge } from '@/shared/components/Badge/Badge'
-import { formatCurrency } from '@/shared/utils/formatCurrency'
 import styles from './PropertyInfo.module.css'
-
-const TYPE_LABEL: Record<string, string> = {
-  apartment: 'Apartamento',
-  house: 'Casa',
-  commercial: 'Comercial',
-}
-
-const OP_LABEL: Record<string, string> = {
-  rent: 'Aluguel',
-  sale: 'Venda',
-}
 
 interface PropertyInfoProps {
   property: Property
@@ -21,32 +8,6 @@ interface PropertyInfoProps {
 export function PropertyInfo({ property }: PropertyInfoProps) {
   return (
     <div className={styles.info}>
-      {/* Header */}
-      <div className={styles.header}>
-        <div className={styles.badgeRow}>
-          <span className="badge badge-outline">{TYPE_LABEL[property.type] ?? property.type}</span>
-          <span className="badge badge-primary">{OP_LABEL[property.operation] ?? property.operation}</span>
-          {property.badge && <Badge variant="secondary">{property.badge}</Badge>}
-        </div>
-
-        <h1 className={styles.title}>{property.title}</h1>
-
-        <p className={styles.address}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
-          {property.address} — {property.neighborhood}, {property.city}
-        </p>
-
-        <div>
-          <span className={styles.price}>{formatCurrency(property.price)}</span>
-          {property.operation === 'rent' && (
-            <span className={styles.priceSuffix}>/mês</span>
-          )}
-        </div>
-      </div>
-
       {/* Specs */}
       <div className={styles.specsGrid}>
         <div className={styles.specItem}>
