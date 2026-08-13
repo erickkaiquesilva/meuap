@@ -36,3 +36,4 @@
 - feat-T030: ContactCard — price summary, agent avatar, WhatsApp CTA with pre-filled message, print/PDF button; sticky on desktop
 - feat-T031: SimilarProperties — grid of up to 3 PropertyCards + link to city listings
 - feat-T032: PropertyPage — breadcrumb, gallery + info/contact layout (2-col desktop, 1-col mobile), skeleton and not-found states
+- fix-T033: guard buildWhatsAppUrl against undefined VITE_WA_NUMBER (prevents CTABanner/ContactCard crash and blank screen); validate apiGetMe response shape; Makefile auto-creates .env.development on mock start
