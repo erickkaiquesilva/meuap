@@ -146,6 +146,12 @@
   color: var(--primary-500);
 }
 
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
 .userMenu {
   display: flex;
   align-items: center;

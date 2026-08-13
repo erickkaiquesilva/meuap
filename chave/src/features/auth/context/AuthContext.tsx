@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import type { AuthContextValue, User } from '../types/auth'
-import { apiGetMe, apiLogin, apiLogout } from '../services/authApi'
+import { apiGetMe, apiLogin, apiLogout, apiRegister } from '../services/authApi'
 
 const TOKEN_KEY = 'chave:token'
 
@@ -35,6 +35,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(me)
   }, [])
 
+  const register = useCallback(async (name: string, email: string, password: string) => {
+    const { token, user: me } = await apiRegister(name, email, password)
+    localStorage.setItem(TOKEN_KEY, token)
+    setUser(me)
+  }, [])
+
   const logout = useCallback(async () => {
     await apiLogout().catch(() => {})
     localStorage.removeItem(TOKEN_KEY)
@@ -43,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, isLoading, login, logout }}
+      value={{ user, isAuthenticated: !!user, isLoading, login, register, logout }}
     >
       {children}
     </AuthContext.Provider>

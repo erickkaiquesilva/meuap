@@ -61,9 +61,14 @@ export function Header() {
               </button>
             </div>
           ) : (
-            <Link to="/entrar" className="btn btn-primary btn-sm">
-              Entrar
-            </Link>
+            <div className={styles.authButtons}>
+              <Link to="/cadastro" className="btn btn-outline btn-sm">
+                Cadastre-se
+              </Link>
+              <Link to="/entrar" className="btn btn-primary btn-sm">
+                Entrar
+              </Link>
+            </div>
           )}
         </nav>
 
@@ -115,9 +120,14 @@ export function Header() {
               Sair ({user?.name})
             </button>
           ) : (
-            <NavLink to="/entrar" className={styles.drawerLink} onClick={closeMenu}>
-              Entrar
-            </NavLink>
+            <>
+              <NavLink to="/entrar" className={styles.drawerLink} onClick={closeMenu}>
+                Entrar
+              </NavLink>
+              <NavLink to="/cadastro" className={styles.drawerLink} onClick={closeMenu}>
+                Cadastre-se
+              </NavLink>
+            </>
           )}
         </nav>
       </div>
