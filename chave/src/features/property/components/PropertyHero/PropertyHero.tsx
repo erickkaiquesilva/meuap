@@ -67,25 +67,13 @@ function WhatsAppIcon() {
   )
 }
 
-/* ── Type / operation labels ─────────────────────────────────── */
-const TYPE_LABEL: Record<string, string> = {
-  apartment: 'Apartamento',
-  house: 'Casa',
-  commercial: 'Comercial',
-}
-
-const OP_LABEL: Record<string, string> = {
-  rent: 'Aluguel',
-  sale: 'Venda',
-}
-
 /* ── Component ───────────────────────────────────────────────── */
 interface PropertyHeroProps {
   property: Property
 }
 
 export function PropertyHero({ property }: PropertyHeroProps) {
-  const { photos, title, price, operation, badge, type, bedrooms, bathrooms, area, parkingSpots, address, neighborhood, city } = property
+  const { photos, title, price, operation, address, neighborhood } = property
   const [current, setCurrent] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIdx, setLightboxIdx] = useState(0)
@@ -133,66 +121,18 @@ export function PropertyHero({ property }: PropertyHeroProps) {
 
         {/* ── Left: info card ── */}
         <div className={styles.infoCard}>
-          {/* Badges */}
-          <div className={styles.badgeRow}>
-            <span className="badge badge-outline">{TYPE_LABEL[type] ?? type}</span>
-            <span className="badge badge-primary">{OP_LABEL[operation] ?? operation}</span>
-            {badge && <span className="badge badge-secondary">{badge}</span>}
-          </div>
-
           {/* Title — semantic h1 for this page */}
           <h1 className={styles.title}>{title}</h1>
 
-          {/* Address */}
-          <p className={styles.address}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            {address} — {neighborhood}, {city}
-          </p>
-
-          {/* Quick specs */}
-          <div className={styles.specs}>
-            <span className={styles.spec}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <path d="M3 22v-7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v7" />
-                <path d="M3 15H1v-4a2 2 0 0 1 2-2h2" />
-                <path d="M21 15h2v-4a2 2 0 0 0-2-2h-2" />
-                <path d="M8 11V7a4 4 0 1 1 8 0v4" />
-              </svg>
-              {bedrooms} {bedrooms === 1 ? 'quarto' : 'quartos'}
-            </span>
-            <span className={styles.spec}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
-                <line x1="10" y1="5" x2="8" y2="7" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-              </svg>
-              {bathrooms} {bathrooms === 1 ? 'banheiro' : 'banheiros'}
-            </span>
-            <span className={styles.spec}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <rect x="1" y="3" width="15" height="13" rx="2" />
-                <path d="M16 8h4l3 3v5h-7V8z" />
-                <circle cx="5.5" cy="18.5" r="2.5" />
-                <circle cx="18.5" cy="18.5" r="2.5" />
-              </svg>
-              {parkingSpots} {parkingSpots === 1 ? 'vaga' : 'vagas'}
-            </span>
-            <span className={styles.spec}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" />
-              </svg>
-              {area} m²
-            </span>
-          </div>
-
           {/* Price */}
           <div className={styles.priceBlock}>
-            <span className={styles.priceLabel}>{OP_LABEL[operation] ?? operation}</span>
-            <span className={styles.price}>{formatCurrency(price)}</span>
-            {operation === 'rent' && <span className={styles.priceSuffix}>/mês</span>}
+            <span className={styles.priceLabel}>
+              {operation === 'rent' ? 'Valor aluguel' : 'Valor venda'}
+            </span>
+            <span className={styles.price}>
+              {formatCurrency(price)}
+              {operation === 'rent' && <span className={styles.priceSuffix}>/mês</span>}
+            </span>
           </div>
 
           {/* CTAs */}
@@ -204,7 +144,7 @@ export function PropertyHero({ property }: PropertyHeroProps) {
               className={`btn btn-primary ${styles.ctaBtn}`}
             >
               <WhatsAppIcon />
-              Falar no WhatsApp
+              Chamar no WhatsApp
             </a>
             <button type="button" className={`btn btn-outline ${styles.ctaBtn}`}>
               Agendar visita
