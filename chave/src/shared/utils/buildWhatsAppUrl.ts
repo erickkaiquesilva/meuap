@@ -1,6 +1,7 @@
 import { waNumber } from '@/core/api/config'
 
 export function buildWhatsAppUrl(message: string): string {
-  const number = waNumber.replace(/\D/g, '')
+  const number = (waNumber ?? '').replace(/\D/g, '')
+  if (!number) return '#'
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`
 }

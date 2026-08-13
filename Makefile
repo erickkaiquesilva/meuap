@@ -87,6 +87,9 @@ start: install
 				printf "$(YELLOW)⚠ .env.mock não encontrado. Criando a partir de .env.example...$(RESET)\n"; \
 				cp $(APP_DIR)/.env.example $(APP_DIR)/.env.mock 2>/dev/null || true; \
 			fi; \
+			if [ ! -f "$(APP_DIR)/.env.development" ]; then \
+				cp $(APP_DIR)/.env.example $(APP_DIR)/.env.development 2>/dev/null || true; \
+			fi; \
 			printf "$(GREEN)→ Subindo em ambiente $(BOLD)MOCK$(RESET)$(GREEN) (MSW ativo, sem backend)$(RESET)\n\n"; \
 			cd $(APP_DIR) && npm run dev:mock \
 			;; \
