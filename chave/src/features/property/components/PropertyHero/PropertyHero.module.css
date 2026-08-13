@@ -1,0 +1,386 @@
+/* ── Full-viewport-width hero ────────────────────────────────── */
+/*  Breaks out of any container max-width / padding entirely.      */
+/*  No margin-top needed — PropertyPage.module.css has padding: 0  */
+/*  on top so the hero is naturally flush with the header.         */
+.hero {
+  display: flex;
+  align-items: stretch;
+  height: 560px;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  /* Reset global section { padding: var(--sp-8) 0 } — that was the gap source */
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: var(--sp-6);
+}
+
+/* ── Left: info card ─────────────────────────────────────────── */
+.infoCard {
+  flex: 0 0 460px;
+  background: var(--neutral-0);
+  padding: var(--sp-7) var(--sp-7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-5);
+  overflow: hidden;
+  border-right: 1px solid var(--neutral-100);
+}
+
+.title {
+  font: 700 30px/1.25 var(--font-display);
+  color: var(--neutral-900);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Price block */
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.priceLabel {
+  font: 500 12px/1 var(--font-ui);
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.price {
+  font: 700 32px/1 var(--font-display);
+  color: var(--primary-600);
+}
+
+.priceSuffix {
+  font: 400 14px/1 var(--font-ui);
+  color: var(--neutral-400);
+}
+
+/* CTA buttons */
+.ctas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.ctaBtn {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 15px;
+  padding: var(--sp-3) var(--sp-4);
+}
+
+/* ── Right: photo strip ──────────────────────────────────────── */
+.photosArea {
+  flex: 1;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  background: var(--neutral-200);
+}
+
+/* ── Photo cells ─────────────────────────────────────────────── */
+.photoCell {
+  flex-shrink: 0;
+  position: relative;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  background: var(--neutral-100);
+}
+
+/* 2px white hairline separator — no gap, just a visual seam */
+.photoCell + .photoCell {
+  border-left: 2px solid #fff;
+}
+
+.photoCell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.photoCell:hover img {
+  transform: scale(1.04);
+}
+
+.photoCell:focus-visible {
+  outline: 2px solid var(--primary-400);
+  outline-offset: -2px;
+}
+
+/* All photos equal width — main and side share the strip equally */
+.photoCellMain,
+.photoCellSide {
+  flex: 1;
+}
+
+/* ── Glass button (shared: action icons + nav arrows) ────────── */
+.glassBtn {
+  background: rgba(255, 255, 255, 0.90);
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--neutral-700);
+  transition: background var(--dur-fast);
+  flex-shrink: 0;
+}
+
+.glassBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 1);
+}
+
+.glassBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.glassBtn:focus-visible {
+  outline: 2px solid var(--primary-400);
+  outline-offset: 2px;
+}
+
+/* ── Action icons overlay (top-left of photo area) ───────────── */
+.actionIcons {
+  position: absolute;
+  top: var(--sp-3);
+  left: var(--sp-3);
+  z-index: 3;
+  display: flex;
+  gap: var(--sp-2);
+}
+
+/* ── Pills overlay (bottom-left of photo area) ───────────────── */
+.pills {
+  position: absolute;
+  bottom: var(--sp-3);
+  left: var(--sp-3);
+  z-index: 3;
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0, 0, 0, 0.60);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  font: 600 11px/1 var(--font-ui);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast);
+}
+
+.pill:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.pill:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.pill:focus-visible {
+  outline: 2px solid var(--primary-400);
+  outline-offset: 2px;
+}
+
+/* ── Navigation arrows overlay (bottom-right) ────────────────── */
+.navArrows {
+  position: absolute;
+  bottom: var(--sp-3);
+  right: var(--sp-3);
+  z-index: 3;
+  display: flex;
+  gap: var(--sp-2);
+}
+
+/* ── Lightbox ────────────────────────────────────────────────── */
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightboxInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lightboxImg {
+  max-width: 82vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  display: block;
+}
+
+.lbArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--dur-fast);
+  z-index: 1;
+}
+
+.lbArrow:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.lbArrow:focus-visible {
+  outline: 2px solid var(--primary-400);
+  outline-offset: 2px;
+}
+
+.lbPrev { left: -56px; }
+.lbNext { right: -56px; }
+
+.lbClose {
+  position: fixed;
+  top: var(--sp-5);
+  right: var(--sp-5);
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+
+.lbClose:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.lbCounter {
+  position: fixed;
+  bottom: var(--sp-5);
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.75);
+  font: 500 14px/1 var(--font-ui);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .hero {
+    flex-direction: column;
+    height: auto;
+    border-radius: 0;
+  }
+
+  .infoCard {
+    flex: none;
+    border-right: none;
+    border-bottom: 1px solid var(--neutral-100);
+    padding: var(--sp-5) var(--sp-5);
+    gap: var(--sp-4);
+    justify-content: flex-start;
+  }
+
+  .title {
+    font-size: 22px;
+    -webkit-line-clamp: 3;
+  }
+
+  .price {
+    font-size: 26px;
+  }
+
+  .ctas {
+    flex-direction: row;
+  }
+
+  .ctaBtn {
+    width: auto;
+    flex: 1;
+  }
+
+  .photosArea {
+    height: 340px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    border-radius: 0;
+    margin-bottom: var(--sp-4);
+    margin-top: calc(-1 * var(--sp-4));
+  }
+
+  .infoCard {
+    padding: var(--sp-4) var(--sp-4);
+    gap: var(--sp-3);
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .price {
+    font-size: 22px;
+  }
+
+  .ctas {
+    flex-direction: column;
+  }
+
+  .ctaBtn {
+    width: 100%;
+  }
+
+  .photosArea {
+    height: 220px;
+  }
+
+  /* On mobile show only 2 photos */
+  .photoCellSide:nth-child(4),
+  .photoCellSide:nth-child(5) {
+    display: none;
+  }
+
+  .lbPrev { left: var(--sp-2); }
+  .lbNext { right: var(--sp-2); }
+}

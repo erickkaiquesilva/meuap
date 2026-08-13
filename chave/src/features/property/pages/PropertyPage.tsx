@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { useProperty, useSimilarProperties } from '../hooks/useProperty'
-import { PhotoGallery } from '../components/PhotoGallery/PhotoGallery'
+import { PropertyHero } from '../components/PropertyHero/PropertyHero'
 import { PropertyInfo } from '../components/PropertyInfo/PropertyInfo'
 import { ContactCard } from '../components/ContactCard/ContactCard'
 import { SimilarProperties } from '../components/SimilarProperties/SimilarProperties'
@@ -50,7 +50,10 @@ export function PropertyPage() {
 
   return (
     <div className={styles.page}>
-      {/* Breadcrumb */}
+      {/* Hero: full-viewport info card + photo strip */}
+      <PropertyHero property={property} />
+
+      {/* Breadcrumb — inside container, below the hero */}
       <nav className={styles.breadcrumb} aria-label="Caminho">
         <Link to="/">Início</Link>
         <span aria-hidden="true">›</span>
@@ -60,11 +63,6 @@ export function PropertyPage() {
         <span aria-hidden="true">›</span>
         <span aria-current="page">{property.neighborhood}</span>
       </nav>
-
-      {/* Photo Gallery */}
-      <div className={styles.galleryWrapper}>
-        <PhotoGallery photos={property.photos} title={property.title} />
-      </div>
 
       {/* Info + Contact side-by-side */}
       <div className={styles.layout}>
