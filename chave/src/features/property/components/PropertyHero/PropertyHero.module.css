@@ -11,13 +11,15 @@
   left: 50%;
   transform: translateX(-50%);
   overflow: hidden;
+  /* Reset global section { padding: var(--sp-8) 0 } — that was the gap source */
+  padding: 0;
   margin-top: 0;
   margin-bottom: var(--sp-6);
 }
 
 /* ── Left: info card ─────────────────────────────────────────── */
 .infoCard {
-  flex: 0 0 400px;
+  flex: 0 0 460px;
   background: var(--neutral-0);
   padding: var(--sp-7) var(--sp-7);
   display: flex;
@@ -121,12 +123,8 @@
   outline-offset: -2px;
 }
 
-/* Main photo: larger */
-.photoCellMain {
-  flex: 0 0 48%;
-}
-
-/* Side photos: share remaining space equally */
+/* All photos equal width — main and side share the strip equally */
+.photoCellMain,
 .photoCellSide {
   flex: 1;
 }
@@ -381,10 +379,6 @@
   .photoCellSide:nth-child(4),
   .photoCellSide:nth-child(5) {
     display: none;
-  }
-
-  .photoCellMain {
-    flex: 0 0 65%;
   }
 
   .lbPrev { left: var(--sp-2); }
