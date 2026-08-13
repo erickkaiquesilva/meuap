@@ -50,7 +50,10 @@ export function PropertyPage() {
 
   return (
     <div className={styles.page}>
-      {/* Breadcrumb */}
+      {/* Hero: full-viewport info card + photo strip */}
+      <PropertyHero property={property} />
+
+      {/* Breadcrumb — inside container, below the hero */}
       <nav className={styles.breadcrumb} aria-label="Caminho">
         <Link to="/">Início</Link>
         <span aria-hidden="true">›</span>
@@ -60,9 +63,6 @@ export function PropertyPage() {
         <span aria-hidden="true">›</span>
         <span aria-current="page">{property.neighborhood}</span>
       </nav>
-
-      {/* Hero: info + connected photo strip */}
-      <PropertyHero property={property} />
 
       {/* Info + Contact side-by-side */}
       <div className={styles.layout}>
