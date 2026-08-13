@@ -38,3 +38,7 @@
 - feat-T032: PropertyPage — breadcrumb, gallery + info/contact layout (2-col desktop, 1-col mobile), skeleton and not-found states
 - fix-T033: guard buildWhatsAppUrl against undefined VITE_WA_NUMBER (prevents CTABanner/ContactCard crash and blank screen); validate apiGetMe response shape; Makefile auto-creates .env.development on mock start
 - fix-T033: fix axios baseURL '/api' doubling every request path to /api/api/... — MSW had no handler for doubled path causing passthrough + Failed to fetch; fix: baseURL defaults to '' so paths reach MSW handlers as-is
+- feat-T034: RegisterPage — cadastro com validação de nome, e-mail, senha e confirmação; auto-login após registro
+- feat-T035: ForgotPasswordPage — recuperação de senha por e-mail com feedback de sucesso inline; sem rota extra
+- feat-T037: authApi + MSW mock handlers para register (409 em e-mail duplicado) e forgot-password
+- feat-T038: AuthContext expõe register(); rotas /cadastro e /recuperar-senha; Header com botão Cadastre-se para visitantes

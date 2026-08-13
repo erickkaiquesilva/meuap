@@ -12,6 +12,22 @@ export async function apiLogin(
   return data
 }
 
+export async function apiRegister(
+  name: string,
+  email: string,
+  password: string,
+): Promise<{ token: string; user: User }> {
+  const { data } = await apiClient.post<{ token: string; user: User }>(
+    '/api/auth/register',
+    { name, email, password },
+  )
+  return data
+}
+
+export async function apiForgotPassword(email: string): Promise<void> {
+  await apiClient.post('/api/auth/forgot-password', { email })
+}
+
 export async function apiLogout(): Promise<void> {
   await apiClient.post('/api/auth/logout')
 }
