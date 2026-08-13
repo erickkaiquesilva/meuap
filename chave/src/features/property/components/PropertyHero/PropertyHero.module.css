@@ -1,15 +1,17 @@
-/* ── Full-bleed hero wrapper ─────────────────────────────────── */
-/*  Breaks out of the page's horizontal padding (--sp-5 = 24px)   */
+/* ── Full-viewport-width hero ────────────────────────────────── */
+/*  Breaks out of any container max-width / padding entirely.      */
+/*  The left+transform trick works regardless of parent layout.    */
 .hero {
   display: flex;
   align-items: stretch;
-  height: 420px;
-  margin-left: calc(-1 * var(--sp-5));
-  margin-right: calc(-1 * var(--sp-5));
-  border-radius: var(--radius-xl);
+  height: 480px;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
   overflow: hidden;
   margin-bottom: var(--sp-6);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12);
 }
 
 /* ── Left: info card ─────────────────────────────────────────── */
@@ -340,7 +342,7 @@
   .hero {
     flex-direction: column;
     height: auto;
-    border-radius: var(--radius-lg);
+    border-radius: 0;
   }
 
   .infoCard {
@@ -382,10 +384,7 @@
 
 @media (max-width: 480px) {
   .hero {
-    /* Match mobile page padding (--sp-4 = 16px) */
-    margin-left: calc(-1 * var(--sp-4));
-    margin-right: calc(-1 * var(--sp-4));
-    border-radius: var(--radius-md);
+    border-radius: 0;
     margin-bottom: var(--sp-4);
   }
 
