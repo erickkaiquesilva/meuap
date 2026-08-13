@@ -29,6 +29,7 @@ export function Neighborhoods() {
               <div className={styles.cardLabel}>
                 <span className={styles.neighborhood}>{n.name}</span>
                 <span className={styles.city}>{n.city}</span>
+                <span className={styles.count}>{n.count} imóveis</span>
               </div>
             </Link>
           ))}
