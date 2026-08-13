@@ -23,11 +23,6 @@
   color: var(--primary-600);
 }
 
-/* ── Gallery ── */
-.galleryWrapper {
-  margin-bottom: var(--sp-6);
-}
-
 /* ── Main layout: info + contact card ── */
 .layout {
   display: grid;

@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { useProperty, useSimilarProperties } from '../hooks/useProperty'
-import { PhotoGallery } from '../components/PhotoGallery/PhotoGallery'
+import { PropertyHero } from '../components/PropertyHero/PropertyHero'
 import { PropertyInfo } from '../components/PropertyInfo/PropertyInfo'
 import { ContactCard } from '../components/ContactCard/ContactCard'
 import { SimilarProperties } from '../components/SimilarProperties/SimilarProperties'
@@ -61,10 +61,8 @@ export function PropertyPage() {
         <span aria-current="page">{property.neighborhood}</span>
       </nav>
 
-      {/* Photo Gallery */}
-      <div className={styles.galleryWrapper}>
-        <PhotoGallery photos={property.photos} title={property.title} />
-      </div>
+      {/* Hero: info + connected photo strip */}
+      <PropertyHero property={property} />
 
       {/* Info + Contact side-by-side */}
       <div className={styles.layout}>
