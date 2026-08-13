@@ -1,100 +1,29 @@
-/* ── Hero wrapper ────────────────────────────────────────────── */
-.hero {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: var(--sp-6);
-  align-items: stretch;
-  margin-bottom: var(--sp-7);
-  min-height: 400px;
-}
-
-/* ── Left: info column ───────────────────────────────────────── */
-.infoCol {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--sp-4);
-  padding: var(--sp-4) 0;
-}
-
-.badgeRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-2);
-}
-
-.title {
-  font: 800 28px/1.2 var(--font-display);
-  color: var(--neutral-900);
-  letter-spacing: -0.5px;
-  margin: 0;
-}
-
-.address {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-1);
-  font: 400 13px/1.4 var(--font-ui);
-  color: var(--neutral-500);
-}
-
-.priceBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.priceLabel {
-  font: 500 12px/1 var(--font-ui);
-  color: var(--neutral-500);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.price {
-  font: 800 30px/1 var(--font-display);
-  color: var(--primary-600);
-  letter-spacing: -1px;
-}
-
-.ctas {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-  margin-top: var(--sp-2);
-}
-
-.ctaBtn {
-  width: 100%;
-  justify-content: center;
-  gap: var(--sp-2);
-}
-
-/* ── Right: connected photo strip ───────────────────────────── */
+/* ── Full-width photo strip ─────────────────────────────────── */
 .strip {
   position: relative;
   display: flex;
   gap: 0;
   overflow: hidden;
+  height: 340px;
   border-radius: var(--radius-xl);
-  /* Force all child images to fill the same height */
-  height: 100%;
-  min-height: 400px;
+  margin-bottom: var(--sp-6);
+  background: var(--neutral-200);
 }
 
+/* ── Photo cells ─────────────────────────────────────────────── */
 .photoCell {
   position: relative;
+  flex-shrink: 0;
   border: none;
   padding: 0;
   cursor: pointer;
   overflow: hidden;
-  background: var(--neutral-200);
-  flex-shrink: 0;
+  background: var(--neutral-100);
 }
 
-/* Thin white separator between photos */
+/* 2px white hairline between photos — no gap, just a visual separator */
 .photoCell + .photoCell {
-  border-left: 2px solid var(--neutral-0);
+  border-left: 2px solid #fff;
 }
 
 .photoCell img {
@@ -102,49 +31,125 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.35s ease;
+  transition: transform 0.3s ease;
 }
 
 .photoCell:hover img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
-/* Main photo — larger */
+.photoCell:focus-visible {
+  outline: 2px solid var(--primary-400);
+  outline-offset: -2px;
+}
+
+/* Main photo: wider */
 .photoCellMain {
-  flex: 0 0 55%;
+  flex: 0 0 44%;
 }
 
-/* Side photos — share remaining 45% equally */
+/* Side photos: share the rest equally */
 .photoCellSide {
   flex: 1;
 }
 
-/* Photo count pill — absolute over strip */
-.photoPill {
+/* ── Overlay: share + heart (top-left) ───────────────────────── */
+.actionIcons {
+  position: absolute;
+  top: var(--sp-3);
+  left: var(--sp-3);
+  z-index: 2;
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.iconBtn {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(4px);
+  border-color: transparent !important;
+  color: var(--neutral-700) !important;
+  padding: var(--sp-2) !important;
+  min-width: 34px;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconBtn:hover {
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+/* ── Overlay: pill buttons (bottom-left of first photo) ──────── */
+.pills {
   position: absolute;
   bottom: var(--sp-3);
   left: var(--sp-3);
+  z-index: 2;
   display: flex;
-  align-items: center;
   gap: var(--sp-2);
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-full);
-  padding: var(--sp-2) var(--sp-3);
-  font: 600 13px/1 var(--font-ui);
-  cursor: pointer;
-  transition: background var(--dur-fast);
 }
 
-.photoPill:hover {
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  font: 600 12px/1 var(--font-ui);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+  white-space: nowrap;
+}
+
+.pill:hover:not(:disabled) {
   background: rgba(0, 0, 0, 0.72);
 }
 
-.photoPill:focus-visible {
+.pill:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.pill:focus-visible {
   outline: 2px solid var(--primary-400);
   outline-offset: 2px;
+}
+
+/* ── Navigation arrows (bottom-right) ───────────────────────── */
+.navArrows {
+  position: absolute;
+  bottom: var(--sp-3);
+  right: var(--sp-3);
+  z-index: 2;
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.navBtn {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(4px);
+  border-color: transparent !important;
+  color: var(--neutral-700) !important;
+  padding: var(--sp-2) !important;
+  min-width: 34px;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+.navBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 /* ── Lightbox ────────────────────────────────────────────────── */
@@ -162,13 +167,12 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--sp-4);
   max-width: 90vw;
   max-height: 90vh;
 }
 
 .lightboxImg {
-  max-width: 80vw;
+  max-width: 82vw;
   max-height: 85vh;
   object-fit: contain;
   border-radius: var(--radius-lg);
@@ -193,17 +197,11 @@
   z-index: 1;
 }
 
-.lbArrow:hover {
-  background: rgba(255, 255, 255, 0.28);
-}
+.lbArrow:hover { background: rgba(255, 255, 255, 0.28); }
+.lbArrow:focus-visible { outline: 2px solid var(--primary-400); outline-offset: 2px; }
 
-.lbArrow:focus-visible {
-  outline: 2px solid var(--primary-400);
-  outline-offset: 2px;
-}
-
-.lbPrev { left: -56px; }
-.lbNext { right: -56px; }
+.lbPrev { left: -58px; }
+.lbNext { right: -58px; }
 
 .lbClose {
   position: fixed;
@@ -222,14 +220,8 @@
   transition: background var(--dur-fast);
 }
 
-.lbClose:hover {
-  background: rgba(255, 255, 255, 0.28);
-}
-
-.lbClose:focus-visible {
-  outline: 2px solid var(--primary-400);
-  outline-offset: 2px;
-}
+.lbClose:hover { background: rgba(255, 255, 255, 0.28); }
+.lbClose:focus-visible { outline: 2px solid var(--primary-400); outline-offset: 2px; }
 
 .lbCounter {
   position: fixed;
@@ -241,40 +233,28 @@
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
-@media (max-width: 960px) {
-  .hero {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-
-  .infoCol {
-    order: 2;
-    padding: 0;
-  }
-
+@media (max-width: 768px) {
   .strip {
-    order: 1;
-    min-height: 260px;
+    height: 240px;
     border-radius: var(--radius-lg);
+  }
+
+  /* On tablet show only 3 photos */
+  .photoCellSide:nth-child(4) {
+    display: none;
   }
 }
 
 @media (max-width: 480px) {
-  .title {
-    font-size: 22px;
-  }
-
-  .price {
-    font-size: 24px;
-  }
-
   .strip {
-    min-height: 220px;
+    height: 200px;
     border-radius: var(--radius-md);
+    margin-bottom: var(--sp-4);
   }
 
-  /* On very small screens show only 2 photos */
-  .photoCellSide:last-of-type {
+  /* On mobile show only 2 photos */
+  .photoCellSide:nth-child(3),
+  .photoCellSide:nth-child(4) {
     display: none;
   }
 
