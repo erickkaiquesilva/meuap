@@ -1,7 +1,8 @@
 .page {
   max-width: var(--container);
   margin: 0 auto;
-  padding: var(--sp-6) var(--sp-5) var(--sp-9);
+  /* padding-top: 0 so the hero can sit flush against the header */
+  padding: 0 var(--sp-5) var(--sp-9);
 }
 
 /* ── Breadcrumb ── */
@@ -12,6 +13,7 @@
   font: 400 13px/1 var(--font-ui);
   color: var(--neutral-500);
   margin-bottom: var(--sp-5);
+  padding-top: var(--sp-4);
 }
 
 .breadcrumb a {

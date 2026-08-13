@@ -1,7 +1,7 @@
 /* ── Full-viewport-width hero ────────────────────────────────── */
 /*  Breaks out of any container max-width / padding entirely.      */
-/*  margin-top cancels the page padding-top so the hero is flush   */
-/*  with the header (colada abaixo do topo).                       */
+/*  No margin-top needed — PropertyPage.module.css has padding: 0  */
+/*  on top so the hero is naturally flush with the header.         */
 .hero {
   display: flex;
   align-items: stretch;
@@ -11,7 +11,7 @@
   left: 50%;
   transform: translateX(-50%);
   overflow: hidden;
-  margin-top: calc(-1 * var(--sp-6));   /* cancel page padding-top (--sp-6 = 32px) */
+  margin-top: 0;
   margin-bottom: var(--sp-6);
 }
 
@@ -311,7 +311,6 @@
     flex-direction: column;
     height: auto;
     border-radius: 0;
-    margin-top: calc(-1 * var(--sp-6));
   }
 
   .infoCard {
