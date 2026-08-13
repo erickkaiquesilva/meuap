@@ -42,3 +42,6 @@
 - feat-T035: ForgotPasswordPage — recuperação de senha por e-mail com feedback de sucesso inline; sem rota extra
 - feat-T037: authApi + MSW mock handlers para register (409 em e-mail duplicado) e forgot-password
 - feat-T038: AuthContext expõe register(); rotas /cadastro e /recuperar-senha; Header com botão Cadastre-se para visitantes
+- feat: LoginPage — fundo animado com cards flutuantes de imóveis (7 cards, animação CSS keyframe, responsivo: cards ocultos em mobile); tamanho uniforme 360×260px
+- feat: PropertyHero — redesenho completo da galeria de detalhes do imóvel: hero full-viewport (100vw) colado ao header; painel de info à esquerda (460px) com título, preço e CTAs WhatsApp/Agendar visita; strip de fotos à direita com largura/altura uniformes (flex: 1), gap zero, separador 2px branco, setas de navegação e pills (Fotos/Vídeo/Mapa); lightbox com navegação por teclado (←/→/Esc); breadcrumb movido para abaixo do hero; PropertyInfo sem h1 duplicado
+- fix: PropertyHero — padding: 0 sobrescreve regra global section{padding:sp-8} que causava gap entre header e hero; page sem padding-top para hero colado ao topo
