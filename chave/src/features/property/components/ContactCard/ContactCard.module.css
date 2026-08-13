@@ -1,0 +1,125 @@
+.card {
+  background: var(--neutral-0);
+  border: 1.5px solid var(--neutral-200);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  position: sticky;
+  top: 80px;
+}
+
+.priceBox {
+  text-align: center;
+  padding-bottom: var(--sp-4);
+  border-bottom: 1.5px solid var(--neutral-100);
+}
+
+.priceLabel {
+  font: 500 12px/1 var(--font-ui);
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--sp-2);
+}
+
+.price {
+  font: 800 28px/1 var(--font-display);
+  color: var(--primary-600);
+  letter-spacing: -0.5px;
+}
+
+.priceSuffix {
+  font: 500 13px/1 var(--font-ui);
+  color: var(--neutral-500);
+  margin-left: 4px;
+}
+
+.agentSection {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.agentAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-400), var(--primary-600));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font: 700 18px/1 var(--font-display);
+  flex: none;
+}
+
+.agentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.agentName {
+  font: 700 14px/1 var(--font-ui);
+  color: var(--neutral-900);
+}
+
+.agentRole {
+  font: 400 12px/1 var(--font-ui);
+  color: var(--neutral-500);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.whatsappBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  background: #25d366;
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 14px 22px;
+  font: 700 14px/1 var(--font-ui);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--dur-fast), transform var(--dur-fast);
+  width: 100%;
+}
+
+.whatsappBtn:hover {
+  background: #1da851;
+  transform: translateY(-1px);
+}
+
+.whatsappBtn:active {
+  transform: scale(0.97);
+}
+
+.disclaimer {
+  font: 400 11px/1.4 var(--font-ui);
+  color: var(--neutral-400);
+  text-align: center;
+}
+
+.refCode {
+  font: 500 12px/1 var(--font-ui);
+  color: var(--neutral-400);
+  text-align: center;
+  padding-top: var(--sp-3);
+  border-top: 1.5px solid var(--neutral-100);
+}
+
+@media (max-width: 900px) {
+  .card {
+    position: static;
+    border-radius: var(--radius-lg);
+  }
+}
