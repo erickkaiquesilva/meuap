@@ -5,6 +5,33 @@ import { Field, Input } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
 import styles from './LoginPage.module.css'
 
+// Property images for the animated background — replace seeds with real listing photos later
+const BG_CARDS = [
+  { seed: 'apt-zona7-a',      cls: styles.bgCard1 },
+  { seed: 'cobertura-centro', cls: styles.bgCard2 },
+  { seed: 'casa-alvorada-a',  cls: styles.bgCard3 },
+  { seed: 'casa-nova-esp-a',  cls: styles.bgCard4 },
+  { seed: 'apt-universo-a',   cls: styles.bgCard5 },
+  { seed: 'casa-panorama-a',  cls: styles.bgCard6 },
+  { seed: 'casa-universo',    cls: styles.bgCard7 },
+]
+
+function FloatingCards() {
+  return (
+    <div className={styles.bg} aria-hidden="true">
+      {BG_CARDS.map(({ seed, cls }) => (
+        <div
+          key={seed}
+          className={`${styles.bgCard} ${cls}`}
+          style={{
+            backgroundImage: `url(https://picsum.photos/seed/${seed}/480/320)`,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
 function EyeIcon({ open }: { open: boolean }) {
   return open ? (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -71,6 +98,7 @@ export function LoginPage() {
 
   return (
     <main className={styles.page}>
+      <FloatingCards />
       <div className={styles.card}>
         <div className={styles.logo}>
           <div className={styles.logoMark} aria-hidden="true">C</div>

@@ -1,13 +1,81 @@
+/* ── Page shell ─────────────────────────────────────────────── */
 .page {
+  position: relative;
   min-height: calc(100vh - 64px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--sp-8) var(--sp-4);
-  background: linear-gradient(160deg, var(--primary-50) 0%, var(--neutral-50) 60%, var(--secondary-100) 100%);
+  overflow: hidden;
+  background: linear-gradient(160deg, #eaecf5 0%, #f3f4fa 55%, #edf0ff 100%);
 }
 
+/* ── Floating background cards ───────────────────────────────── */
+.bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bgCard {
+  position: absolute;
+  border-radius: 18px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.10);
+  opacity: 0.80;
+  will-change: transform;
+}
+
+/* Positions mirror the reference layout — all cards same size */
+.bgCard1 { width: 360px; height: 260px; left:  3%; top: 11%; animation: float1  7.2s ease-in-out infinite; animation-delay:  0s; }
+.bgCard2 { width: 360px; height: 260px; left: 52%; top:  9%; animation: float2  9.0s ease-in-out infinite; animation-delay: -2.3s; }
+.bgCard3 { width: 360px; height: 260px; left: 83%; top: 12%; animation: float3  8.4s ease-in-out infinite; animation-delay: -4.1s; }
+.bgCard4 { width: 360px; height: 260px; left: 14%; top: 50%; animation: float4 10.0s ease-in-out infinite; animation-delay: -1.7s; }
+.bgCard5 { width: 360px; height: 260px; left: 68%; top: 52%; animation: float5  6.8s ease-in-out infinite; animation-delay: -3.5s; }
+.bgCard6 { width: 360px; height: 260px; left:  3%; top: 70%; animation: float6  8.8s ease-in-out infinite; animation-delay: -0.9s; }
+.bgCard7 { width: 360px; height: 260px; left: 54%; top: 77%; animation: float7  7.6s ease-in-out infinite; animation-delay: -5.2s; }
+
+@keyframes float1 {
+  0%, 100% { transform: translateY(0px)   rotate(-1.0deg); }
+  50%       { transform: translateY(-14px) rotate( 0.6deg); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translateY(0px)   rotate( 1.0deg); }
+  50%       { transform: translateY(-11px) rotate(-0.5deg); }
+}
+@keyframes float3 {
+  0%, 100% { transform: translateY(0px)   rotate( 0.5deg); }
+  33%       { transform: translateY(-8px)  rotate(-0.8deg); }
+  66%       { transform: translateY(-4px)  rotate( 1.2deg); }
+}
+@keyframes float4 {
+  0%, 100% { transform: translateY(0px)   rotate(-0.6deg); }
+  50%       { transform: translateY(-13px) rotate( 1.0deg); }
+}
+@keyframes float5 {
+  0%, 100% { transform: translateY(0px)   rotate( 1.5deg); }
+  50%       { transform: translateY(-16px) rotate( 0.0deg); }
+}
+@keyframes float6 {
+  0%, 100% { transform: translateY(0px)   rotate(-1.0deg); }
+  50%       { transform: translateY(-10px) rotate( 0.6deg); }
+}
+@keyframes float7 {
+  0%, 100% { transform: translateY(0px)   rotate( 0.4deg); }
+  50%       { transform: translateY(-12px) rotate(-0.8deg); }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .bgCard { animation: none; }
+}
+
+/* ── Login card (above the background layer) ─────────────────── */
 .card {
+  position: relative;
+  z-index: 1;
   background: var(--neutral-0);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
@@ -75,7 +143,7 @@
   gap: var(--sp-2);
 }
 
-/* Toggle fica dentro do .control (flex) do DS — sem position absolute */
+/* Toggle sits inside the DS .control flex row */
 .passwordToggle {
   flex: none;
   background: none;
@@ -90,10 +158,7 @@
   line-height: 0;
 }
 
-.passwordToggle:hover {
-  color: var(--neutral-700);
-}
-
+.passwordToggle:hover   { color: var(--neutral-700); }
 .passwordToggle:focus-visible {
   outline: 2px solid var(--primary-400);
   outline-offset: 2px;
@@ -172,13 +237,15 @@
   color: var(--primary-700);
 }
 
-/* ── Mobile ── */
+/* ── Mobile — hide background cards, full-screen card ── */
 @media (max-width: 480px) {
   .page {
     align-items: flex-start;
     padding: 0;
     background: var(--neutral-0);
   }
+
+  .bg { display: none; }
 
   .card {
     border-radius: 0;
