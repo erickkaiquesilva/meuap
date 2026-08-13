@@ -10,67 +10,73 @@
   top: 80px;
 }
 
-.priceBox {
-  text-align: center;
+/* ── Cost breakdown ──────────────────────────────────────────── */
+.costBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
   padding-bottom: var(--sp-4);
   border-bottom: 1.5px solid var(--neutral-100);
 }
 
-.priceLabel {
-  font: 500 12px/1 var(--font-ui);
+.costTitle {
+  font: 600 11px/1 var(--font-ui);
   color: var(--neutral-500);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: var(--sp-2);
+  letter-spacing: 0.06em;
+  margin: 0;
 }
 
-.price {
-  font: 800 28px/1 var(--font-display);
-  color: var(--primary-600);
-  letter-spacing: -0.5px;
+.costTable {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
 }
 
-.priceSuffix {
-  font: 500 13px/1 var(--font-ui);
-  color: var(--neutral-500);
-  margin-left: 4px;
-}
-
-.agentSection {
+.costRow {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--sp-3);
 }
 
-.agentAvatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-400), var(--primary-600));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font: 700 18px/1 var(--font-display);
-  flex: none;
+.costRowTotal {
+  padding-top: var(--sp-2);
+  margin-top: var(--sp-1);
+  border-top: 1px dashed var(--neutral-200);
 }
 
-.agentInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+.costLabel {
+  font: 400 13px/1.2 var(--font-ui);
+  color: var(--neutral-600);
 }
 
-.agentName {
-  font: 700 14px/1 var(--font-ui);
-  color: var(--neutral-900);
+.costRowTotal .costLabel {
+  font-weight: 700;
+  color: var(--neutral-800);
 }
 
-.agentRole {
+.costValue {
+  font: 600 13px/1 var(--font-ui);
+  color: var(--neutral-800);
+  white-space: nowrap;
+  margin: 0;
+}
+
+.costValueTotal {
+  font: 800 20px/1 var(--font-display);
+  color: var(--primary-600);
+  letter-spacing: -0.3px;
+}
+
+.suffix {
   font: 400 12px/1 var(--font-ui);
-  color: var(--neutral-500);
+  color: var(--neutral-400);
+  margin-left: 3px;
 }
 
+/* ── Actions ─────────────────────────────────────────────────── */
 .actions {
   display: flex;
   flex-direction: column;
@@ -103,10 +109,20 @@
   transform: scale(0.97);
 }
 
+.printBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
 .disclaimer {
   font: 400 11px/1.4 var(--font-ui);
   color: var(--neutral-400);
   text-align: center;
+  margin: 0;
 }
 
 .refCode {
@@ -115,6 +131,7 @@
   text-align: center;
   padding-top: var(--sp-3);
   border-top: 1.5px solid var(--neutral-100);
+  margin: 0;
 }
 
 @media (max-width: 900px) {

@@ -56,7 +56,19 @@ export const propertyHandlers = [
   http.get('/api/properties/:id', ({ params }) => {
     const property = mockProperties.find((p) => p.id === params.id)
     if (!property) return new HttpResponse(null, { status: 404 })
-    return HttpResponse.json(property)
+
+    // Inject realistic monthly cost breakdown for rental listings
+    const enriched =
+      property.operation === 'rent'
+        ? {
+            ...property,
+            iptu: Math.round(property.price * 0.12),
+            fireInsurance: Math.round(property.price * 0.03),
+            serviceFee: Math.round(property.price * 0.08),
+          }
+        : property
+
+    return HttpResponse.json(enriched)
   }),
 
   http.get('/api/properties/:id/similar', ({ params }) => {
