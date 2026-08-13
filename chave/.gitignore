@@ -14,6 +14,7 @@ dist-ssr
 
 # Environment files — never commit real values
 .env
+.env.development
 .env.mock
 .env.staging
 .env.production

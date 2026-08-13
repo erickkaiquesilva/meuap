@@ -18,5 +18,8 @@ export async function apiLogout(): Promise<void> {
 
 export async function apiGetMe(): Promise<User> {
   const { data } = await apiClient.get<User>('/api/auth/me')
+  if (!data || typeof data !== 'object' || !('id' in data)) {
+    throw new Error('Invalid user response')
+  }
   return data
 }
