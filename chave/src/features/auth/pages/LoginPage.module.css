@@ -28,14 +28,14 @@
   will-change: transform;
 }
 
-/* Positions mirror the reference layout — cards at 1.5× original size */
-.bgCard1 { width: 368px; height: 267px; left:  3%; top: 11%; animation: float1  7.2s ease-in-out infinite; animation-delay:  0s; }
-.bgCard2 { width: 378px; height: 282px; left: 52%; top:  9%; animation: float2  9.0s ease-in-out infinite; animation-delay: -2.3s; }
-.bgCard3 { width: 291px; height: 234px; left: 83%; top: 12%; animation: float3  8.4s ease-in-out infinite; animation-delay: -4.1s; }
-.bgCard4 { width: 327px; height: 252px; left: 14%; top: 50%; animation: float4 10.0s ease-in-out infinite; animation-delay: -1.7s; }
-.bgCard5 { width: 366px; height: 243px; left: 68%; top: 52%; animation: float5  6.8s ease-in-out infinite; animation-delay: -3.5s; }
-.bgCard6 { width: 327px; height: 222px; left:  3%; top: 70%; animation: float6  8.8s ease-in-out infinite; animation-delay: -0.9s; }
-.bgCard7 { width: 348px; height: 243px; left: 54%; top: 77%; animation: float7  7.6s ease-in-out infinite; animation-delay: -5.2s; }
+/* Positions mirror the reference layout — all cards same size */
+.bgCard1 { width: 360px; height: 260px; left:  3%; top: 11%; animation: float1  7.2s ease-in-out infinite; animation-delay:  0s; }
+.bgCard2 { width: 360px; height: 260px; left: 52%; top:  9%; animation: float2  9.0s ease-in-out infinite; animation-delay: -2.3s; }
+.bgCard3 { width: 360px; height: 260px; left: 83%; top: 12%; animation: float3  8.4s ease-in-out infinite; animation-delay: -4.1s; }
+.bgCard4 { width: 360px; height: 260px; left: 14%; top: 50%; animation: float4 10.0s ease-in-out infinite; animation-delay: -1.7s; }
+.bgCard5 { width: 360px; height: 260px; left: 68%; top: 52%; animation: float5  6.8s ease-in-out infinite; animation-delay: -3.5s; }
+.bgCard6 { width: 360px; height: 260px; left:  3%; top: 70%; animation: float6  8.8s ease-in-out infinite; animation-delay: -0.9s; }
+.bgCard7 { width: 360px; height: 260px; left: 54%; top: 77%; animation: float7  7.6s ease-in-out infinite; animation-delay: -5.2s; }
 
 @keyframes float1 {
   0%, 100% { transform: translateY(0px)   rotate(-1.0deg); }
