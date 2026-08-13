@@ -30,3 +30,9 @@
 - feat-T023: PropertyGrid — responsive grid, shimmer skeleton (6 cards), empty and error states
 - feat-T024: listingsApi + useListings hook (React Query) + useListingsFilters (URL-driven state)
 - feat-T025: SortSelect (5 options) + Pagination component with ellipsis logic
+- feat-T027: propertyApi (fetchProperty + fetchSimilarProperties) + useProperty/useSimilarProperties hooks
+- feat-T028: PhotoGallery — main photo with prev/next arrows, thumbnail strip, counter badge, lightbox with keyboard navigation (←/→/Esc)
+- feat-T029: PropertyInfo — specs grid (quartos/banheiros/vagas/m²), description, amenities checklist, location placeholder
+- feat-T030: ContactCard — price summary, agent avatar, WhatsApp CTA with pre-filled message, print/PDF button; sticky on desktop
+- feat-T031: SimilarProperties — grid of up to 3 PropertyCards + link to city listings
+- feat-T032: PropertyPage — breadcrumb, gallery + info/contact layout (2-col desktop, 1-col mobile), skeleton and not-found states

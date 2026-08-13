@@ -1,0 +1,157 @@
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.title {
+  font: 800 28px/1.15 var(--font-display);
+  color: var(--neutral-900);
+  letter-spacing: -0.5px;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font: 400 14px/1.4 var(--font-ui);
+  color: var(--neutral-500);
+}
+
+.price {
+  font: 800 32px/1 var(--font-display);
+  color: var(--primary-600);
+  letter-spacing: -1px;
+}
+
+.priceSuffix {
+  font: 500 14px/1 var(--font-ui);
+  color: var(--neutral-500);
+  margin-left: var(--sp-1);
+}
+
+/* ── Specs grid ── */
+.specsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+}
+
+.specItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-4) var(--sp-3);
+  background: var(--neutral-50);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--neutral-200);
+  text-align: center;
+}
+
+.specIcon {
+  color: var(--primary-500);
+}
+
+.specValue {
+  font: 700 18px/1 var(--font-display);
+  color: var(--neutral-900);
+}
+
+.specLabel {
+  font: 400 12px/1 var(--font-ui);
+  color: var(--neutral-500);
+}
+
+/* ── Section ── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.sectionTitle {
+  font: 700 16px/1 var(--font-display);
+  color: var(--neutral-900);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1.5px solid var(--neutral-200);
+}
+
+.description {
+  font: 400 15px/1.7 var(--font-ui);
+  color: var(--neutral-700);
+  white-space: pre-line;
+}
+
+/* ── Amenities ── */
+.amenities {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--sp-2);
+}
+
+.amenityItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font: 500 13px/1.3 var(--font-ui);
+  color: var(--neutral-700);
+}
+
+.amenityCheck {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-600);
+  flex: none;
+}
+
+/* ── Map placeholder ── */
+.mapPlaceholder {
+  height: 200px;
+  border-radius: var(--radius-lg);
+  background: var(--neutral-100);
+  border: 1.5px solid var(--neutral-200);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  color: var(--neutral-400);
+}
+
+.mapPlaceholder p {
+  font: 400 13px/1 var(--font-ui);
+}
+
+@media (max-width: 640px) {
+  .specsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .price {
+    font-size: 26px;
+  }
+}
