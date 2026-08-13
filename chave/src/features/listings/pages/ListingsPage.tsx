@@ -1,99 +1,150 @@
+import { useMemo, useState } from 'react'
 import { useListings, useListingsFilters } from '../hooks/useListings'
-import { FilterPanel } from '../components/FilterPanel/FilterPanel'
-import { PropertyList } from '../components/PropertyList/PropertyList'
-import { SearchContextBar } from '../components/SearchContextBar/SearchContextBar'
+import { SearchFilterBar } from '../components/SearchFilterBar/SearchFilterBar'
+import { PropertyResultsGrid } from '../components/PropertyResultsGrid/PropertyResultsGrid'
+import { MapPanel } from '../components/MapPanel/MapPanel'
+import { NeighborhoodChips } from '../components/NeighborhoodChips/NeighborhoodChips'
 import { Pagination } from '../components/Pagination/Pagination'
-import type { SearchFilters } from '@/shared/types/property'
+import { SortSelect } from '../components/SortSelect/SortSelect'
+import { mockNeighborhoods } from '@/mocks/data/neighborhoods'
+import { mockProperties } from '@/mocks/data/properties'
 import styles from './ListingsPage.module.css'
 
-function countActiveFilters(filters: SearchFilters): number {
-  return [
-    filters.op,
-    filters.city,
-    filters.neighborhood,
-    filters.type,
-    filters.maxPrice,
-    filters.minPrice,
-    filters.bedrooms,
-    filters.bathrooms,
-    filters.parkingSpots,
-    filters.minArea,
-    filters.maxArea,
-    filters.amenities,
-  ].filter(Boolean).length
+const TYPE_LABEL: Record<string, string> = {
+  apartment: 'Apartamento',
+  house: 'Casa',
+  studio: 'Kitnet/Studio',
+  commercial: 'Comercial',
 }
 
-function buildLocationLabel(filters: SearchFilters): string {
-  if (filters.neighborhood && filters.city) {
-    return `${filters.neighborhood}, ${filters.city}`
-  }
-  if (filters.city) return filters.city
-  if (filters.op === 'sale') return 'Imóveis à venda'
-  if (filters.op === 'rent') return 'Imóveis para alugar'
-  return 'Imóveis'
-}
-
-function resultNoun(filters: SearchFilters): string {
-  if (filters.type === 'house') return 'casa'
-  if (filters.type === 'commercial') return 'imóvel comercial'
-  if (filters.type === 'studio') return 'kitnet/studio'
-  return 'apartamento'
+function resultNoun(type?: string): string {
+  if (type === 'house') return 'casas'
+  if (type === 'commercial') return 'imóveis comerciais'
+  if (type === 'studio') return 'kitnets/studios'
+  return 'apartamentos'
 }
 
 export function ListingsPage() {
   const { filters, setFilters, setPage, resetFilters } = useListingsFilters()
   const { data, isLoading, isError, refetch } = useListings(filters)
+  const [mobileView, setMobileView] = useState<'list' | 'map'>('list')
 
   const page = Number(filters.page ?? 1)
   const total = data?.total ?? 0
   const totalPages = data?.totalPages ?? 0
   const properties = data?.data ?? []
-  const activeCount = countActiveFilters(filters)
+
+  const city = filters.city ?? 'Maringá'
+  const neighborhood = filters.neighborhood
+  const locationPlaceholder = neighborhood && filters.city
+    ? `${neighborhood}, ${filters.city} – PR, Brasil`
+    : filters.city
+      ? `${filters.city} – PR, Brasil`
+      : 'Buscar bairro ou cidade'
+
+  const subtitleClean = (() => {
+    const parts: string[] = ['para alugar']
+    if (neighborhood && filters.city) parts.push(`em ${neighborhood}, ${filters.city}, PR`)
+    else if (filters.city) parts.push(`em ${filters.city}, PR`)
+    else parts.push('em Maringá e Sarandi, PR')
+    return parts.join(' ')
+  })()
+
+  const nearby = useMemo(() => {
+    const cityName = filters.city ?? city
+    return mockNeighborhoods
+      .filter((n) => n.city === cityName && n.name !== neighborhood)
+      .slice(0, 8)
+      .map((n) => ({
+        name: n.name,
+        city: n.city,
+        count: mockProperties.filter(
+          (p) => p.city === n.city && p.neighborhood === n.name && (!filters.op || p.operation === filters.op),
+        ).length,
+      }))
+      .filter((n) => n.count > 0)
+  }, [filters.city, filters.op, neighborhood, city])
 
   return (
     <div className={styles.page}>
-      <SearchContextBar
-        locationLabel={buildLocationLabel(filters)}
-        total={total}
-        isLoading={isLoading}
-        resultNoun={resultNoun(filters)}
-        sort={filters.sort ?? 'relevant'}
-        onSortChange={(val) => setFilters({ sort: val })}
+      <SearchFilterBar
+        filters={filters}
+        onFilterChange={setFilters}
+        locationPlaceholder={locationPlaceholder}
       />
 
-      <div className={styles.mobileFilters}>
-        <FilterPanel
-          filters={filters}
-          onFilterChange={setFilters}
-          onReset={resetFilters}
-          activeCount={activeCount}
-        />
+      <div className={styles.mobileToggle}>
+        <button
+          type="button"
+          className={`${styles.toggleBtn} ${mobileView === 'list' ? styles.toggleOn : ''}`}
+          onClick={() => setMobileView('list')}
+        >
+          Ver lista
+        </button>
+        <button
+          type="button"
+          className={`${styles.toggleBtn} ${mobileView === 'map' ? styles.toggleOn : ''}`}
+          onClick={() => setMobileView('map')}
+        >
+          Ver mapa
+        </button>
       </div>
 
-      <div className={styles.layout}>
-        <aside className={styles.sidebar}>
-          <FilterPanel
-            filters={filters}
-            onFilterChange={setFilters}
-            onReset={resetFilters}
-            activeCount={activeCount}
+      <div className={styles.split}>
+        {/* Left: results (independent scroll) */}
+        <section
+          className={`${styles.resultsCol} ${mobileView === 'map' ? styles.hideOnMobile : ''}`}
+          aria-label="Resultados da busca"
+        >
+          <div className={styles.resultsInner}>
+            <header className={styles.resultsHead}>
+              <div>
+                <h1 className={styles.resultsTitle}>
+                  {isLoading ? '…' : total} {resultNoun(filters.type)}
+                </h1>
+                <p className={styles.resultsSub}>{subtitleClean}</p>
+              </div>
+              <SortSelect
+                value={filters.sort ?? 'relevant'}
+                onChange={(val) => setFilters({ sort: val })}
+              />
+            </header>
+
+            <PropertyResultsGrid
+              properties={properties}
+              isLoading={isLoading}
+              isError={isError}
+              onRetry={() => refetch()}
+            />
+
+            <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+
+            <NeighborhoodChips
+              currentNeighborhood={neighborhood}
+              items={nearby}
+            />
+
+            {Object.keys(filters).some((k) => k !== 'page' && filters[k as keyof typeof filters]) && (
+              <button type="button" className={styles.clearLink} onClick={resetFilters}>
+                Limpar todos os filtros
+              </button>
+            )}
+          </div>
+        </section>
+
+        {/* Right: map (sticky) */}
+        <aside
+          className={`${styles.mapCol} ${mobileView === 'list' ? styles.hideOnMobile : ''}`}
+          aria-label="Mapa"
+        >
+          <MapPanel
+            properties={properties}
+            city={filters.city}
+            neighborhood={neighborhood}
+            typeLabel={filters.type ? TYPE_LABEL[filters.type] : undefined}
+            onClearType={() => setFilters({ type: undefined })}
           />
         </aside>
-
-        <div className={styles.content}>
-          <PropertyList
-            properties={properties}
-            isLoading={isLoading}
-            isError={isError}
-            onRetry={() => refetch()}
-          />
-
-          <Pagination
-            page={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-          />
-        </div>
       </div>
     </div>
   )

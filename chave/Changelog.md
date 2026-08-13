@@ -51,3 +51,4 @@
 - feat-T041: ListingPropertyCard — layout lista com carrossel de fotos, badge, favorito, preço + total com taxas, specs e endereço
 - feat-T042: PropertyList vertical + ListingsPage reorganizada (sidebar sticky + lista + paginação)
 - feat-T043: Header — seletor de cidade e link Anunciar (stub); Changelog STORY-07 Fase 1
+- feat-T044: Listings QuintoAndar layout — SearchFilterBar com chips horizontais, grid 3 colunas, MapPanel mock sticky, NeighborhoodChips, scroll independente; mobile toggle lista/mapa

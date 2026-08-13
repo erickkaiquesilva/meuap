@@ -4,16 +4,10 @@ import { formatCurrency } from '@/shared/utils/formatCurrency'
 import type { Property } from '@/shared/types/property'
 import styles from './ListingPropertyCard.module.css'
 
-const BADGE_CLASS: Record<NonNullable<Property['badge']>, string> = {
-  'Novo': 'badge-success',
-  'Exclusivo': 'badge-primary',
-  'Abaixo do mercado': 'badge-warning',
-}
-
 const TYPE_LABEL: Record<Property['type'], string> = {
-  apartment: 'Apartamento',
-  house: 'Casa',
-  commercial: 'Comercial',
+  apartment: 'apartamento',
+  house: 'casa',
+  commercial: 'imóvel comercial',
 }
 
 function estimateTotal(property: Property): number | undefined {
@@ -24,6 +18,16 @@ function estimateTotal(property: Property): number | undefined {
   return property.price + iptu + fire + fee
 }
 
+function buildBlurb(property: Property): string {
+  const op = property.operation === 'rent' ? 'Alugar' : 'Comprar'
+  const type = TYPE_LABEL[property.type]
+  const rooms = property.bedrooms > 0
+    ? ` com ${property.bedrooms} ${property.bedrooms === 1 ? 'quarto' : 'quartos'}`
+    : ''
+  const amenity = property.amenities[0] ? ` e ${property.amenities[0].toLowerCase()}` : ''
+  return `${op} ${type}${rooms}${amenity}.`
+}
+
 interface ListingPropertyCardProps {
   property: Property
 }
@@ -31,20 +35,15 @@ interface ListingPropertyCardProps {
 export function ListingPropertyCard({ property }: ListingPropertyCardProps) {
   const [photoIdx, setPhotoIdx] = useState(0)
   const [favorited, setFavorited] = useState(false)
-  const photos = property.photos.length > 0 ? property.photos : []
+  const photos = property.photos
   const total = photos.length
   const totalCost = estimateTotal(property)
 
-  function prevPhoto(e: React.MouseEvent) {
+  function go(delta: number, e: React.MouseEvent) {
     e.preventDefault()
     e.stopPropagation()
-    setPhotoIdx((i) => (i - 1 + total) % total)
-  }
-
-  function nextPhoto(e: React.MouseEvent) {
-    e.preventDefault()
-    e.stopPropagation()
-    setPhotoIdx((i) => (i + 1) % total)
+    if (total < 2) return
+    setPhotoIdx((i) => (i + delta + total) % total)
   }
 
   function toggleFavorite(e: React.MouseEvent) {
@@ -53,37 +52,44 @@ export function ListingPropertyCard({ property }: ListingPropertyCardProps) {
     setFavorited((f) => !f)
   }
 
+  const specs = [
+    `${property.area} m²`,
+    property.bedrooms > 0
+      ? `${property.bedrooms} ${property.bedrooms === 1 ? 'quarto' : 'quartos'}`
+      : null,
+    property.parkingSpots > 0
+      ? `${property.parkingSpots} ${property.parkingSpots === 1 ? 'vaga' : 'vagas'}`
+      : null,
+  ].filter(Boolean).join(' · ')
+
   return (
     <article className={styles.card}>
-      {/* Photo carousel */}
       <div className={styles.media}>
-        <Link
-          to={`/imoveis/${property.id}`}
-          className={styles.mediaLink}
-          aria-label={`Ver detalhes: ${property.title}`}
-        >
+        <Link to={`/imoveis/${property.id}`} className={styles.mediaLink} aria-label={property.title}>
           {photos.length > 0 ? (
             <img
               src={photos[photoIdx]}
-              alt={`${TYPE_LABEL[property.type]} em ${property.neighborhood} — foto ${photoIdx + 1} de ${total}`}
+              alt=""
               className={styles.photo}
               loading="lazy"
             />
           ) : (
-            <div className={styles.photoPlaceholder} aria-hidden="true" />
+            <div className={styles.placeholder} />
           )}
         </Link>
 
-        {property.badge && (
-          <span className={`badge ${BADGE_CLASS[property.badge]} ${styles.badge}`}>
-            {property.badge}
-          </span>
-        )}
+        <div className={styles.badges}>
+          {property.badge && (
+            <span className={`${styles.badge} ${property.badge === 'Exclusivo' ? styles.badgeDark : styles.badgeSoft}`}>
+              {property.badge === 'Novo' ? 'Anúncio novo' : property.badge}
+            </span>
+          )}
+        </div>
 
         <button
           type="button"
-          className={`${styles.favoriteBtn} ${favorited ? styles.favorited : ''}`}
-          aria-label={favorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+          className={`${styles.favorite} ${favorited ? styles.favorited : ''}`}
+          aria-label={favorited ? 'Remover dos favoritos' : 'Favoritar'}
           onClick={toggleFavorite}
         >
           <svg viewBox="0 0 24 24" fill={favorited ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -93,76 +99,37 @@ export function ListingPropertyCard({ property }: ListingPropertyCardProps) {
 
         {total > 1 && (
           <>
-            <button
-              type="button"
-              className={`${styles.navBtn} ${styles.navPrev}`}
-              onClick={prevPhoto}
-              aria-label="Foto anterior"
-            >
-              <Chevron dir="left" />
+            <button type="button" className={`${styles.nav} ${styles.navPrev}`} onClick={(e) => go(-1, e)} aria-label="Foto anterior">
+              ‹
             </button>
-            <button
-              type="button"
-              className={`${styles.navBtn} ${styles.navNext}`}
-              onClick={nextPhoto}
-              aria-label="Próxima foto"
-            >
-              <Chevron dir="right" />
+            <button type="button" className={`${styles.nav} ${styles.navNext}`} onClick={(e) => go(1, e)} aria-label="Próxima foto">
+              ›
             </button>
             <div className={styles.dots} aria-hidden="true">
               {photos.slice(0, 5).map((_, i) => (
-                <span key={i} className={`${styles.dot} ${i === photoIdx ? styles.dotActive : ''}`} />
+                <span key={i} className={`${styles.dot} ${i === photoIdx ? styles.dotOn : ''}`} />
               ))}
-              {total > 5 && <span className={styles.dotMore}>+{total - 5}</span>}
             </div>
           </>
         )}
       </div>
 
-      {/* Info */}
-      <div className={styles.body}>
-        <Link to={`/imoveis/${property.id}`} className={styles.bodyLink}>
-          <div className={styles.priceRow}>
-            <span className={styles.price}>
-              {formatCurrency(property.price)}
-              {property.operation === 'rent' && <span className={styles.priceSuffix}>/mês</span>}
-            </span>
-            {totalCost !== undefined && (
-              <span className={styles.totalPrice}>
-                Total {formatCurrency(totalCost)}/mês
-              </span>
-            )}
-          </div>
-
-          <p className={styles.typeLine}>
-            {TYPE_LABEL[property.type]} · {property.area} m²
-          </p>
-
-          <div className={styles.specs} aria-label="Especificações">
-            {property.bedrooms > 0 && (
-              <span>{property.bedrooms} {property.bedrooms === 1 ? 'quarto' : 'quartos'}</span>
-            )}
-            {property.bathrooms > 0 && (
-              <span>{property.bathrooms} {property.bathrooms === 1 ? 'banheiro' : 'banheiros'}</span>
-            )}
-            {property.parkingSpots > 0 && (
-              <span>{property.parkingSpots} {property.parkingSpots === 1 ? 'vaga' : 'vagas'}</span>
-            )}
-          </div>
-
-          <p className={styles.address}>
-            {property.address} — {property.neighborhood}, {property.city}
-          </p>
-        </Link>
-      </div>
+      <Link to={`/imoveis/${property.id}`} className={styles.body}>
+        <p className={styles.blurb}>{buildBlurb(property)}</p>
+        <p className={styles.price}>
+          {formatCurrency(property.price)}{' '}
+          <span className={styles.priceKind}>
+            {property.operation === 'rent' ? 'aluguel' : ''}
+          </span>
+        </p>
+        {totalCost !== undefined && (
+          <p className={styles.total}>{formatCurrency(totalCost)} total</p>
+        )}
+        <p className={styles.specs}>{specs}</p>
+        <p className={styles.address}>
+          {property.address}, {property.neighborhood}, {property.city}
+        </p>
+      </Link>
     </article>
-  )
-}
-
-function Chevron({ dir }: { dir: 'left' | 'right' }) {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      {dir === 'left' ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 18l6-6-6-6" />}
-    </svg>
   )
 }

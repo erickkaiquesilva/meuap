@@ -16,12 +16,13 @@ interface SortSelectProps {
 export function SortSelect({ value, onChange }: SortSelectProps) {
   return (
     <div className={styles.wrapper}>
-      <label htmlFor="sort-select" className={styles.label}>Ordenar por</label>
+      <label htmlFor="sort-select" className={styles.label}>↕</label>
       <select
         id="sort-select"
         className={styles.select}
         value={value || 'relevant'}
         onChange={(e) => onChange(e.target.value)}
+        aria-label="Ordenar resultados"
       >
         {SORT_OPTIONS.map((o) => (
           <option key={o.value} value={o.value}>{o.label}</option>
