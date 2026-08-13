@@ -4,6 +4,10 @@ export interface Property {
   type: 'apartment' | 'house' | 'commercial'
   operation: 'rent' | 'sale'
   price: number
+  /** Monthly costs breakdown — primarily for rental listings */
+  iptu?: number
+  fireInsurance?: number
+  serviceFee?: number
   city: string
   neighborhood: string
   address: string
