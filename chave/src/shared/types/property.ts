@@ -21,6 +21,9 @@ export interface Property {
   badge?: 'Novo' | 'Exclusivo' | 'Abaixo do mercado'
   createdAt: string
   amenities: string[]
+  /** Optional coordinates from backend; mock scatters around city when absent */
+  lat?: number
+  lng?: number
 }
 
 export interface PaginatedProperties {

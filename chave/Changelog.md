@@ -52,3 +52,4 @@
 - feat-T042: PropertyList vertical + ListingsPage reorganizada (sidebar sticky + lista + paginação)
 - feat-T043: Header — seletor de cidade e link Anunciar (stub); Changelog STORY-07 Fase 1
 - feat-T044: Listings QuintoAndar layout — SearchFilterBar com chips horizontais, grid 3 colunas, MapPanel mock sticky, NeighborhoodChips, scroll independente; mobile toggle lista/mapa
+- feat-T045: MapPanel — Google Maps JS API via VITE_GOOGLE_MAPS_API_KEY (markers com preço + clusters); fallback CSS mock quando a key estiver vazia
