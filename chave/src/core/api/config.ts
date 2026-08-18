@@ -3,6 +3,8 @@ export const appEnv = import.meta.env.VITE_ENV as 'production' | 'staging' | 'mo
 export const waNumber = import.meta.env.VITE_WA_NUMBER as string
 /** Browser Maps JS key — restrict by HTTP referrer in Google Cloud Console */
 export const googleMapsApiKey = (import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string | undefined) ?? ''
+/** OAuth Web client ID (public). Leave empty to use mock Google sign-in. */
+export const googleClientId = (import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined) ?? ''
 
 export const isMock = appEnv === 'mock'
 export const hasGoogleMaps = googleMapsApiKey.length > 0

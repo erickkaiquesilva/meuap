@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { AuthSplitLayout } from '../components/AuthSplitLayout/AuthSplitLayout'
+import { GoogleLoginButton } from '../components/GoogleLoginButton/GoogleLoginButton'
 import { Field, Input } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
 import styles from './LoginPage.module.css'
@@ -33,7 +34,7 @@ function validatePassword(value: string) {
 }
 
 export function LoginPage() {
-  const { login } = useAuth()
+  const { login, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
 
@@ -44,6 +45,11 @@ export function LoginPage() {
   const [passwordError, setPasswordError] = useState('')
   const [serverError, setServerError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  function redirectAfterLogin() {
+    const redirect = searchParams.get('redirect') ?? '/'
+    navigate(redirect, { replace: true })
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -58,8 +64,7 @@ export function LoginPage() {
     setIsSubmitting(true)
     try {
       await login(email, password)
-      const redirect = searchParams.get('redirect') ?? '/'
-      navigate(redirect, { replace: true })
+      redirectAfterLogin()
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message
@@ -153,6 +158,16 @@ export function LoginPage() {
         </form>
 
         <div className={styles.divider}>ou</div>
+
+        <GoogleLoginButton
+          disabled={isSubmitting}
+          onError={setServerError}
+          onSuccess={async (idToken) => {
+            setServerError('')
+            await loginWithGoogle(idToken)
+            redirectAfterLogin()
+          }}
+        />
 
         <p className={styles.registerLink}>
           Não tem uma conta?{' '}
