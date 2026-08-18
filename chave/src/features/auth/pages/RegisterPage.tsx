@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { AuthSplitLayout } from '../components/AuthSplitLayout/AuthSplitLayout'
 import { Field, Input } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
 import styles from './RegisterPage.module.css'
@@ -69,14 +70,13 @@ export function RegisterPage() {
   }
 
   return (
-    <main className={styles.page}>
-      <div className={styles.card}>
-        <div className={styles.logo}>
-          <div className={styles.logoMark} aria-hidden="true">C</div>
-          <span className={styles.logoName}>Chave</span>
-        </div>
-
-        <h1 className={styles.heading}>Crie sua conta</h1>
+    <AuthSplitLayout
+      title="Anuncie em minutos, não em formulários."
+      subtitle="Diga quem você é e o que precisa. Depois do pré-cadastro, o onboarding continua com você já dentro."
+      footer="Corretores, corretoras e proprietários · Maringá e Sarandi"
+    >
+      <div className={styles.panel}>
+        <h2 className={styles.heading}>Crie sua conta</h2>
         <p className={styles.subtitle}>Cadastre-se gratuitamente e encontre seu próximo imóvel</p>
 
         {serverError && (
@@ -182,6 +182,6 @@ export function RegisterPage() {
           <Link to="/entrar">Entrar</Link>
         </p>
       </div>
-    </main>
+    </AuthSplitLayout>
   )
 }

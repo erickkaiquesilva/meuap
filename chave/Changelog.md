@@ -55,3 +55,4 @@
 - feat-T045: MapPanel — Google Maps JS API via VITE_GOOGLE_MAPS_API_KEY (markers com preço + clusters); fallback CSS mock quando a key estiver vazia
 - feat-T046: MapPanel — hover balloon (foto + preço + specs), lista sincronizada com viewport (pan/zoom), geocode do endereço do anúncio (Geocoding API)
 - chore-T039: copy pública genérica — sem nomes de outros players de mercado no Changelog, README e análise de produto
+- feat-T047: AuthSplitLayout full-bleed (marca | formulário) em /cadastro e /entrar; rotas sem Header/Footer

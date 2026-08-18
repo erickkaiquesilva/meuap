@@ -59,7 +59,7 @@ import { Avatar } from '@/shared/components/Avatar/Avatar'
 
 ### Header / Footer
 
-Both are in `src/shared/components/` and composed in `Layout.tsx`. Do not import directly in pages — they're always present via the Layout route wrapper.
+Both are in `src/shared/components/` and composed in `Layout.tsx`. Do not import them in feature pages. `/entrar` and `/cadastro` sit **outside** Layout (full-bleed `AuthSplitLayout`, no Header/Footer).
 
 ### Layout
 
