@@ -1,74 +1,26 @@
-.page {
-  min-height: calc(100vh - 64px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--sp-8) var(--sp-4);
-  background: linear-gradient(160deg, var(--primary-50) 0%, var(--neutral-50) 60%, var(--secondary-100) 100%);
-}
-
-.card {
-  background: var(--neutral-0);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
-  padding: var(--sp-7) var(--sp-6);
+.panel {
   width: 100%;
-  max-width: 440px;
 }
 
-/* ── Logo ── */
-.logo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--sp-2);
-  margin-bottom: var(--sp-5);
-  text-align: center;
-}
-
-.logoMark {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--primary-400), var(--primary-700));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font: 800 24px/1 var(--font-display);
-  letter-spacing: -1px;
-  box-shadow: var(--shadow-md);
-}
-
-.logoName {
-  font: 800 22px/1 var(--font-display);
-  color: var(--neutral-900);
-  letter-spacing: -0.5px;
-}
-
-/* ── Headings ── */
 .heading {
-  font: 700 20px/1.2 var(--font-display);
+  font: 800 26px/1.2 var(--font-display);
   color: var(--neutral-800);
-  text-align: center;
+  letter-spacing: -0.5px;
   margin-bottom: var(--sp-1);
 }
 
 .subtitle {
   font: 400 14px/1.4 var(--font-ui);
   color: var(--neutral-500);
-  text-align: center;
-  margin-bottom: var(--sp-5);
+  margin-bottom: var(--sp-6);
 }
 
-/* ── Form ── */
 .form {
   display: flex;
   flex-direction: column;
   gap: var(--sp-4);
 }
 
-/* ── Eye toggle (inside DS .control flex row) ── */
 .eyeToggle {
   flex: none;
   background: none;
@@ -92,11 +44,9 @@
   outline-offset: 2px;
 }
 
-/* ── Terms ── */
 .terms {
   font: 400 12px/1.5 var(--font-ui);
   color: var(--neutral-500);
-  text-align: center;
   margin-top: calc(var(--sp-1) * -1);
 }
 
@@ -109,7 +59,6 @@
   text-decoration: underline;
 }
 
-/* ── Server error ── */
 .serverError {
   display: flex;
   align-items: center;
@@ -123,13 +72,11 @@
   margin-bottom: var(--sp-2);
 }
 
-/* ── Submit button ── */
 .submitBtn {
   width: 100%;
   justify-content: center;
 }
 
-/* ── Divider ── */
 .divider {
   display: flex;
   align-items: center;
@@ -147,7 +94,6 @@
   background: var(--neutral-200);
 }
 
-/* ── Login link ── */
 .loginLink {
   text-align: center;
   font: 400 14px/1 var(--font-ui);
@@ -163,20 +109,4 @@
 .loginLink a:hover {
   text-decoration: underline;
   color: var(--primary-700);
-}
-
-/* ── Mobile ── */
-@media (max-width: 480px) {
-  .page {
-    align-items: flex-start;
-    padding: 0;
-    background: var(--neutral-0);
-  }
-
-  .card {
-    border-radius: 0;
-    box-shadow: none;
-    padding: var(--sp-6) var(--sp-5);
-    min-height: 100vh;
-  }
 }

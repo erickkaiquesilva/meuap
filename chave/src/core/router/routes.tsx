@@ -24,13 +24,13 @@ function NotFoundPage() {
 }
 
 export const router = createBrowserRouter([
+  { path: 'entrar', element: <LoginPage /> },
+  { path: 'cadastro', element: <RegisterPage /> },
   {
     path: '/',
     element: <Layout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'entrar', element: <LoginPage /> },
-      { path: 'cadastro', element: <RegisterPage /> },
       { path: 'recuperar-senha', element: <ForgotPasswordPage /> },
       { path: 'imoveis', element: <ListingsPage /> },
       { path: 'imoveis/:id', element: <PropertyPage /> },
