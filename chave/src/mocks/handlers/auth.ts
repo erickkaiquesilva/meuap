@@ -68,6 +68,16 @@ export const authHandlers = [
     return HttpResponse.json({ token: MOCK_TOKEN, user: sessionUser })
   }),
 
+  http.post('/api/auth/google', async () => {
+    sessionUser = makeMockUser({
+      name: 'Conta Google',
+      email: 'google.user@chave.com.br',
+      id: 'user-google',
+      onboardingComplete: true,
+    })
+    return HttpResponse.json({ token: MOCK_TOKEN, user: sessionUser })
+  }),
+
   http.post('/api/auth/register', async ({ request }) => {
     const body = await request.json() as {
       name?: string

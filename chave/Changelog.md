@@ -57,3 +57,4 @@
 - chore-T039: copy pública genérica — sem nomes de outros players de mercado no Changelog, README e análise de produto
 - feat-T047: AuthSplitLayout full-bleed (marca | formulário) em /cadastro e /entrar; rotas sem Header/Footer
 - feat-T048: pré-cadastro — perfil (corretor/corretora/proprietário), intenção vender/alugar, força de senha; User com onboardingComplete
+- feat-T049: login com Conta Google em /entrar (GIS se VITE_GOOGLE_CLIENT_ID; mock MSW se vazio); cadastro permanece e-mail/senha

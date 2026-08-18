@@ -12,6 +12,16 @@ export async function apiLogin(
   return data
 }
 
+export async function apiLoginWithGoogle(
+  idToken?: string,
+): Promise<{ token: string; user: User }> {
+  const { data } = await apiClient.post<{ token: string; user: User }>(
+    '/api/auth/google',
+    idToken ? { idToken } : { provider: 'google' },
+  )
+  return data
+}
+
 export async function apiRegister(
   payload: RegisterPayload,
 ): Promise<{ token: string; user: User }> {
