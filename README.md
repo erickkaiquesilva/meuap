@@ -1,6 +1,6 @@
 # Chave Imóveis — Design System & Protótipo
 
-Site de imóveis para **Sarandi e Maringá-PR**, desenvolvido do zero com design system próprio. O projeto nasce como resposta aos gaps de UX dos concorrentes locais (Granado Imóveis e Pedro Granado) e como aplicação prática de padrões de proptechs nacionais (QuintoAndar, Loft, Airbnb) em um contexto de mercado local.
+Site de imóveis para **Sarandi e Maringá-PR**, desenvolvido do zero com design system próprio.
 
 ---
 
@@ -36,10 +36,10 @@ meuap/
 │   ├── index.html              # design system navegável + protótipo de home
 │   └── analise-produto-design.md  # análise de produto (diagnóstico + decisões)
 ├── referencias/
-│   ├── airbnb.com.br/          # capturas de tela do Airbnb
-│   ├── quintoandar.com.br/     # capturas de tela do QuintoAndar
-│   ├── loft.com.br/            # capturas de tela do Loft
-│   ├── concorrentes/           # análise dos concorrentes locais
+│   ├── airbnb.com.br/          # capturas de tela de referência
+│   ├── quintoandar.com.br/     # capturas de tela de referência
+│   ├── loft.com.br/            # capturas de tela de referência
+│   ├── concorrentes/           # análise de mercado local
 │   ├── img-reference/          # referências adicionais de layout
 │   └── zips/                   # arquivos compactados de referência
 └── README.md

@@ -3,6 +3,7 @@ import type { PaginatedProperties, SearchFilters } from '@/shared/types/property
 
 export async function fetchListings(
   filters: SearchFilters,
+  options?: { limit?: number },
 ): Promise<PaginatedProperties> {
   const params = new URLSearchParams()
 
@@ -13,9 +14,14 @@ export async function fetchListings(
   if (filters.maxPrice) params.set('maxPrice', filters.maxPrice)
   if (filters.minPrice) params.set('minPrice', filters.minPrice)
   if (filters.bedrooms) params.set('bedrooms', filters.bedrooms)
+  if (filters.bathrooms) params.set('bathrooms', filters.bathrooms)
+  if (filters.parkingSpots) params.set('parkingSpots', filters.parkingSpots)
+  if (filters.minArea) params.set('minArea', filters.minArea)
+  if (filters.maxArea) params.set('maxArea', filters.maxArea)
+  if (filters.amenities) params.set('amenities', filters.amenities)
   if (filters.sort) params.set('sort', filters.sort)
   if (filters.page) params.set('page', filters.page)
-  params.set('limit', '12')
+  params.set('limit', String(options?.limit ?? 12))
 
   const { data } = await apiClient.get<PaginatedProperties>(
     `/api/properties?${params.toString()}`,

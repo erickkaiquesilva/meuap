@@ -17,6 +17,12 @@ export const propertyHandlers = [
     const maxPrice = url.searchParams.get('maxPrice')
     const minPrice = url.searchParams.get('minPrice')
     const bedrooms = url.searchParams.get('bedrooms')
+    const bathrooms = url.searchParams.get('bathrooms')
+    const parkingSpots = url.searchParams.get('parkingSpots')
+    const minArea = url.searchParams.get('minArea')
+    const maxArea = url.searchParams.get('maxArea')
+    const amenitiesRaw = url.searchParams.get('amenities')
+    const amenities = amenitiesRaw ? amenitiesRaw.split(',').filter(Boolean) : []
     const sort = url.searchParams.get('sort') ?? 'relevant'
     const page = parseInt(url.searchParams.get('page') ?? '1', 10)
     const limit = parseInt(url.searchParams.get('limit') ?? '12', 10)
@@ -26,10 +32,29 @@ export const propertyHandlers = [
     if (operation) results = results.filter((p) => p.operation === operation)
     if (city) results = results.filter((p) => p.city === city)
     if (neighborhood) results = results.filter((p) => p.neighborhood === neighborhood)
-    if (type) results = results.filter((p) => p.type === type)
+
+    // type=studio → apartments with area ≤ 40 m² (kitnet/studio)
+    if (type === 'studio') {
+      results = results.filter((p) => p.type === 'apartment' && p.area <= 40)
+    } else if (type) {
+      results = results.filter((p) => p.type === type)
+    }
+
     if (maxPrice) results = results.filter((p) => p.price <= Number(maxPrice))
     if (minPrice) results = results.filter((p) => p.price >= Number(minPrice))
     if (bedrooms) results = results.filter((p) => p.bedrooms >= Number(bedrooms))
+    if (bathrooms) results = results.filter((p) => p.bathrooms >= Number(bathrooms))
+    if (parkingSpots) results = results.filter((p) => p.parkingSpots >= Number(parkingSpots))
+    if (minArea) results = results.filter((p) => p.area >= Number(minArea))
+    if (maxArea) results = results.filter((p) => p.area <= Number(maxArea))
+
+    if (amenities.length > 0) {
+      results = results.filter((p) =>
+        amenities.every((a) =>
+          p.amenities.some((pa) => pa.toLowerCase().includes(a.toLowerCase())),
+        ),
+      )
+    }
 
     switch (sort) {
       case 'price-asc':
@@ -48,9 +73,18 @@ export const propertyHandlers = [
 
     const total = results.length
     const totalPages = Math.ceil(total / limit)
-    const data = results.slice((page - 1) * limit, page * limit)
+    const pageData = results.slice((page - 1) * limit, page * limit).map((p) =>
+      p.operation === 'rent'
+        ? {
+            ...p,
+            iptu: Math.round(p.price * 0.12),
+            fireInsurance: Math.round(p.price * 0.03),
+            serviceFee: Math.round(p.price * 0.08),
+          }
+        : p,
+    )
 
-    return HttpResponse.json({ data, total, page, limit, totalPages })
+    return HttpResponse.json({ data: pageData, total, page, limit, totalPages })
   }),
 
   http.get('/api/properties/:id', ({ params }) => {

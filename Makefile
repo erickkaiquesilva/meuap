@@ -60,15 +60,11 @@ check-node:
 		printf "$(YELLOW)⚠ Node.js $$node_version detectado. Recomendamos v20+.$(RESET)\n"; \
 	fi
 
-## Instala dependências se necessário
+## Instala / atualiza dependências (sempre roda npm install — pega pacotes novos do package.json)
 install: check-node
-	@if [ ! -f "$(NODE_MODULES)" ]; then \
-		printf "$(CYAN)→ Instalando dependências em $(APP_DIR)/...$(RESET)\n"; \
-		cd $(APP_DIR) && npm install; \
-		printf "$(GREEN)✓ Dependências instaladas.$(RESET)\n"; \
-	else \
-		printf "$(GREEN)✓ Dependências já instaladas.$(RESET)\n"; \
-	fi
+	@printf "$(CYAN)→ Instalando dependências em $(APP_DIR)/...$(RESET)\n"
+	@cd $(APP_DIR) && npm install
+	@printf "$(GREEN)✓ Dependências instaladas.$(RESET)\n"
 
 ## Inicia o servidor de desenvolvimento (pergunta o ambiente)
 start: install
