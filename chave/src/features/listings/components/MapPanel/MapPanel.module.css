@@ -270,7 +270,6 @@
   overflow: hidden !important;
 }
 
-.panel :global(.gm-style-iw-tc),
 .panel :global(.gm-ui-hover-effect) {
-  /* keep close button accessible */
+  display: none !important;
 }
