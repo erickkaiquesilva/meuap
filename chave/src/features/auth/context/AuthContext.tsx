@@ -6,10 +6,9 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import type { AuthContextValue, User } from '../types/auth'
+import type { AuthContextValue, RegisterPayload, User } from '../types/auth'
 import { apiGetMe, apiLogin, apiLogout, apiRegister } from '../services/authApi'
-
-const TOKEN_KEY = 'chave:token'
+import { clearAuthToken, getAuthToken, setAuthToken } from '@/core/api/tokenStorage'
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
@@ -18,32 +17,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY)
+    const token = getAuthToken()
     if (!token) {
       setIsLoading(false)
       return
     }
     apiGetMe()
       .then(setUser)
-      .catch(() => localStorage.removeItem(TOKEN_KEY))
+      .catch(() => clearAuthToken())
       .finally(() => setIsLoading(false))
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {
     const { token, user: me } = await apiLogin(email, password)
-    localStorage.setItem(TOKEN_KEY, token)
+    setAuthToken(token)
     setUser(me)
   }, [])
 
-  const register = useCallback(async (name: string, email: string, password: string) => {
-    const { token, user: me } = await apiRegister(name, email, password)
-    localStorage.setItem(TOKEN_KEY, token)
+  const register = useCallback(async (payload: RegisterPayload) => {
+    const { token, user: me } = await apiRegister(payload)
+    setAuthToken(token)
     setUser(me)
   }, [])
 
   const logout = useCallback(async () => {
     await apiLogout().catch(() => {})
-    localStorage.removeItem(TOKEN_KEY)
+    clearAuthToken()
     setUser(null)
   }, [])
 

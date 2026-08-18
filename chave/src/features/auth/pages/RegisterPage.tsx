@@ -2,9 +2,23 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { AuthSplitLayout } from '../components/AuthSplitLayout/AuthSplitLayout'
+import { PasswordStrengthMeter } from '../components/PasswordStrengthMeter/PasswordStrengthMeter'
 import { Field, Input } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
+import { scorePassword } from '../utils/passwordStrength'
+import type { ListingIntent, UserRole } from '../types/auth'
 import styles from './RegisterPage.module.css'
+
+const ROLES: { value: UserRole; label: string }[] = [
+  { value: 'corretor', label: 'Corretor' },
+  { value: 'corretora', label: 'Corretora' },
+  { value: 'proprietario', label: 'Proprietário' },
+]
+
+const INTENTS: { value: ListingIntent; label: string }[] = [
+  { value: 'sell', label: 'Vender' },
+  { value: 'rent', label: 'Alugar' },
+]
 
 function EyeIcon({ open }: { open: boolean }) {
   return open ? (
@@ -20,16 +34,22 @@ function EyeIcon({ open }: { open: boolean }) {
   )
 }
 
-function validate(name: string, email: string, password: string, confirm: string) {
-  const errors = { name: '', email: '', password: '', confirm: '' }
+function validate(
+  role: UserRole | null,
+  intent: ListingIntent[],
+  name: string,
+  email: string,
+  password: string,
+) {
+  const errors = { role: '', intent: '', name: '', email: '', password: '' }
+  if (!role) errors.role = 'Selecione se você é corretor, corretora ou proprietário'
+  if (intent.length === 0) errors.intent = 'Selecione se quer vender, alugar ou ambos'
   if (!name.trim()) errors.name = 'Nome é obrigatório'
   else if (name.trim().length < 2) errors.name = 'Nome muito curto'
   if (!email.trim()) errors.email = 'E-mail é obrigatório'
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'E-mail inválido'
   if (!password) errors.password = 'Senha é obrigatória'
-  else if (password.length < 6) errors.password = 'Mínimo 6 caracteres'
-  if (!confirm) errors.confirm = 'Confirme a senha'
-  else if (confirm !== password) errors.confirm = 'As senhas não coincidem'
+  else if (!scorePassword(password).canSubmit) errors.password = 'Senha fraca demais'
   return errors
 }
 
@@ -37,27 +57,40 @@ export function RegisterPage() {
   const { register } = useAuth()
   const navigate = useNavigate()
 
+  const [role, setRole] = useState<UserRole | null>(null)
+  const [intent, setIntent] = useState<ListingIntent[]>([])
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [confirm, setConfirm] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [showConfirm, setShowConfirm] = useState(false)
-  const [errors, setErrors] = useState({ name: '', email: '', password: '', confirm: '' })
+  const [errors, setErrors] = useState({ role: '', intent: '', name: '', email: '', password: '' })
   const [serverError, setServerError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  function toggleIntent(value: ListingIntent) {
+    setIntent((prev) => (
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+    ))
+    setErrors((p) => ({ ...p, intent: '' }))
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setServerError('')
 
-    const errs = validate(name, email, password, confirm)
+    const errs = validate(role, intent, name, email, password)
     setErrors(errs)
-    if (Object.values(errs).some(Boolean)) return
+    if (Object.values(errs).some(Boolean) || !role) return
 
     setIsSubmitting(true)
     try {
-      await register(name.trim(), email, password)
+      await register({
+        name: name.trim(),
+        email,
+        password,
+        role,
+        intent,
+      })
       navigate('/', { replace: true })
     } catch (err: unknown) {
       const message =
@@ -76,8 +109,8 @@ export function RegisterPage() {
       footer="Corretores, corretoras e proprietários · Maringá e Sarandi"
     >
       <div className={styles.panel}>
-        <h2 className={styles.heading}>Crie sua conta</h2>
-        <p className={styles.subtitle}>Cadastre-se gratuitamente e encontre seu próximo imóvel</p>
+        <h2 className={styles.heading}>Criar conta</h2>
+        <p className={styles.subtitle}>Pré-cadastro rápido. Completamos o perfil depois.</p>
 
         {serverError && (
           <div className={styles.serverError} role="alert">
@@ -91,14 +124,56 @@ export function RegisterPage() {
         )}
 
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
-          <Field label="Nome completo" htmlFor="reg-name" error={errors.name}>
+          <fieldset className={`${styles.choiceGroup} ${errors.role ? styles.choiceError : ''}`}>
+            <legend>Você é</legend>
+            <div role="radiogroup" aria-label="Você é" className={styles.chips}>
+              {ROLES.map(({ value, label }) => (
+                <button
+                  key={value}
+                  type="button"
+                  role="radio"
+                  aria-checked={role === value}
+                  className={`chip ${role === value ? 'active' : ''}`}
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    setRole(value)
+                    setErrors((p) => ({ ...p, role: '' }))
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            {errors.role ? <p className={styles.choiceHint} role="alert">{errors.role}</p> : null}
+          </fieldset>
+
+          <fieldset className={`${styles.choiceGroup} ${errors.intent ? styles.choiceError : ''}`}>
+            <legend>Quer</legend>
+            <div className={styles.chips}>
+              {INTENTS.map(({ value, label }) => (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={intent.includes(value)}
+                  className={`chip ${intent.includes(value) ? 'active' : ''}`}
+                  disabled={isSubmitting}
+                  onClick={() => toggleIntent(value)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            {errors.intent ? <p className={styles.choiceHint} role="alert">{errors.intent}</p> : null}
+          </fieldset>
+
+          <Field label="Nome" htmlFor="reg-name" error={errors.name}>
             <Input
               id="reg-name"
               type="text"
               value={name}
               onChange={(e) => { setName(e.target.value); setErrors((p) => ({ ...p, name: '' })) }}
-              onBlur={() => setErrors((p) => ({ ...p, name: validate(name, email, password, confirm).name }))}
-              placeholder="Seu nome completo"
+              onBlur={() => setErrors((p) => ({ ...p, name: validate(role, intent, name, email, password).name }))}
+              placeholder="Como devemos te chamar"
               autoComplete="name"
               disabled={isSubmitting}
             />
@@ -110,54 +185,37 @@ export function RegisterPage() {
               type="email"
               value={email}
               onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: '' })) }}
-              onBlur={() => setErrors((p) => ({ ...p, email: validate(name, email, password, confirm).email }))}
+              onBlur={() => setErrors((p) => ({ ...p, email: validate(role, intent, name, email, password).email }))}
               placeholder="seu@email.com"
               autoComplete="email"
               disabled={isSubmitting}
             />
           </Field>
 
-          <Field label="Senha" htmlFor="reg-password" error={errors.password}>
-            <Input
-              id="reg-password"
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: '' })) }}
-              onBlur={() => setErrors((p) => ({ ...p, password: validate(name, email, password, confirm).password }))}
-              placeholder="Mínimo 6 caracteres"
-              autoComplete="new-password"
-              disabled={isSubmitting}
-            />
-            <button
-              type="button"
-              className={styles.eyeToggle}
-              aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-              onClick={() => setShowPassword((v) => !v)}
-            >
-              <EyeIcon open={showPassword} />
-            </button>
-          </Field>
-
-          <Field label="Confirmar senha" htmlFor="reg-confirm" error={errors.confirm}>
-            <Input
-              id="reg-confirm"
-              type={showConfirm ? 'text' : 'password'}
-              value={confirm}
-              onChange={(e) => { setConfirm(e.target.value); setErrors((p) => ({ ...p, confirm: '' })) }}
-              onBlur={() => setErrors((p) => ({ ...p, confirm: validate(name, email, password, confirm).confirm }))}
-              placeholder="Repita a senha"
-              autoComplete="new-password"
-              disabled={isSubmitting}
-            />
-            <button
-              type="button"
-              className={styles.eyeToggle}
-              aria-label={showConfirm ? 'Ocultar confirmação' : 'Mostrar confirmação'}
-              onClick={() => setShowConfirm((v) => !v)}
-            >
-              <EyeIcon open={showConfirm} />
-            </button>
-          </Field>
+          <div>
+            <Field label="Senha" htmlFor="reg-password" error={errors.password}>
+              <Input
+                id="reg-password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: '' })) }}
+                onBlur={() => setErrors((p) => ({ ...p, password: validate(role, intent, name, email, password).password }))}
+                placeholder="Crie uma senha"
+                autoComplete="new-password"
+                aria-describedby="reg-password-strength"
+                disabled={isSubmitting}
+              />
+              <button
+                type="button"
+                className={styles.eyeToggle}
+                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                onClick={() => setShowPassword((v) => !v)}
+              >
+                <EyeIcon open={showPassword} />
+              </button>
+            </Field>
+            <PasswordStrengthMeter id="reg-password-strength" password={password} />
+          </div>
 
           <p className={styles.terms}>
             Ao criar uma conta, você concorda com os{' '}

@@ -21,6 +21,41 @@
   gap: var(--sp-4);
 }
 
+.choiceGroup {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.choiceGroup legend {
+  font: 600 12px/1 var(--font-ui);
+  color: var(--neutral-600);
+  margin-bottom: 8px;
+  padding: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chips :global(.chip):focus-visible {
+  outline: 2px solid var(--primary-400);
+  outline-offset: 2px;
+}
+
+.choiceHint {
+  font: 500 12px/1.4 var(--font-ui);
+  color: var(--error-500);
+  margin-top: 8px;
+}
+
+.choiceError legend {
+  color: var(--error-500);
+}
+
 .eyeToggle {
   flex: none;
   background: none;
