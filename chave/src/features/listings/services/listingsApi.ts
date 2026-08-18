@@ -3,6 +3,7 @@ import type { PaginatedProperties, SearchFilters } from '@/shared/types/property
 
 export async function fetchListings(
   filters: SearchFilters,
+  options?: { limit?: number },
 ): Promise<PaginatedProperties> {
   const params = new URLSearchParams()
 
@@ -20,7 +21,7 @@ export async function fetchListings(
   if (filters.amenities) params.set('amenities', filters.amenities)
   if (filters.sort) params.set('sort', filters.sort)
   if (filters.page) params.set('page', filters.page)
-  params.set('limit', '12')
+  params.set('limit', String(options?.limit ?? 12))
 
   const { data } = await apiClient.get<PaginatedProperties>(
     `/api/properties?${params.toString()}`,

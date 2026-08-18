@@ -74,3 +74,13 @@ export function useListings(filters: SearchFilters) {
     placeholderData: (prev) => prev,
   })
 }
+
+/** Larger unpaged set for the map + viewport-synced list */
+export function useMapListings(filters: SearchFilters) {
+  const { page: _page, ...mapFilters } = filters
+  return useQuery({
+    queryKey: ['listings-map', mapFilters],
+    queryFn: () => fetchListings({ ...mapFilters, page: '1' }, { limit: 80 }),
+    placeholderData: (prev) => prev,
+  })
+}

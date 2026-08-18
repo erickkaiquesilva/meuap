@@ -1,12 +1,11 @@
-import { useCallback, useMemo, useState } from 'react'
-import { GoogleMap, Marker, MarkerClusterer, useJsApiLoader } from '@react-google-maps/api'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { GoogleMap, InfoWindow, Marker, MarkerClusterer, useJsApiLoader } from '@react-google-maps/api'
+import { Link } from 'react-router-dom'
 import type { Property } from '@/shared/types/property'
 import { googleMapsApiKey, hasGoogleMaps } from '@/core/api/config'
-import {
-  formatMapPrice,
-  getCityCenter,
-  getPropertyCoords,
-} from '@/shared/utils/propertyCoords'
+import { formatCurrency } from '@/shared/utils/formatCurrency'
+import { formatMapPrice, getCityCenter } from '@/shared/utils/propertyCoords'
+import { useGeocodedMarkers, type MarkerPoint } from '../../hooks/useGeocodedMarkers'
 import styles from './MapPanel.module.css'
 
 interface MapPanelProps {
@@ -15,6 +14,7 @@ interface MapPanelProps {
   neighborhood?: string
   typeLabel?: string
   onClearType?: () => void
+  onVisibleChange?: (ids: string[]) => void
 }
 
 const MAP_OPTIONS: google.maps.MapOptions = {
@@ -131,42 +131,106 @@ function MapOverlays({
   )
 }
 
+function HoverBalloon({ property }: { property: Property }) {
+  const photo = property.photos[0]
+  const specs = [
+    `${property.area} m²`,
+    property.bedrooms > 0 ? `${property.bedrooms} ${property.bedrooms === 1 ? 'quarto' : 'quartos'}` : null,
+    property.parkingSpots > 0 ? `${property.parkingSpots} ${property.parkingSpots === 1 ? 'vaga' : 'vagas'}` : null,
+  ].filter(Boolean).join(' · ')
+
+  return (
+    <Link to={`/imoveis/${property.id}`} className={styles.balloon}>
+      {photo ? (
+        <img src={photo} alt="" className={styles.balloonPhoto} />
+      ) : (
+        <div className={styles.balloonPhotoFallback} />
+      )}
+      <div className={styles.balloonBody}>
+        <p className={styles.balloonPrice}>
+          {formatCurrency(property.price)}
+          {property.operation === 'rent' ? ' aluguel' : ''}
+        </p>
+        <p className={styles.balloonTitle}>{property.title}</p>
+        <p className={styles.balloonSpecs}>{specs}</p>
+        <p className={styles.balloonAddr}>
+          {property.address}, {property.neighborhood}
+        </p>
+      </div>
+    </Link>
+  )
+}
+
+function emitVisible(map: google.maps.Map, points: MarkerPoint[], onVisibleChange?: (ids: string[]) => void) {
+  const bounds = map.getBounds()
+  if (!bounds || !onVisibleChange) return
+  const ids = points
+    .filter(({ position }) => bounds.contains(new google.maps.LatLng(position.lat, position.lng)))
+    .map(({ property }) => property.id)
+  onVisibleChange(ids)
+}
+
 function GoogleMapPanel({
   properties,
   city,
   neighborhood,
   typeLabel,
   onClearType,
+  onVisibleChange,
 }: MapPanelProps) {
   const [map, setMap] = useState<google.maps.Map | null>(null)
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const hideTimer = useRef<number | null>(null)
+  const fittedKey = useRef<string>('')
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'chave-google-maps',
     googleMapsApiKey,
   })
 
-  const center = useMemo(() => getCityCenter(city), [city])
-  const markers = useMemo(
-    () => properties.map((p) => ({ property: p, position: getPropertyCoords(p) })),
-    [properties],
-  )
+  const { points, ready } = useGeocodedMarkers(properties, isLoaded && !loadError)
+  const center = getCityCenter(city)
+  const hovered = points.find((p) => p.property.id === hoveredId)
+
+  const reportVisible = useCallback((m: google.maps.Map | null) => {
+    if (!m) return
+    emitVisible(m, points, onVisibleChange)
+  }, [points, onVisibleChange])
 
   const onLoad = useCallback((m: google.maps.Map) => {
     setMap(m)
-    if (markers.length === 0) {
-      m.setCenter(center)
-      m.setZoom(13)
-      return
-    }
-    const bounds = new google.maps.LatLngBounds()
-    markers.forEach(({ position }) => bounds.extend(position))
-    bounds.extend(center)
-    m.fitBounds(bounds, 48)
-  }, [center, markers])
+    m.setCenter(center)
+    m.setZoom(13)
+  }, [center])
 
   const onUnmount = useCallback(() => setMap(null), [])
 
+  // Fit once after addresses are geocoded for this listing set
+  useEffect(() => {
+    if (!map || !ready || points.length === 0) return
+    const key = points.map((p) => p.property.id).join(',')
+    if (fittedKey.current === key) {
+      reportVisible(map)
+      return
+    }
+    fittedKey.current = key
+    const bounds = new google.maps.LatLngBounds()
+    points.forEach(({ position }) => bounds.extend(position))
+    map.fitBounds(bounds, 48)
+    window.setTimeout(() => reportVisible(map), 350)
+  }, [map, points, ready, reportVisible])
+
   function handleDraw() {
     window.alert('Desenhar área de busca estará disponível em breve.')
+  }
+
+  function showBalloon(id: string) {
+    if (hideTimer.current) window.clearTimeout(hideTimer.current)
+    setHoveredId(id)
+  }
+
+  function scheduleHideBalloon() {
+    if (hideTimer.current) window.clearTimeout(hideTimer.current)
+    hideTimer.current = window.setTimeout(() => setHoveredId(null), 280)
   }
 
   if (loadError) {
@@ -207,24 +271,12 @@ function GoogleMapPanel({
         options={MAP_OPTIONS}
         onLoad={onLoad}
         onUnmount={onUnmount}
+        onIdle={() => reportVisible(map)}
       >
-        <Marker
-          position={center}
-          title={city ?? 'Centro da busca'}
-          icon={{
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 9,
-            fillColor: '#e53935',
-            fillOpacity: 1,
-            strokeColor: '#ffffff',
-            strokeWeight: 2,
-          }}
-        />
-
         <MarkerClusterer>
           {(clusterer) => (
             <>
-              {markers.map(({ property, position }) => (
+              {points.map(({ property, position }) => (
                 <Marker
                   key={property.id}
                   position={position}
@@ -239,12 +291,14 @@ function GoogleMapPanel({
                   icon={{
                     path: google.maps.SymbolPath.CIRCLE,
                     scale: 18,
-                    fillColor: '#ffffff',
+                    fillColor: hoveredId === property.id ? '#eff6ff' : '#ffffff',
                     fillOpacity: 1,
                     strokeColor: '#2563eb',
-                    strokeWeight: 2,
+                    strokeWeight: hoveredId === property.id ? 3 : 2,
                     labelOrigin: new google.maps.Point(0, 0),
                   }}
+                  onMouseOver={() => showBalloon(property.id)}
+                  onMouseOut={scheduleHideBalloon}
                   onClick={() => {
                     window.location.assign(`/imoveis/${property.id}`)
                   }}
@@ -253,6 +307,21 @@ function GoogleMapPanel({
             </>
           )}
         </MarkerClusterer>
+
+        {hovered && (
+          <InfoWindow
+            position={hovered.position}
+            options={{ disableAutoPan: true, pixelOffset: new google.maps.Size(0, -36) }}
+            onCloseClick={() => setHoveredId(null)}
+          >
+            <div
+              onMouseEnter={() => showBalloon(hovered.property.id)}
+              onMouseLeave={scheduleHideBalloon}
+            >
+              <HoverBalloon property={hovered.property} />
+            </div>
+          </InfoWindow>
+        )}
       </GoogleMap>
 
       <MapOverlays

@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
-import { useListings, useListingsFilters } from '../hooks/useListings'
+import { useListingsFilters, useMapListings } from '../hooks/useListings'
 import { SearchFilterBar } from '../components/SearchFilterBar/SearchFilterBar'
 import { PropertyResultsGrid } from '../components/PropertyResultsGrid/PropertyResultsGrid'
 import { MapPanel } from '../components/MapPanel/MapPanel'
 import { NeighborhoodChips } from '../components/NeighborhoodChips/NeighborhoodChips'
-import { Pagination } from '../components/Pagination/Pagination'
 import { SortSelect } from '../components/SortSelect/SortSelect'
 import { mockNeighborhoods } from '@/mocks/data/neighborhoods'
 import { mockProperties } from '@/mocks/data/properties'
+import { hasGoogleMaps } from '@/core/api/config'
 import styles from './ListingsPage.module.css'
 
 const TYPE_LABEL: Record<string, string> = {
@@ -25,14 +25,17 @@ function resultNoun(type?: string): string {
 }
 
 export function ListingsPage() {
-  const { filters, setFilters, setPage, resetFilters } = useListingsFilters()
-  const { data, isLoading, isError, refetch } = useListings(filters)
+  const { filters, setFilters, resetFilters } = useListingsFilters()
+  const { data, isLoading, isError, refetch } = useMapListings(filters)
   const [mobileView, setMobileView] = useState<'list' | 'map'>('list')
+  const [visibleIds, setVisibleIds] = useState<string[] | null>(null)
 
-  const page = Number(filters.page ?? 1)
-  const total = data?.total ?? 0
-  const totalPages = data?.totalPages ?? 0
-  const properties = data?.data ?? []
+  const allProperties = data?.data ?? []
+  const properties = useMemo(() => {
+    if (!hasGoogleMaps || !visibleIds) return allProperties
+    const set = new Set(visibleIds)
+    return allProperties.filter((p) => set.has(p.id))
+  }, [allProperties, visibleIds])
 
   const city = filters.city ?? 'Maringá'
   const neighborhood = filters.neighborhood
@@ -47,6 +50,7 @@ export function ListingsPage() {
     if (neighborhood && filters.city) parts.push(`em ${neighborhood}, ${filters.city}, PR`)
     else if (filters.city) parts.push(`em ${filters.city}, PR`)
     else parts.push('em Maringá e Sarandi, PR')
+    if (hasGoogleMaps) parts.push('· visíveis no mapa')
     return parts.join(' ')
   })()
 
@@ -69,7 +73,10 @@ export function ListingsPage() {
     <div className={styles.page}>
       <SearchFilterBar
         filters={filters}
-        onFilterChange={setFilters}
+        onFilterChange={(next) => {
+          setVisibleIds(null)
+          setFilters(next)
+        }}
         locationPlaceholder={locationPlaceholder}
       />
 
@@ -91,7 +98,6 @@ export function ListingsPage() {
       </div>
 
       <div className={styles.split}>
-        {/* Left: results (independent scroll) */}
         <section
           className={`${styles.resultsCol} ${mobileView === 'map' ? styles.hideOnMobile : ''}`}
           aria-label="Resultados da busca"
@@ -100,7 +106,7 @@ export function ListingsPage() {
             <header className={styles.resultsHead}>
               <div>
                 <h1 className={styles.resultsTitle}>
-                  {isLoading ? '…' : total} {resultNoun(filters.type)}
+                  {isLoading ? '…' : properties.length} {resultNoun(filters.type)}
                 </h1>
                 <p className={styles.resultsSub}>{subtitleClean}</p>
               </div>
@@ -117,32 +123,30 @@ export function ListingsPage() {
               onRetry={() => refetch()}
             />
 
-            <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
-
             <NeighborhoodChips
               currentNeighborhood={neighborhood}
               items={nearby}
             />
 
             {Object.keys(filters).some((k) => k !== 'page' && filters[k as keyof typeof filters]) && (
-              <button type="button" className={styles.clearLink} onClick={resetFilters}>
+              <button type="button" className={styles.clearLink} onClick={() => { setVisibleIds(null); resetFilters() }}>
                 Limpar todos os filtros
               </button>
             )}
           </div>
         </section>
 
-        {/* Right: map (sticky) */}
         <aside
           className={`${styles.mapCol} ${mobileView === 'list' ? styles.hideOnMobile : ''}`}
           aria-label="Mapa"
         >
           <MapPanel
-            properties={properties}
+            properties={allProperties}
             city={filters.city}
             neighborhood={neighborhood}
             typeLabel={filters.type ? TYPE_LABEL[filters.type] : undefined}
             onClearType={() => setFilters({ type: undefined })}
+            onVisibleChange={setVisibleIds}
           />
         </aside>
       </div>
