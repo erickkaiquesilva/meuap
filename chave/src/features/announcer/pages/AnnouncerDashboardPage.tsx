@@ -23,13 +23,15 @@ export function AnnouncerDashboardPage() {
         ) : null}
       </header>
 
-      <MyListingsGrid
-        listings={listings}
-        isLoading={isLoading || (isFetching && listings.length === 0)}
-        isError={isError}
-        onRetry={() => { void refetch() }}
-        onCreate={() => navigate('/anuncios/novo')}
-      />
+      <div className={styles.content}>
+        <MyListingsGrid
+          listings={listings}
+          isLoading={isLoading || (isFetching && listings.length === 0)}
+          isError={isError}
+          onRetry={() => { void refetch() }}
+          onCreate={() => navigate('/anuncios/novo')}
+        />
+      </div>
     </div>
   )
 }

@@ -36,7 +36,7 @@ async function seedListAnnouncer() {
   })
 }
 
-function renderCreateFlow() {
+function renderCreateFlow(path = '/anuncios/novo') {
   const qc = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   })
@@ -47,10 +47,11 @@ function renderCreateFlow() {
         children: [
           { path: 'anuncios', element: <AnnouncerDashboardPage /> },
           { path: 'anuncios/novo', element: <NewListingPage /> },
+          { path: 'anuncios/:listingId/editar', element: <NewListingPage /> },
         ],
       },
     ],
-    { initialEntries: ['/anuncios/novo'] },
+    { initialEntries: [path] },
   )
 
   return render(
@@ -77,7 +78,7 @@ describe('NewListingPage', () => {
     expect(await screen.findByRole('heading', { name: 'Novo anúncio' })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Publicar anúncio' }))
     expect(screen.getByText('Título com pelo menos 8 caracteres')).toBeInTheDocument()
-    expect(screen.getByText('Informe um CEP válido')).toBeInTheDocument()
+    expect(screen.getByText('Informe a rua')).toBeInTheDocument()
   })
 
   it('autofills address from CEP and publishes the listing', async () => {
@@ -87,7 +88,7 @@ describe('NewListingPage', () => {
 
     await screen.findByRole('heading', { name: 'Novo anúncio' })
 
-    expect(screen.getByText('R$ 2.500')).toBeInTheDocument()
+    expect(screen.getByText('R$ 2.500,00')).toBeInTheDocument()
 
     await user.type(
       screen.getByLabelText('Título do anúncio'),

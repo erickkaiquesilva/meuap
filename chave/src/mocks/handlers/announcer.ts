@@ -111,6 +111,18 @@ export const announcerHandlers = [
     return HttpResponse.json({ data: myListings })
   }),
 
+  http.get('/api/me/listings/:id', ({ request, params }) => {
+    const auth = request.headers.get('Authorization')
+    if (!auth?.startsWith('Bearer ')) {
+      return new HttpResponse(null, { status: 401 })
+    }
+    const listing = myListings.find((item) => item.id === String(params.id))
+    if (!listing) {
+      return HttpResponse.json({ message: 'Anúncio não encontrado' }, { status: 404 })
+    }
+    return HttpResponse.json({ data: listing })
+  }),
+
   http.post('/api/me/listings', async ({ request }) => {
     const auth = request.headers.get('Authorization')
     if (!auth?.startsWith('Bearer ')) {
@@ -137,7 +149,7 @@ export const announcerHandlers = [
       title: parsed.title,
       type: parsed.type,
       operation: parsed.operation,
-      price: parsed.price,
+      price: Math.round(parsed.price * 100) / 100,
       city: parsed.city,
       neighborhood: parsed.neighborhood,
       address: parsed.address,
@@ -154,6 +166,53 @@ export const announcerHandlers = [
 
     myListings = [listing, ...myListings]
     return HttpResponse.json({ data: listing }, { status: 201 })
+  }),
+
+  http.put('/api/me/listings/:id', async ({ request, params }) => {
+    const auth = request.headers.get('Authorization')
+    if (!auth?.startsWith('Bearer ')) {
+      return new HttpResponse(null, { status: 401 })
+    }
+
+    const id = String(params.id)
+    const index = myListings.findIndex((item) => item.id === id)
+    if (index < 0) {
+      return HttpResponse.json({ message: 'Anúncio não encontrado' }, { status: 404 })
+    }
+
+    const parsed = parseCreateListing(await request.json())
+    if (!parsed) {
+      return HttpResponse.json(
+        { message: 'Dados do anúncio inválidos' },
+        { status: 400 },
+      )
+    }
+
+    const current = myListings[index]
+    const photos = parsed.photos?.length ? parsed.photos : current.photos
+    const updated: MyListing = {
+      ...current,
+      title: parsed.title,
+      type: parsed.type,
+      operation: parsed.operation,
+      price: Math.round(parsed.price * 100) / 100,
+      city: parsed.city,
+      neighborhood: parsed.neighborhood,
+      address: parsed.address,
+      bedrooms: parsed.bedrooms,
+      bathrooms: parsed.bathrooms,
+      parkingSpots: parsed.parkingSpots,
+      area: parsed.area,
+      description: parsed.description,
+      amenities: parsed.amenities,
+      photos,
+    }
+    myListings = [
+      ...myListings.slice(0, index),
+      updated,
+      ...myListings.slice(index + 1),
+    ]
+    return HttpResponse.json({ data: updated })
   }),
 
   http.post('/api/me/listings/seed', async ({ request }) => {
@@ -173,10 +232,37 @@ export const announcerHandlers = [
       return new HttpResponse(null, { status: 401 })
     }
 
-    const body = await request.json() as { reason?: string }
+    const body = await request.json() as {
+      reason?: string
+      otherDetail?: string
+      otherChannel?: string
+      otherChannelDetail?: string
+    }
     if (!body.reason) {
       return HttpResponse.json(
         { message: 'Informe o motivo da exclusão' },
+        { status: 400 },
+      )
+    }
+    if (body.reason === 'other' && !body.otherDetail?.trim()) {
+      return HttpResponse.json(
+        { message: 'Descreva o motivo da exclusão' },
+        { status: 400 },
+      )
+    }
+    if (body.reason === 'other_channel' && !body.otherChannel) {
+      return HttpResponse.json(
+        { message: 'Informe o canal' },
+        { status: 400 },
+      )
+    }
+    if (
+      body.reason === 'other_channel'
+      && body.otherChannel === 'other'
+      && !body.otherChannelDetail?.trim()
+    ) {
+      return HttpResponse.json(
+        { message: 'Descreva o canal' },
         { status: 400 },
       )
     }

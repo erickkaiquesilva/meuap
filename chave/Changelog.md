@@ -68,3 +68,4 @@
 - feat-T058: formulário criar anúncio em /anuncios/novo com POST mock e retorno ao dashboard
 - feat-T059: UX do formulário criar anúncio — slider de preço, CEP ViaCEP, steppers e upload de fotos
 - feat-T060: teto de preço do anúncio até R$ 1 bilhão (aluguel e venda) com campo numérico
+- feat-T061: polish anunciante — espaçamento dashboard, footer sticky, edição, exclusão com detalhes e preço decimal
