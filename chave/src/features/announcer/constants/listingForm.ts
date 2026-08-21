@@ -37,15 +37,17 @@ export const LISTING_AMENITIES = [
   'Churrasqueira',
 ] as const
 
-/** Price slider ranges */
+/** Price slider ranges — ceiling high enough for any realistic listing */
+export const LISTING_PRICE_MAX = 1_000_000_000
+
 export const RENT_PRICE_MIN = 500
-export const RENT_PRICE_MAX = 10_000
+export const RENT_PRICE_MAX = LISTING_PRICE_MAX
 export const RENT_PRICE_STEP = 100
 export const RENT_PRICE_DEFAULT = 2_500
 
 export const SALE_PRICE_MIN = 50_000
-export const SALE_PRICE_MAX = 2_000_000
-export const SALE_PRICE_STEP = 10_000
+export const SALE_PRICE_MAX = LISTING_PRICE_MAX
+export const SALE_PRICE_STEP = 1_000
 export const SALE_PRICE_DEFAULT = 350_000
 
 export const MAX_LISTING_PHOTOS = 6
