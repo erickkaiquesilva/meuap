@@ -358,7 +358,7 @@ export function NewListingPage() {
               min={cfg.min}
               max={cfg.max}
               step={cfg.step}
-              value={price}
+              value={clamp(price, cfg.min, cfg.max)}
               disabled={busy}
               aria-valuemin={cfg.min}
               aria-valuemax={cfg.max}
@@ -374,7 +374,33 @@ export function NewListingPage() {
               <span>{formatCurrencyBrl(cfg.min)}</span>
               <span>{formatCurrencyBrl(cfg.max)}</span>
             </div>
-            {errors.price ? <p className={styles.fieldError}>{errors.price}</p> : null}
+            <Field
+              label="Ou digite o valor (R$)"
+              htmlFor="listing-price-input"
+              error={errors.price}
+            >
+              <Input
+                id="listing-price-input"
+                type="number"
+                inputMode="numeric"
+                min={cfg.min}
+                max={cfg.max}
+                step={cfg.step}
+                value={price}
+                disabled={busy}
+                onChange={(e) => {
+                  const raw = e.target.value
+                  if (raw === '') {
+                    setPrice(cfg.min)
+                    return
+                  }
+                  const next = Number(raw)
+                  if (!Number.isFinite(next)) return
+                  setPrice(clamp(Math.round(next), cfg.min, cfg.max))
+                  setErrors((p) => ({ ...p, price: undefined }))
+                }}
+              />
+            </Field>
           </div>
         </section>
 
