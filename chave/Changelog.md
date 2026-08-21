@@ -65,3 +65,4 @@
 - feat-T055: CTA de recomendações em /imoveis para locatários com perfil — aplica filtros na URL ou dispensa na sessão
 - feat-T056: polish onboarding — máscaras/validação CPF·CNPJ·telefone, rent nearby/slider/condo/vaga, tipografia e transição
 - feat-T057: dashboard do anunciante — /anuncios com loading/empty/error/ready, exclusão com modal de motivo
+- feat-T058: formulário criar anúncio em /anuncios/novo com POST mock e retorno ao dashboard

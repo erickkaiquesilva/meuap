@@ -20,6 +20,24 @@ export interface MyListing extends Property {
   status: 'active' | 'paused'
 }
 
+export interface CreateListingInput {
+  title: string
+  type: Property['type']
+  operation: Property['operation']
+  price: number
+  city: string
+  neighborhood: string
+  address: string
+  bedrooms: number
+  bathrooms: number
+  parkingSpots: number
+  area: number
+  description: string
+  amenities: string[]
+  /** Optional photo URL; mock generates a placeholder when empty */
+  photoUrl?: string
+}
+
 export interface DeleteListingPayload {
   reason: DeleteListingReason
 }

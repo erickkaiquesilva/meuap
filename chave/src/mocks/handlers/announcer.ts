@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw'
-import type { MyListing } from '@/features/announcer/types/listings'
+import type { CreateListingInput, MyListing } from '@/features/announcer/types/listings'
 import { mockProperties } from '@/mocks/data/properties'
 
 /** In-memory listings owned by the current mock session user. */
@@ -21,6 +21,56 @@ export function seedDemoMyListings(ownerId: string, count = 3) {
   return myListings
 }
 
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0
+}
+
+function isPositiveNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value) && value >= 0
+}
+
+function parseCreateListing(raw: unknown): CreateListingInput | null {
+  if (!raw || typeof raw !== 'object') return null
+  const body = raw as Record<string, unknown>
+
+  const types = ['apartment', 'house', 'commercial'] as const
+  const ops = ['rent', 'sale'] as const
+  if (!isNonEmptyString(body.title)) return null
+  if (typeof body.type !== 'string' || !types.includes(body.type as typeof types[number])) return null
+  if (typeof body.operation !== 'string' || !ops.includes(body.operation as typeof ops[number])) {
+    return null
+  }
+  if (!isPositiveNumber(body.price) || body.price <= 0) return null
+  if (!isNonEmptyString(body.city)) return null
+  if (!isNonEmptyString(body.neighborhood)) return null
+  if (!isNonEmptyString(body.address)) return null
+  if (!isPositiveNumber(body.bedrooms)) return null
+  if (!isPositiveNumber(body.bathrooms)) return null
+  if (!isPositiveNumber(body.parkingSpots)) return null
+  if (!isPositiveNumber(body.area) || body.area <= 0) return null
+  if (!isNonEmptyString(body.description) || body.description.trim().length < 20) return null
+  if (!Array.isArray(body.amenities) || !body.amenities.every((a) => typeof a === 'string')) {
+    return null
+  }
+
+  return {
+    title: body.title.trim(),
+    type: body.type as CreateListingInput['type'],
+    operation: body.operation as CreateListingInput['operation'],
+    price: body.price,
+    city: body.city.trim(),
+    neighborhood: body.neighborhood.trim(),
+    address: body.address.trim(),
+    bedrooms: body.bedrooms,
+    bathrooms: body.bathrooms,
+    parkingSpots: body.parkingSpots,
+    area: body.area,
+    description: body.description.trim(),
+    amenities: body.amenities.map((a) => String(a).trim()).filter(Boolean),
+    photoUrl: typeof body.photoUrl === 'string' ? body.photoUrl.trim() : undefined,
+  }
+}
+
 export const announcerHandlers = [
   http.get('/api/me/listings', ({ request }) => {
     const auth = request.headers.get('Authorization')
@@ -28,7 +78,6 @@ export const announcerHandlers = [
       return new HttpResponse(null, { status: 401 })
     }
 
-    // Test hook: fail once when header X-Force-Error is set
     if (request.headers.get('X-Force-Error') === '1') {
       return HttpResponse.json(
         { message: 'Não foi possível carregar seus anúncios' },
@@ -37,6 +86,50 @@ export const announcerHandlers = [
     }
 
     return HttpResponse.json({ data: myListings })
+  }),
+
+  http.post('/api/me/listings', async ({ request }) => {
+    const auth = request.headers.get('Authorization')
+    if (!auth?.startsWith('Bearer ')) {
+      return new HttpResponse(null, { status: 401 })
+    }
+
+    const parsed = parseCreateListing(await request.json())
+    if (!parsed) {
+      return HttpResponse.json(
+        { message: 'Dados do anúncio inválidos' },
+        { status: 400 },
+      )
+    }
+
+    const seed = encodeURIComponent(parsed.title.slice(0, 24) || 'listing')
+    const photo = parsed.photoUrl
+      || `https://picsum.photos/seed/${seed}/800/600`
+
+    const listing: MyListing = {
+      id: `mine-${Date.now()}`,
+      ownerId: 'session-user',
+      status: 'active',
+      title: parsed.title,
+      type: parsed.type,
+      operation: parsed.operation,
+      price: parsed.price,
+      city: parsed.city,
+      neighborhood: parsed.neighborhood,
+      address: parsed.address,
+      bedrooms: parsed.bedrooms,
+      bathrooms: parsed.bathrooms,
+      parkingSpots: parsed.parkingSpots,
+      area: parsed.area,
+      description: parsed.description,
+      amenities: parsed.amenities,
+      photos: [photo],
+      featured: false,
+      createdAt: new Date().toISOString().slice(0, 10),
+    }
+
+    myListings = [listing, ...myListings]
+    return HttpResponse.json({ data: listing }, { status: 201 })
   }),
 
   http.post('/api/me/listings/seed', async ({ request }) => {
