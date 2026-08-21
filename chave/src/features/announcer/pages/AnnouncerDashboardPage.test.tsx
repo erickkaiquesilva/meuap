@@ -49,6 +49,7 @@ function renderDashboard(path = '/anuncios') {
         children: [
           { path: 'anuncios', element: <AnnouncerDashboardPage /> },
           { path: 'anuncios/novo', element: <NewListingPage /> },
+          { path: 'anuncios/:listingId/editar', element: <NewListingPage /> },
         ],
       },
       { path: '/', element: <div>Home public</div> },
@@ -103,6 +104,35 @@ describe('AnnouncerDashboardPage', () => {
     await waitFor(() => {
       expect(screen.getAllByRole('button', { name: 'Excluir' })).toHaveLength(2)
     })
+  })
+
+  it('asks for channel when deleting via other channel', async () => {
+    const ownerId = await seedListAnnouncer()
+    await seedMyListings(ownerId, 1)
+    const user = userEvent.setup()
+    renderDashboard()
+
+    await user.click(await screen.findByRole('button', { name: 'Excluir' }))
+    const dialog = await screen.findByRole('dialog')
+    await user.click(within(dialog).getByLabelText('Aluguei / vendi por outro canal'))
+    expect(within(dialog).getByText('Qual canal?')).toBeInTheDocument()
+    await user.click(within(dialog).getByLabelText('OLX'))
+    await user.click(within(dialog).getByRole('button', { name: 'Excluir anúncio' }))
+
+    await waitFor(() => {
+      expect(screen.getByText('Você ainda não tem anúncios')).toBeInTheDocument()
+    })
+  })
+
+  it('opens edit form from the listing card', async () => {
+    const ownerId = await seedListAnnouncer()
+    const seeded = await seedMyListings(ownerId, 1)
+    const user = userEvent.setup()
+    renderDashboard()
+
+    await user.click(await screen.findByRole('link', { name: 'Editar' }))
+    expect(await screen.findByRole('heading', { name: 'Editar anúncio' })).toBeInTheDocument()
+    expect(screen.getByDisplayValue(seeded[0].title)).toBeInTheDocument()
   })
 
   it('redirects rent users away from the dashboard', async () => {

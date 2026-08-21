@@ -43,3 +43,40 @@ export function formatCurrencyBrl(value: number): string {
     maximumFractionDigits: 0,
   })
 }
+
+/** Currency with exactly 2 decimal places (centavos), e.g. R$ 2.500,50 */
+export function formatCurrencyBrlCents(value: number): string {
+  return value.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+}
+
+/** Digits-as-cents → "2.500,50" (no currency symbol) */
+export function formatPriceDigitsBrl(cents: number): string {
+  return (cents / 100).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+}
+
+/**
+ * Parse Brazilian price typing. Digits are treated as centavos
+ * (typing 250050 → 2500.50). Caps at `maxCents`.
+ */
+export function parsePriceDigitsToNumber(raw: string, maxCents = 100_000_000_000): number {
+  const digits = digitsOnly(raw).slice(0, String(maxCents).length)
+  if (!digits) return 0
+  const cents = Math.min(Number(digits), maxCents)
+  return cents / 100
+}
+
+/** Format a number as Brazilian digits with comma decimals for an input. */
+export function formatNumberAsPriceInput(value: number): string {
+  if (!Number.isFinite(value) || value < 0) return ''
+  const cents = Math.round(value * 100)
+  return formatPriceDigitsBrl(cents)
+}
+

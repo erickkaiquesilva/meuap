@@ -3,6 +3,7 @@ import type {
   CreateListingInput,
   DeleteListingPayload,
   MyListing,
+  UpdateListingInput,
 } from '../types/listings'
 
 export async function fetchMyListings(): Promise<MyListing[]> {
@@ -10,8 +11,21 @@ export async function fetchMyListings(): Promise<MyListing[]> {
   return data.data ?? []
 }
 
+export async function fetchMyListing(id: string): Promise<MyListing> {
+  const { data } = await apiClient.get<{ data: MyListing }>(`/api/me/listings/${id}`)
+  return data.data
+}
+
 export async function createMyListing(payload: CreateListingInput): Promise<MyListing> {
   const { data } = await apiClient.post<{ data: MyListing }>('/api/me/listings', payload)
+  return data.data
+}
+
+export async function updateMyListing(
+  id: string,
+  payload: UpdateListingInput,
+): Promise<MyListing> {
+  const { data } = await apiClient.put<{ data: MyListing }>(`/api/me/listings/${id}`, payload)
   return data.data
 }
 

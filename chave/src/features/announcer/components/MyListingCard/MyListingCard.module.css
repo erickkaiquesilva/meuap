@@ -56,23 +56,26 @@
 }
 
 .viewBtn,
+.editBtn,
 .deleteBtn {
   flex: 1;
   text-align: center;
   border-radius: var(--radius-pill);
-  padding: 10px 12px;
+  padding: 10px 8px;
   font: 700 12px/1 var(--font-ui);
   cursor: pointer;
   text-decoration: none;
 }
 
-.viewBtn {
+.viewBtn,
+.editBtn {
   border: 1.5px solid var(--neutral-200);
   background: #fff;
   color: var(--neutral-800);
 }
 
-.viewBtn:hover {
+.viewBtn:hover,
+.editBtn:hover {
   border-color: var(--primary-300);
 }
 
@@ -111,6 +114,45 @@
 .reason input {
   margin-top: 2px;
   accent-color: var(--primary-500);
+}
+
+.followUp {
+  margin: -4px 0 var(--sp-4);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--neutral-50, #f7f8fc);
+  border: 1.5px solid var(--neutral-200);
+}
+
+.followUpLabel {
+  margin: 0 0 10px;
+  font: 700 13px/1.3 var(--font-ui);
+  color: var(--neutral-800);
+}
+
+.textField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: var(--sp-4);
+  font: 600 12px/1 var(--font-ui);
+  color: var(--neutral-600);
+}
+
+.textField input,
+.textField textarea {
+  border: 1.5px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  font: 400 14px/1.4 var(--font-ui);
+  color: var(--neutral-800);
+  resize: vertical;
+}
+
+.textField input:focus,
+.textField textarea:focus {
+  outline: 2px solid var(--primary-400);
+  outline-offset: 1px;
 }
 
 .modalError {

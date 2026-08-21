@@ -57,6 +57,7 @@ export const router = createBrowserRouter([
             children: [
               { path: 'anuncios', element: <AnnouncerDashboardPage /> },
               { path: 'anuncios/novo', element: <NewListingPage /> },
+              { path: 'anuncios/:listingId/editar', element: <NewListingPage /> },
             ],
           },
           { path: '*', element: <NotFoundPage /> },

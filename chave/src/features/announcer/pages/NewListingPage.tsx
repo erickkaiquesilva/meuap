@@ -1,16 +1,26 @@
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Field, Input, Select } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
 import { digitsOnly } from '@/shared/utils/brDocuments'
-import { formatCurrencyBrl, maskCep } from '@/shared/utils/brMasks'
-import type { CreateListingInput } from '../types/listings'
-import { useCreateMyListing } from '../hooks/useMyListings'
+import {
+  formatCurrencyBrlCents,
+  formatNumberAsPriceInput,
+  maskCep,
+  parsePriceDigitsToNumber,
+} from '@/shared/utils/brMasks'
+import type { CreateListingInput, MyListing } from '../types/listings'
+import {
+  useCreateMyListing,
+  useMyListing,
+  useUpdateMyListing,
+} from '../hooks/useMyListings'
 import { lookupCep } from '../services/cepLookup'
 import {
   LISTING_AMENITIES,
   LISTING_OPERATIONS,
   LISTING_TYPES,
+  LISTING_PRICE_MAX,
   MAX_LISTING_PHOTOS,
   MAX_PHOTO_BYTES,
   RENT_PRICE_DEFAULT,
@@ -61,6 +71,42 @@ function readFileAsDataUrl(file: File): Promise<string> {
   })
 }
 
+function splitAddress(address: string): { street: string; number: string } {
+  const idx = address.lastIndexOf(',')
+  if (idx < 0) return { street: address.trim(), number: '' }
+  return {
+    street: address.slice(0, idx).trim(),
+    number: address.slice(idx + 1).trim(),
+  }
+}
+
+function inferState(city: string): string {
+  if (city === 'Maringá' || city === 'Sarandi') return 'PR'
+  return ''
+}
+
+function hydrateFromListing(listing: MyListing) {
+  const { street, number } = splitAddress(listing.address)
+  return {
+    title: listing.title,
+    type: listing.type,
+    operation: listing.operation,
+    price: listing.price,
+    street,
+    number,
+    neighborhood: listing.neighborhood,
+    city: listing.city,
+    state: inferState(listing.city),
+    bedrooms: listing.bedrooms,
+    bathrooms: listing.bathrooms,
+    parkingSpots: listing.parkingSpots,
+    area: String(listing.area),
+    description: listing.description,
+    amenities: listing.amenities ?? [],
+    photos: listing.photos ?? [],
+  }
+}
+
 interface StepperProps {
   id: string
   label: string
@@ -102,7 +148,12 @@ function Stepper({ id, label, value, min = 0, max = 20, disabled, onChange }: St
 
 export function NewListingPage() {
   const navigate = useNavigate()
+  const { listingId } = useParams<{ listingId?: string }>()
+  const isEdit = Boolean(listingId)
   const createMutation = useCreateMyListing()
+  const updateMutation = useUpdateMyListing()
+  const listingQuery = useMyListing(listingId)
+  const hydratedRef = useRef<string | null>(null)
   const photoInputId = useId()
   const photoInputRef = useRef<HTMLInputElement>(null)
 
@@ -128,14 +179,36 @@ export function NewListingPage() {
   const [serverError, setServerError] = useState('')
 
   const cfg = priceConfig(operation)
+  const saving = createMutation.isPending || updateMutation.isPending
 
   useEffect(() => {
-    setPrice((prev) => {
-      if (prev < cfg.min || prev > cfg.max) return cfg.defaultValue
-      const snapped = Math.round(prev / cfg.step) * cfg.step
-      return clamp(snapped, cfg.min, cfg.max)
-    })
-  }, [cfg.defaultValue, cfg.max, cfg.min, cfg.step, operation])
+    if (!isEdit) {
+      setPrice((prev) => clamp(prev, cfg.min, cfg.max))
+    }
+  }, [cfg.max, cfg.min, isEdit, operation])
+
+  useEffect(() => {
+    if (!listingId || !listingQuery.data) return
+    if (hydratedRef.current === listingId) return
+    const data = hydrateFromListing(listingQuery.data)
+    hydratedRef.current = listingId
+    setTitle(data.title)
+    setType(data.type)
+    setOperation(data.operation)
+    setPrice(data.price)
+    setStreet(data.street)
+    setNumber(data.number)
+    setNeighborhood(data.neighborhood)
+    setCity(data.city)
+    setState(data.state)
+    setBedrooms(data.bedrooms)
+    setBathrooms(data.bathrooms)
+    setParkingSpots(data.parkingSpots)
+    setArea(data.area)
+    setDescription(data.description)
+    setAmenities(data.amenities)
+    setPhotos(data.photos)
+  }, [listingId, listingQuery.data])
 
   function toggleAmenity(value: string) {
     setAmenities((prev) =>
@@ -210,7 +283,8 @@ export function NewListingPage() {
     if (!Number.isFinite(price) || price <= 0) {
       next.price = 'Informe um preço válido'
     }
-    if (digitsOnly(cep).length !== 8) {
+    const cepDigits = digitsOnly(cep)
+    if (cepDigits.length > 0 && cepDigits.length !== 8) {
       next.cep = 'Informe um CEP válido'
     }
     if (!street.trim() || street.trim().length < 3) {
@@ -249,7 +323,7 @@ export function NewListingPage() {
       title: title.trim(),
       type,
       operation,
-      price,
+      price: Math.round(price * 100) / 100,
       city: city.trim(),
       neighborhood: neighborhood.trim(),
       address,
@@ -263,26 +337,48 @@ export function NewListingPage() {
     }
 
     try {
-      await createMutation.mutateAsync(payload)
+      if (isEdit && listingId) {
+        await updateMutation.mutateAsync({ id: listingId, payload })
+      } else {
+        await createMutation.mutateAsync(payload)
+      }
       navigate('/anuncios', { replace: true })
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message
-        ?? 'Não foi possível publicar o anúncio. Tente novamente.'
+        ?? (isEdit
+          ? 'Não foi possível salvar as alterações. Tente novamente.'
+          : 'Não foi possível publicar o anúncio. Tente novamente.')
       setServerError(message)
     }
   }
 
-  const busy = createMutation.isPending || cepLoading
+  const busy = saving || cepLoading || (isEdit && listingQuery.isLoading)
   const priceLabel = operation === 'rent' ? 'Aluguel mensal' : 'Preço de venda'
+  const pageTitle = isEdit ? 'Editar anúncio' : 'Novo anúncio'
+  const submitLabel = isEdit ? 'Salvar alterações' : 'Publicar anúncio'
+
+  if (isEdit && listingQuery.isError) {
+    return (
+      <div className={styles.page}>
+        <h1 className={styles.title}>Anúncio não encontrado</h1>
+        <p className={styles.sub}>Esse anúncio não existe ou não pertence à sua conta.</p>
+        <Button type="button" onClick={() => navigate('/anuncios')}>
+          Voltar para meus anúncios
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.page}>
       <header className={styles.head}>
         <div>
-          <h1 className={styles.title}>Novo anúncio</h1>
+          <h1 className={styles.title}>{pageTitle}</h1>
           <p className={styles.sub}>
-            Preencha os dados do imóvel. Você poderá gerenciar depois em Meus anúncios.
+            {isEdit
+              ? 'Atualize os dados do imóvel e salve as alterações.'
+              : 'Preencha os dados do imóvel. Você poderá gerenciar depois em Meus anúncios.'}
           </p>
         </div>
         <Link to="/anuncios" className={`btn btn-outline btn-sm ${styles.cancelBtn}`}>
@@ -349,7 +445,7 @@ export function NewListingPage() {
               className={styles.sliderValue}
               aria-live="polite"
             >
-              {formatCurrencyBrl(price)}
+              {formatCurrencyBrlCents(price)}
             </p>
             <input
               id="listing-price"
@@ -358,12 +454,12 @@ export function NewListingPage() {
               min={cfg.min}
               max={cfg.max}
               step={cfg.step}
-              value={clamp(price, cfg.min, cfg.max)}
+              value={clamp(Math.round(price), cfg.min, cfg.max)}
               disabled={busy}
               aria-valuemin={cfg.min}
               aria-valuemax={cfg.max}
               aria-valuenow={price}
-              aria-valuetext={formatCurrencyBrl(price)}
+              aria-valuetext={formatCurrencyBrlCents(price)}
               aria-labelledby="listing-price-value"
               onChange={(e) => {
                 setPrice(Number(e.target.value))
@@ -371,8 +467,8 @@ export function NewListingPage() {
               }}
             />
             <div className={styles.sliderMeta}>
-              <span>{formatCurrencyBrl(cfg.min)}</span>
-              <span>{formatCurrencyBrl(cfg.max)}</span>
+              <span>{formatCurrencyBrlCents(cfg.min)}</span>
+              <span>{formatCurrencyBrlCents(cfg.max)}</span>
             </div>
             <Field
               label="Ou digite o valor (R$)"
@@ -381,22 +477,14 @@ export function NewListingPage() {
             >
               <Input
                 id="listing-price-input"
-                type="number"
-                inputMode="numeric"
-                min={cfg.min}
-                max={cfg.max}
-                step={cfg.step}
-                value={price}
+                inputMode="decimal"
+                value={formatNumberAsPriceInput(price)}
+                placeholder="0,00"
                 disabled={busy}
                 onChange={(e) => {
-                  const raw = e.target.value
-                  if (raw === '') {
-                    setPrice(cfg.min)
-                    return
-                  }
-                  const next = Number(raw)
-                  if (!Number.isFinite(next)) return
-                  setPrice(clamp(Math.round(next), cfg.min, cfg.max))
+                  const maxCents = Math.round(LISTING_PRICE_MAX * 100)
+                  const next = parsePriceDigitsToNumber(e.target.value, maxCents)
+                  setPrice(clamp(next, cfg.min, cfg.max))
                   setErrors((p) => ({ ...p, price: undefined }))
                 }}
               />
@@ -622,13 +710,13 @@ export function NewListingPage() {
         </section>
 
         <div className={styles.actions}>
-          <Button type="submit" loading={createMutation.isPending}>
-            Publicar anúncio
+          <Button type="submit" loading={saving}>
+            {submitLabel}
           </Button>
           <Button
             type="button"
             variant="outline"
-            disabled={createMutation.isPending}
+            disabled={saving}
             onClick={() => navigate('/anuncios')}
           >
             Voltar
