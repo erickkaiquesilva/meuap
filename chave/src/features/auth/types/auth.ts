@@ -15,8 +15,40 @@ export interface RentProfile {
 
 export type RentProfileInput = Omit<RentProfile, 'wantRecommendations'>
 
+export interface ProprietarioListProfile {
+  kind: 'proprietario'
+  phone: string
+  city: string
+  hasListingReady: boolean
+}
+
+export interface CorretorListProfile {
+  kind: 'corretor'
+  creci: string
+  phone: string
+  city: string
+}
+
+export interface CorretoraListProfile {
+  kind: 'corretora'
+  tradeName: string
+  legalName: string
+  cnpj: string
+  creciJ: string
+  phone: string
+  cities: string[]
+  website: string
+}
+
+export type ListProfile =
+  | ProprietarioListProfile
+  | CorretorListProfile
+  | CorretoraListProfile
+
 export interface CompleteOnboardingPayload {
   rentProfile?: RentProfileInput
+  role?: UserRole
+  listProfile?: ListProfile
 }
 
 export interface User {
@@ -27,6 +59,7 @@ export interface User {
   role: UserRole | null
   onboardingComplete: boolean
   rentProfile: RentProfile | null
+  listProfile: ListProfile | null
 }
 
 export interface RegisterPayload {
