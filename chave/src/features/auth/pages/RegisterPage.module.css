@@ -79,19 +79,41 @@
   outline-offset: 2px;
 }
 
-.terms {
-  font: 400 12px/1.5 var(--font-ui);
-  color: var(--neutral-500);
-  margin-top: calc(var(--sp-1) * -1);
+.termsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.terms a {
+.termsLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font: 400 13px/1.5 var(--font-ui);
+  color: var(--neutral-600);
+  cursor: pointer;
+}
+
+.termsLabel input {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  accent-color: var(--primary-500);
+}
+
+.termsLabel a {
   color: var(--primary-600);
   text-decoration: none;
+  font-weight: 600;
 }
 
-.terms a:hover {
+.termsLabel a:hover {
   text-decoration: underline;
+}
+
+.termsError .termsLabel {
+  color: var(--error-500);
 }
 
 .serverError {

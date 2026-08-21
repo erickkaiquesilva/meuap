@@ -6,18 +6,12 @@ import { PasswordStrengthMeter } from '../components/PasswordStrengthMeter/Passw
 import { Field, Input } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
 import { scorePassword } from '../utils/passwordStrength'
-import type { ListingIntent, UserRole } from '../types/auth'
+import type { UserGoal } from '../types/auth'
 import styles from './RegisterPage.module.css'
 
-const ROLES: { value: UserRole; label: string }[] = [
-  { value: 'corretor', label: 'Corretor' },
-  { value: 'corretora', label: 'Corretora' },
-  { value: 'proprietario', label: 'Proprietário' },
-]
-
-const INTENTS: { value: ListingIntent; label: string }[] = [
-  { value: 'sell', label: 'Vender' },
-  { value: 'rent', label: 'Alugar' },
+const GOALS: { value: UserGoal; label: string }[] = [
+  { value: 'rent', label: 'Alugar um imóvel' },
+  { value: 'list', label: 'Anunciar um imóvel' },
 ]
 
 function EyeIcon({ open }: { open: boolean }) {
@@ -35,21 +29,24 @@ function EyeIcon({ open }: { open: boolean }) {
 }
 
 function validate(
-  role: UserRole | null,
-  intent: ListingIntent[],
+  goal: UserGoal | null,
   name: string,
   email: string,
   password: string,
+  confirm: string,
+  acceptedTerms: boolean,
 ) {
-  const errors = { role: '', intent: '', name: '', email: '', password: '' }
-  if (!role) errors.role = 'Selecione se você é corretor, corretora ou proprietário'
-  if (intent.length === 0) errors.intent = 'Selecione se quer vender, alugar ou ambos'
+  const errors = { goal: '', name: '', email: '', password: '', confirm: '', terms: '' }
+  if (!goal) errors.goal = 'Selecione se quer alugar ou anunciar um imóvel'
   if (!name.trim()) errors.name = 'Nome é obrigatório'
   else if (name.trim().length < 2) errors.name = 'Nome muito curto'
   if (!email.trim()) errors.email = 'E-mail é obrigatório'
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'E-mail inválido'
   if (!password) errors.password = 'Senha é obrigatória'
   else if (!scorePassword(password).canSubmit) errors.password = 'Senha fraca demais'
+  if (!confirm) errors.confirm = 'Confirme a senha'
+  else if (confirm !== password) errors.confirm = 'As senhas não coincidem'
+  if (!acceptedTerms) errors.terms = 'Aceite os Termos de uso e a Política de privacidade'
   return errors
 }
 
@@ -57,30 +54,32 @@ export function RegisterPage() {
   const { register } = useAuth()
   const navigate = useNavigate()
 
-  const [role, setRole] = useState<UserRole | null>(null)
-  const [intent, setIntent] = useState<ListingIntent[]>([])
+  const [goal, setGoal] = useState<UserGoal | null>(null)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [errors, setErrors] = useState({ role: '', intent: '', name: '', email: '', password: '' })
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [errors, setErrors] = useState({
+    goal: '',
+    name: '',
+    email: '',
+    password: '',
+    confirm: '',
+    terms: '',
+  })
   const [serverError, setServerError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  function toggleIntent(value: ListingIntent) {
-    setIntent((prev) => (
-      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
-    ))
-    setErrors((p) => ({ ...p, intent: '' }))
-  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setServerError('')
 
-    const errs = validate(role, intent, name, email, password)
+    const errs = validate(goal, name, email, password, confirm, acceptedTerms)
     setErrors(errs)
-    if (Object.values(errs).some(Boolean) || !role) return
+    if (Object.values(errs).some(Boolean) || !goal) return
 
     setIsSubmitting(true)
     try {
@@ -88,8 +87,7 @@ export function RegisterPage() {
         name: name.trim(),
         email,
         password,
-        role,
-        intent,
+        goal,
       })
       navigate('/', { replace: true })
     } catch (err: unknown) {
@@ -104,9 +102,9 @@ export function RegisterPage() {
 
   return (
     <AuthSplitLayout
-      title="Anuncie em minutos, não em formulários."
-      subtitle="Diga quem você é e o que precisa. Depois do pré-cadastro, o onboarding continua com você já dentro."
-      footer="Corretores, corretoras e proprietários · Maringá e Sarandi"
+      title="Seu próximo passo começa aqui."
+      subtitle="Diga se quer alugar ou anunciar. Depois do pré-cadastro, o onboarding continua com você já dentro."
+      footer="Maringá e Sarandi"
     >
       <div className={styles.panel}>
         <h2 className={styles.heading}>Criar conta</h2>
@@ -124,68 +122,49 @@ export function RegisterPage() {
         )}
 
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
-          <fieldset className={`${styles.choiceGroup} ${errors.role ? styles.choiceError : ''}`}>
-            <legend>Você é</legend>
-            <div role="radiogroup" aria-label="Você é" className={styles.chips}>
-              {ROLES.map(({ value, label }) => (
+          <fieldset className={`${styles.choiceGroup} ${errors.goal ? styles.choiceError : ''}`}>
+            <legend>O que você está procurando com a Chave?</legend>
+            <div role="radiogroup" aria-label="O que você está procurando com a Chave?" className={styles.chips}>
+              {GOALS.map(({ value, label }) => (
                 <button
                   key={value}
                   type="button"
                   role="radio"
-                  aria-checked={role === value}
-                  className={`chip ${role === value ? 'active' : ''}`}
+                  aria-checked={goal === value}
+                  className={`chip ${goal === value ? 'active' : ''}`}
                   disabled={isSubmitting}
                   onClick={() => {
-                    setRole(value)
-                    setErrors((p) => ({ ...p, role: '' }))
+                    setGoal(value)
+                    setErrors((p) => ({ ...p, goal: '' }))
                   }}
                 >
                   {label}
                 </button>
               ))}
             </div>
-            {errors.role ? <p className={styles.choiceHint} role="alert">{errors.role}</p> : null}
+            {errors.goal ? <p className={styles.choiceHint} role="alert">{errors.goal}</p> : null}
           </fieldset>
 
-          <fieldset className={`${styles.choiceGroup} ${errors.intent ? styles.choiceError : ''}`}>
-            <legend>Quer</legend>
-            <div className={styles.chips}>
-              {INTENTS.map(({ value, label }) => (
-                <button
-                  key={value}
-                  type="button"
-                  aria-pressed={intent.includes(value)}
-                  className={`chip ${intent.includes(value) ? 'active' : ''}`}
-                  disabled={isSubmitting}
-                  onClick={() => toggleIntent(value)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            {errors.intent ? <p className={styles.choiceHint} role="alert">{errors.intent}</p> : null}
-          </fieldset>
-
-          <Field label="Nome" htmlFor="reg-name" error={errors.name}>
+          <Field label="Qual o seu nome?" htmlFor="reg-name" error={errors.name}>
             <Input
               id="reg-name"
               type="text"
               value={name}
               onChange={(e) => { setName(e.target.value); setErrors((p) => ({ ...p, name: '' })) }}
-              onBlur={() => setErrors((p) => ({ ...p, name: validate(role, intent, name, email, password).name }))}
+              onBlur={() => setErrors((p) => ({ ...p, name: validate(goal, name, email, password, confirm, acceptedTerms).name }))}
               placeholder="Como devemos te chamar"
               autoComplete="name"
               disabled={isSubmitting}
             />
           </Field>
 
-          <Field label="E-mail" htmlFor="reg-email" error={errors.email}>
+          <Field label="Qual o seu e-mail?" htmlFor="reg-email" error={errors.email}>
             <Input
               id="reg-email"
               type="email"
               value={email}
               onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: '' })) }}
-              onBlur={() => setErrors((p) => ({ ...p, email: validate(role, intent, name, email, password).email }))}
+              onBlur={() => setErrors((p) => ({ ...p, email: validate(goal, name, email, password, confirm, acceptedTerms).email }))}
               placeholder="seu@email.com"
               autoComplete="email"
               disabled={isSubmitting}
@@ -193,13 +172,13 @@ export function RegisterPage() {
           </Field>
 
           <div>
-            <Field label="Senha" htmlFor="reg-password" error={errors.password}>
+            <Field label="Digite uma senha" htmlFor="reg-password" error={errors.password}>
               <Input
                 id="reg-password"
                 type={showPassword ? 'text' : 'password'}
                 value={password}
-                onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: '' })) }}
-                onBlur={() => setErrors((p) => ({ ...p, password: validate(role, intent, name, email, password).password }))}
+                onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: '', confirm: '' })) }}
+                onBlur={() => setErrors((p) => ({ ...p, password: validate(goal, name, email, password, confirm, acceptedTerms).password }))}
                 placeholder="Crie uma senha"
                 autoComplete="new-password"
                 aria-describedby="reg-password-strength"
@@ -217,11 +196,49 @@ export function RegisterPage() {
             <PasswordStrengthMeter id="reg-password-strength" password={password} />
           </div>
 
-          <p className={styles.terms}>
-            Ao criar uma conta, você concorda com os{' '}
-            <Link to="/termos">Termos de uso</Link> e a{' '}
-            <Link to="/privacidade">Política de privacidade</Link>.
-          </p>
+          <Field label="Confirme a senha" htmlFor="reg-confirm" error={errors.confirm}>
+            <Input
+              id="reg-confirm"
+              type={showConfirm ? 'text' : 'password'}
+              value={confirm}
+              onChange={(e) => { setConfirm(e.target.value); setErrors((p) => ({ ...p, confirm: '' })) }}
+              onBlur={() => setErrors((p) => ({ ...p, confirm: validate(goal, name, email, password, confirm, acceptedTerms).confirm }))}
+              placeholder="Repita a senha"
+              autoComplete="new-password"
+              disabled={isSubmitting}
+            />
+            <button
+              type="button"
+              className={styles.eyeToggle}
+              aria-label={showConfirm ? 'Ocultar confirmação' : 'Mostrar confirmação'}
+              onClick={() => setShowConfirm((v) => !v)}
+            >
+              <EyeIcon open={showConfirm} />
+            </button>
+          </Field>
+
+          <div className={`${styles.termsRow} ${errors.terms ? styles.termsError : ''}`}>
+            <label className={styles.termsLabel} htmlFor="reg-terms">
+              <input
+                id="reg-terms"
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => {
+                  setAcceptedTerms(e.target.checked)
+                  setErrors((p) => ({ ...p, terms: '' }))
+                }}
+                disabled={isSubmitting}
+              />
+              <span>
+                Aceito os{' '}
+                <Link to="/termos">Termos de uso</Link>
+                {' '}e a{' '}
+                <Link to="/privacidade">Política de privacidade</Link>
+                {' '}da plataforma
+              </span>
+            </label>
+            {errors.terms ? <p className={styles.choiceHint} role="alert">{errors.terms}</p> : null}
+          </div>
 
           <Button
             type="submit"
