@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import type {
+  ListProfile,
   RentProfile,
   RentPurpose,
   User,
@@ -9,6 +10,7 @@ import type {
 
 const MOCK_TOKEN = 'mock-jwt-token-dev-only'
 const GOALS: UserGoal[] = ['rent', 'list']
+const ROLES: UserRole[] = ['proprietario', 'corretor', 'corretora']
 const PURPOSES: RentPurpose[] = ['morar', 'trabalho', 'estudos', 'temporada', 'outro']
 
 function makeMockUser(partial: {
@@ -19,6 +21,7 @@ function makeMockUser(partial: {
   role?: UserRole | null
   onboardingComplete?: boolean
   rentProfile?: RentProfile | null
+  listProfile?: ListProfile | null
 }): User {
   return {
     id: partial.id ?? 'user-001',
@@ -28,6 +31,7 @@ function makeMockUser(partial: {
     role: partial.role ?? null,
     onboardingComplete: partial.onboardingComplete ?? false,
     rentProfile: partial.rentProfile ?? null,
+    listProfile: partial.listProfile ?? null,
   }
 }
 
@@ -48,8 +52,20 @@ function isGoal(value: unknown): value is UserGoal {
   return typeof value === 'string' && GOALS.includes(value as UserGoal)
 }
 
+function isRole(value: unknown): value is UserRole {
+  return typeof value === 'string' && ROLES.includes(value as UserRole)
+}
+
 function isPurpose(value: unknown): value is RentPurpose {
   return typeof value === 'string' && PURPOSES.includes(value as RentPurpose)
+}
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0
+}
+
+function digitsOnly(value: string): string {
+  return value.replace(/\D/g, '')
 }
 
 function parseRentProfile(raw: unknown): RentProfile | null {
@@ -81,6 +97,58 @@ function parseRentProfile(raw: unknown): RentProfile | null {
     minBedrooms,
     wantRecommendations: false,
   }
+}
+
+function parseListProfile(raw: unknown, role: UserRole): ListProfile | null {
+  if (!raw || typeof raw !== 'object') return null
+  const body = raw as Record<string, unknown>
+
+  if (role === 'proprietario') {
+    if (body.kind !== 'proprietario') return null
+    if (!isNonEmptyString(body.phone) || digitsOnly(body.phone).length < 10) return null
+    if (!isNonEmptyString(body.city)) return null
+    if (typeof body.hasListingReady !== 'boolean') return null
+    return {
+      kind: 'proprietario',
+      phone: body.phone.trim(),
+      city: body.city.trim(),
+      hasListingReady: body.hasListingReady,
+    }
+  }
+
+  if (role === 'corretor') {
+    if (body.kind !== 'corretor') return null
+    if (!isNonEmptyString(body.creci)) return null
+    if (!isNonEmptyString(body.phone) || digitsOnly(body.phone).length < 10) return null
+    if (!isNonEmptyString(body.city)) return null
+    return {
+      kind: 'corretor',
+      creci: body.creci.trim(),
+      phone: body.phone.trim(),
+      city: body.city.trim(),
+    }
+  }
+
+  if (role === 'corretora') {
+    if (body.kind !== 'corretora') return null
+    if (!isNonEmptyString(body.tradeName)) return null
+    if (!isNonEmptyString(body.cnpj) || digitsOnly(body.cnpj).length !== 14) return null
+    if (!isNonEmptyString(body.phone) || digitsOnly(body.phone).length < 10) return null
+    if (!Array.isArray(body.cities) || body.cities.length === 0) return null
+    if (!body.cities.every((c) => typeof c === 'string' && c.trim())) return null
+    return {
+      kind: 'corretora',
+      tradeName: body.tradeName.trim(),
+      legalName: typeof body.legalName === 'string' ? body.legalName.trim() : '',
+      cnpj: digitsOnly(body.cnpj),
+      creciJ: typeof body.creciJ === 'string' ? body.creciJ.trim() : '',
+      phone: body.phone.trim(),
+      cities: body.cities.map((c) => String(c).trim()),
+      website: typeof body.website === 'string' ? body.website.trim() : '',
+    }
+  }
+
+  return null
 }
 
 export const authHandlers = [
@@ -191,6 +259,8 @@ export const authHandlers = [
     const body = await request.json() as {
       onboardingComplete?: boolean
       rentProfile?: unknown
+      role?: unknown
+      listProfile?: unknown
     }
 
     let rentProfile = sessionUser.rentProfile
@@ -205,9 +275,32 @@ export const authHandlers = [
       rentProfile = parsed
     }
 
+    let role = sessionUser.role
+    let listProfile = sessionUser.listProfile
+
+    if (body.role !== undefined || body.listProfile !== undefined) {
+      if (!isRole(body.role)) {
+        return HttpResponse.json(
+          { message: 'Selecione se é dono, corretor ou corretora' },
+          { status: 400 },
+        )
+      }
+      const parsedList = parseListProfile(body.listProfile, body.role)
+      if (!parsedList) {
+        return HttpResponse.json(
+          { message: 'Dados do anunciante inválidos' },
+          { status: 400 },
+        )
+      }
+      role = body.role
+      listProfile = parsedList
+    }
+
     sessionUser = {
       ...sessionUser,
       rentProfile,
+      role,
+      listProfile,
       onboardingComplete: body.onboardingComplete ?? true,
     }
     return HttpResponse.json(sessionUser)

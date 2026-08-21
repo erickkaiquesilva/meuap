@@ -61,3 +61,4 @@
 - feat-T051: pré-cadastro — Alugar vs Anunciar, confirmar senha e aceite explícito de Termos; User.goal para onboarding
 - feat-T052: shell e gate do pré-onboarding — rotas /onboarding/alugar|anunciar, redirect pós-cadastro, OnboardingGate e PATCH /api/auth/onboarding
 - feat-T053: wizard Alugar — purpose, cidade, aluguel máx e quartos; persiste rentProfile e marca onboardingComplete
+- feat-T054: wizard Anunciar — persona dono/corretor/corretora, formulários por tipo, persiste role + listProfile
