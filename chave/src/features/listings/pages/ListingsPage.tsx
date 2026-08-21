@@ -5,9 +5,15 @@ import { PropertyResultsGrid } from '../components/PropertyResultsGrid/PropertyR
 import { MapPanel } from '../components/MapPanel/MapPanel'
 import { NeighborhoodChips } from '../components/NeighborhoodChips/NeighborhoodChips'
 import { SortSelect } from '../components/SortSelect/SortSelect'
+import { RecommendationsBanner } from '../components/RecommendationsBanner/RecommendationsBanner'
 import { mockNeighborhoods } from '@/mocks/data/neighborhoods'
 import { mockProperties } from '@/mocks/data/properties'
 import { hasGoogleMaps } from '@/core/api/config'
+import { useAuth } from '@/features/auth/context/AuthContext'
+import {
+  isRecommendationsCtaDismissed,
+  shouldShowRecommendationsCta,
+} from '../utils/recommendations'
 import styles from './ListingsPage.module.css'
 
 const TYPE_LABEL: Record<string, string> = {
@@ -25,10 +31,16 @@ function resultNoun(type?: string): string {
 }
 
 export function ListingsPage() {
+  const { user, setWantRecommendations } = useAuth()
   const { filters, setFilters, resetFilters } = useListingsFilters()
   const { data, isLoading, isError, refetch } = useMapListings(filters)
   const [mobileView, setMobileView] = useState<'list' | 'map'>('list')
   const [visibleIds, setVisibleIds] = useState<string[] | null>(null)
+
+  const showRecCta =
+    shouldShowRecommendationsCta(user)
+    && !!user?.rentProfile
+    && !isRecommendationsCtaDismissed()
 
   const allProperties = data?.data ?? []
   const properties = useMemo(() => {
@@ -103,6 +115,18 @@ export function ListingsPage() {
           aria-label="Resultados da busca"
         >
           <div className={styles.resultsInner}>
+            {showRecCta && user?.rentProfile ? (
+              <RecommendationsBanner
+                profile={user.rentProfile}
+                onApplyFilters={(next) => {
+                  setVisibleIds(null)
+                  setFilters(next)
+                }}
+                onAccept={() => setWantRecommendations(true)}
+                onDecline={() => setWantRecommendations(false)}
+              />
+            ) : null}
+
             <header className={styles.resultsHead}>
               <div>
                 <h1 className={styles.resultsTitle}>

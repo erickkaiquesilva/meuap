@@ -305,4 +305,35 @@ export const authHandlers = [
     }
     return HttpResponse.json(sessionUser)
   }),
+
+  http.patch('/api/auth/rent-profile', async ({ request }) => {
+    const auth = request.headers.get('Authorization')
+    if (!auth?.startsWith('Bearer ')) {
+      return new HttpResponse(null, { status: 401 })
+    }
+
+    if (!sessionUser.rentProfile) {
+      return HttpResponse.json(
+        { message: 'Perfil de busca não encontrado' },
+        { status: 400 },
+      )
+    }
+
+    const body = await request.json() as { wantRecommendations?: boolean }
+    if (typeof body.wantRecommendations !== 'boolean') {
+      return HttpResponse.json(
+        { message: 'wantRecommendations é obrigatório' },
+        { status: 400 },
+      )
+    }
+
+    sessionUser = {
+      ...sessionUser,
+      rentProfile: {
+        ...sessionUser.rentProfile,
+        wantRecommendations: body.wantRecommendations,
+      },
+    }
+    return HttpResponse.json(sessionUser)
+  }),
 ]
