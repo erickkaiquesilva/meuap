@@ -77,5 +77,6 @@ export interface AuthContextValue {
   loginWithGoogle: (idToken?: string) => Promise<User>
   register: (payload: RegisterPayload) => Promise<User>
   completeOnboarding: (payload?: CompleteOnboardingPayload) => Promise<User>
+  setWantRecommendations: (want: boolean) => Promise<User>
   logout: () => Promise<void>
 }

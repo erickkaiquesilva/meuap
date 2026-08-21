@@ -45,6 +45,16 @@ export async function apiCompleteOnboarding(
   return data
 }
 
+export async function apiSetWantRecommendations(want: boolean): Promise<User> {
+  const { data } = await apiClient.patch<User>('/api/auth/rent-profile', {
+    wantRecommendations: want,
+  })
+  if (!data || typeof data !== 'object' || !('id' in data)) {
+    throw new Error('Invalid user response')
+  }
+  return data
+}
+
 export async function apiForgotPassword(email: string): Promise<void> {
   await apiClient.post('/api/auth/forgot-password', { email })
 }

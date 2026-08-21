@@ -19,6 +19,7 @@ import {
   apiLoginWithGoogle,
   apiLogout,
   apiRegister,
+  apiSetWantRecommendations,
 } from '../services/authApi'
 import { clearAuthToken, getAuthToken, setAuthToken } from '@/core/api/tokenStorage'
 
@@ -67,6 +68,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return me
   }, [])
 
+  const setWantRecommendations = useCallback(async (want: boolean) => {
+    const me = await apiSetWantRecommendations(want)
+    setUser(me)
+    return me
+  }, [])
+
   const logout = useCallback(async () => {
     await apiLogout().catch(() => {})
     clearAuthToken()
@@ -83,6 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginWithGoogle,
         register,
         completeOnboarding,
+        setWantRecommendations,
         logout,
       }}
     >
