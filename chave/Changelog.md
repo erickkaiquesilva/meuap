@@ -63,3 +63,4 @@
 - feat-T053: wizard Alugar — purpose, cidade, aluguel máx e quartos; persiste rentProfile e marca onboardingComplete
 - feat-T054: wizard Anunciar — persona dono/corretor/corretora, formulários por tipo, persiste role + listProfile
 - feat-T055: CTA de recomendações em /imoveis para locatários com perfil — aplica filtros na URL ou dispensa na sessão
+- feat-T056: polish onboarding — máscaras/validação CPF·CNPJ·telefone, rent nearby/slider/condo/vaga, tipografia e transição

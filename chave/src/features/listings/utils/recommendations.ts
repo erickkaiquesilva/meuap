@@ -19,6 +19,7 @@ export function filtersFromRentProfile(profile: RentProfile): Partial<SearchFilt
     city: profile.city,
     maxPrice: profile.maxRent != null ? String(profile.maxRent) : undefined,
     bedrooms: profile.minBedrooms != null ? String(profile.minBedrooms) : undefined,
+    parkingSpots: profile.wantsParking ? '1' : undefined,
   }
 }
 

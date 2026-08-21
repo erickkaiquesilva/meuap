@@ -22,6 +22,11 @@ function HomeProbe() {
           ? user.listProfile.phone
           : 'none'}
       </p>
+      <p data-testid="cpf">
+        {user?.listProfile && 'cpf' in user.listProfile
+          ? user.listProfile.cpf
+          : 'none'}
+      </p>
     </div>
   )
 }
@@ -82,18 +87,20 @@ describe('OnboardingListPage', () => {
     await user.click(screen.getByRole('radio', { name: /Sou o dono do imóvel/i }))
     await user.click(screen.getByRole('button', { name: 'Continuar' }))
 
-    expect(await screen.findByText('Dados do proprietário')).toBeInTheDocument()
+    expect(await screen.findByText('Dados do proprietário', {}, { timeout: 3000 })).toBeInTheDocument()
+    await user.type(screen.getByLabelText('CPF'), '39053344705')
     await user.type(screen.getByLabelText('Telefone / WhatsApp'), '44999999999')
     await user.click(screen.getByRole('radio', { name: 'Sim' }))
     await user.click(screen.getByRole('button', { name: 'Concluir' }))
 
     await waitFor(() => {
       expect(screen.getByText('Home')).toBeInTheDocument()
-    })
+    }, { timeout: 4000 })
     expect(screen.getByTestId('complete')).toHaveTextContent('true')
     expect(screen.getByTestId('role')).toHaveTextContent('proprietario')
     expect(screen.getByTestId('kind')).toHaveTextContent('proprietario')
     expect(screen.getByTestId('phone')).toHaveTextContent('44999999999')
+    expect(screen.getByTestId('cpf')).toHaveTextContent('39053344705')
   })
 
   it('completes corretora persona with required fields', async () => {
@@ -105,15 +112,15 @@ describe('OnboardingListPage', () => {
     await user.click(screen.getByRole('radio', { name: /Sou uma corretora/i }))
     await user.click(screen.getByRole('button', { name: 'Continuar' }))
 
-    expect(await screen.findByText('Dados da corretora')).toBeInTheDocument()
+    expect(await screen.findByText('Dados da corretora', {}, { timeout: 3000 })).toBeInTheDocument()
     await user.type(screen.getByLabelText('Nome fantasia'), 'Chave Imob')
-    await user.type(screen.getByLabelText('CNPJ'), '12.345.678/0001-90')
+    await user.type(screen.getByLabelText('CNPJ'), '11222333000181')
     await user.type(screen.getByLabelText('Telefone comercial'), '4430223344')
     await user.click(screen.getByRole('button', { name: 'Concluir' }))
 
     await waitFor(() => {
       expect(screen.getByText('Home')).toBeInTheDocument()
-    })
+    }, { timeout: 4000 })
     expect(screen.getByTestId('role')).toHaveTextContent('corretora')
     expect(screen.getByTestId('kind')).toHaveTextContent('corretora')
   })

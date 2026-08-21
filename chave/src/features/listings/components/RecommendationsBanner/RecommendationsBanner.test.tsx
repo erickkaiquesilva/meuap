@@ -10,6 +10,9 @@ const profile: RentProfile = {
   city: 'Maringá',
   maxRent: 4000,
   minBedrooms: 3,
+  nearby: ['parque'],
+  condoIncluded: false,
+  wantsParking: true,
   wantRecommendations: false,
 }
 
@@ -43,6 +46,7 @@ describe('RecommendationsBanner', () => {
         city: 'Maringá',
         maxPrice: '4000',
         bedrooms: '3',
+        parkingSpots: '1',
       })
     })
     expect(screen.queryByText(/Quer que recomende a você imóveis/i)).not.toBeInTheDocument()
