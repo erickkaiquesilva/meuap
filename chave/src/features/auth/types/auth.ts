@@ -4,11 +4,23 @@ export type UserRole = 'corretor' | 'corretora' | 'proprietario'
 
 export type RentPurpose = 'morar' | 'trabalho' | 'estudos' | 'temporada' | 'outro'
 
+export type RentNearby =
+  | 'mercado'
+  | 'transporte'
+  | 'escola'
+  | 'parque'
+  | 'hospital'
+  | 'farmacia'
+  | 'shopping'
+
 export interface RentProfile {
   purpose: RentPurpose
   city: string
   maxRent: number | null
   minBedrooms: number | null
+  nearby: RentNearby[]
+  condoIncluded: boolean
+  wantsParking: boolean
   /** Preferência do CTA em /imoveis (T055); default false no wizard */
   wantRecommendations: boolean
 }
@@ -17,6 +29,7 @@ export type RentProfileInput = Omit<RentProfile, 'wantRecommendations'>
 
 export interface ProprietarioListProfile {
   kind: 'proprietario'
+  cpf: string
   phone: string
   city: string
   hasListingReady: boolean
@@ -24,6 +37,7 @@ export interface ProprietarioListProfile {
 
 export interface CorretorListProfile {
   kind: 'corretor'
+  cpf: string
   creci: string
   phone: string
   city: string

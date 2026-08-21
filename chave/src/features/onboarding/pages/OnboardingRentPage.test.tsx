@@ -19,6 +19,7 @@ function HomeProbe() {
       <p data-testid="city">{user?.rentProfile?.city ?? 'none'}</p>
       <p data-testid="maxRent">{String(user?.rentProfile?.maxRent)}</p>
       <p data-testid="bedrooms">{String(user?.rentProfile?.minBedrooms)}</p>
+      <p data-testid="parking">{String(user?.rentProfile?.wantsParking)}</p>
       <p data-testid="wantRec">{String(user?.rentProfile?.wantRecommendations)}</p>
     </div>
   )
@@ -79,24 +80,27 @@ describe('OnboardingRentPage', () => {
 
     await screen.findByText('Para que você busca um imóvel?')
     await user.click(screen.getByRole('radio', { name: 'Estudos' }))
+    await user.click(screen.getByLabelText('Escola / universidade'))
     await user.click(screen.getByRole('button', { name: 'Continuar' }))
 
-    expect(await screen.findByText('Onde e quanto?')).toBeInTheDocument()
+    expect(await screen.findByText('Onde e quanto?', {}, { timeout: 3000 })).toBeInTheDocument()
 
     await user.selectOptions(screen.getByLabelText('Cidade'), 'Sarandi')
-    await user.selectOptions(screen.getByLabelText('Aluguel até (R$)'), '4000')
     await user.click(screen.getByRole('radio', { name: '3+' }))
+    await user.click(screen.getByRole('radio', { name: 'Sim, incluso' }))
+    await user.click(screen.getByRole('radio', { name: 'Sim, com vaga' }))
     await user.click(screen.getByRole('button', { name: 'Concluir' }))
 
     await waitFor(() => {
       expect(screen.getByText('Home')).toBeInTheDocument()
-    })
+    }, { timeout: 4000 })
 
     expect(screen.getByTestId('complete')).toHaveTextContent('true')
     expect(screen.getByTestId('purpose')).toHaveTextContent('estudos')
     expect(screen.getByTestId('city')).toHaveTextContent('Sarandi')
-    expect(screen.getByTestId('maxRent')).toHaveTextContent('4000')
+    expect(screen.getByTestId('maxRent')).toHaveTextContent('2500')
     expect(screen.getByTestId('bedrooms')).toHaveTextContent('3')
+    expect(screen.getByTestId('parking')).toHaveTextContent('true')
     expect(screen.getByTestId('wantRec')).toHaveTextContent('false')
   })
 
@@ -108,10 +112,10 @@ describe('OnboardingRentPage', () => {
     await screen.findByText('Para que você busca um imóvel?')
     await user.click(screen.getByRole('radio', { name: 'Morar' }))
     await user.click(screen.getByRole('button', { name: 'Continuar' }))
-    await screen.findByText('Onde e quanto?')
+    await screen.findByText('Onde e quanto?', {}, { timeout: 3000 })
     await user.click(screen.getByRole('button', { name: 'Voltar' }))
 
-    expect(await screen.findByText('Para que você busca um imóvel?')).toBeInTheDocument()
+    expect(await screen.findByText('Para que você busca um imóvel?', {}, { timeout: 3000 })).toBeInTheDocument()
     expect(screen.getByRole('radio', { name: 'Morar' })).toHaveAttribute('aria-checked', 'true')
   })
 })

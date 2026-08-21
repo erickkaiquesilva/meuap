@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   digitsOnly,
-  isValidCnpjFormat,
+  isValidCnpj,
   isValidOptionalUrl,
   isValidPhone,
 } from './listPersona'
@@ -13,10 +13,10 @@ describe('listPersona validators', () => {
     expect(isValidPhone('123')).toBe(false)
   })
 
-  it('validates CNPJ length', () => {
-    expect(isValidCnpjFormat('12.345.678/0001-90')).toBe(true)
-    expect(digitsOnly('12.345.678/0001-90')).toHaveLength(14)
-    expect(isValidCnpjFormat('123')).toBe(false)
+  it('validates CNPJ check digits', () => {
+    expect(isValidCnpj('11.222.333/0001-81')).toBe(true)
+    expect(digitsOnly('11.222.333/0001-81')).toHaveLength(14)
+    expect(isValidCnpj('12.345.678/0001-90')).toBe(false)
   })
 
   it('allows empty or http(s) URLs', () => {

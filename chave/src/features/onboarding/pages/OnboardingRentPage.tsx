@@ -1,15 +1,23 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/features/auth/context/AuthContext'
-import type { RentPurpose } from '@/features/auth/types/auth'
+import type { RentNearby, RentPurpose } from '@/features/auth/types/auth'
 import { Field, Select } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
+import { formatCurrencyBrl } from '@/shared/utils/brMasks'
 import { OnboardingShell } from '../components/OnboardingShell/OnboardingShell'
 import {
+  delay,
+  StepLoadingOverlay,
+} from '../components/StepLoadingOverlay/StepLoadingOverlay'
+import {
   RENT_BEDROOMS,
-  RENT_BUDGETS,
   RENT_CITIES,
+  RENT_NEARBY,
   RENT_PURPOSES,
+  RENT_SLIDER_MAX,
+  RENT_SLIDER_MIN,
+  RENT_SLIDER_STEP,
 } from '../constants/rentProfile'
 import styles from './OnboardingRentPage.module.css'
 
@@ -21,21 +29,45 @@ export function OnboardingRentPage() {
 
   const [step, setStep] = useState<Step>(1)
   const [purpose, setPurpose] = useState<RentPurpose | null>(null)
+  const [nearby, setNearby] = useState<RentNearby[]>([])
   const [city, setCity] = useState<string>(RENT_CITIES[0])
   const [maxRent, setMaxRent] = useState<number | null>(2500)
+  const [sliderValue, setSliderValue] = useState(2500)
   const [minBedrooms, setMinBedrooms] = useState<number | null>(2)
+  const [condoIncluded, setCondoIncluded] = useState<boolean | null>(null)
+  const [wantsParking, setWantsParking] = useState<boolean | null>(null)
   const [purposeError, setPurposeError] = useState('')
   const [prefsError, setPrefsError] = useState('')
   const [serverError, setServerError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [transitioning, setTransitioning] = useState(false)
+  const [transitionMsg, setTransitionMsg] = useState('')
 
-  function goToStep2() {
+  function toggleNearby(value: RentNearby) {
+    setNearby((prev) =>
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value],
+    )
+  }
+
+  async function goToStep2() {
     if (!purpose) {
       setPurposeError('Selecione o motivo da busca')
       return
     }
     setPurposeError('')
+    setTransitionMsg('Preparando o próximo passo…')
+    setTransitioning(true)
+    await delay(650)
     setStep(2)
+    setTransitioning(false)
+  }
+
+  async function goToStep1() {
+    setTransitionMsg('Voltando…')
+    setTransitioning(true)
+    await delay(450)
+    setStep(1)
+    setTransitioning(false)
   }
 
   async function handleComplete(e: FormEvent) {
@@ -55,9 +87,19 @@ export function OnboardingRentPage() {
       setPrefsError('Selecione a quantidade de quartos')
       return
     }
+    if (condoIncluded === null) {
+      setPrefsError('Informe se deseja condomínio incluso')
+      return
+    }
+    if (wantsParking === null) {
+      setPrefsError('Informe se deseja vaga de garagem')
+      return
+    }
 
     setPrefsError('')
     setIsSubmitting(true)
+    setTransitionMsg('Salvando seu perfil…')
+    setTransitioning(true)
     try {
       await completeOnboarding({
         rentProfile: {
@@ -65,14 +107,19 @@ export function OnboardingRentPage() {
           city,
           maxRent,
           minBedrooms,
+          nearby,
+          condoIncluded,
+          wantsParking,
         },
       })
+      await delay(400)
       navigate('/', { replace: true })
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message
         ?? 'Não foi possível salvar seu perfil. Tente novamente.'
       setServerError(message)
+      setTransitioning(false)
     } finally {
       setIsSubmitting(false)
     }
@@ -84,6 +131,8 @@ export function OnboardingRentPage() {
       subtitle="Algumas perguntas rápidas para personalizar a busca."
     >
       <div className={styles.panel}>
+        {transitioning ? <StepLoadingOverlay message={transitionMsg} /> : null}
+
         {serverError ? (
           <div className={styles.serverError} role="alert">
             {serverError}
@@ -91,7 +140,7 @@ export function OnboardingRentPage() {
         ) : null}
 
         {step === 1 ? (
-          <>
+          <div key="step-1" className={styles.stepEnter}>
             <p className={styles.steps}>Passo 1 de 2</p>
             <h2 className={styles.heading}>Para que você busca um imóvel?</h2>
             <p className={styles.subtitle}>Isso ajuda a Chave a entender o seu momento.</p>
@@ -124,14 +173,38 @@ export function OnboardingRentPage() {
               ) : null}
             </fieldset>
 
+            <fieldset className={styles.choiceGroup} style={{ marginTop: 24 }}>
+              <legend>O que você deseja por perto?</legend>
+              <p className={styles.subtitle} style={{ marginBottom: 12 }}>
+                Marque o que importa no dia a dia — opcional.
+              </p>
+              <div className={styles.checkList} role="group" aria-label="Proximidades desejadas">
+                {RENT_NEARBY.map(({ value, label }) => (
+                  <label key={value} className={styles.checkItem}>
+                    <input
+                      type="checkbox"
+                      checked={nearby.includes(value)}
+                      onChange={() => toggleNearby(value)}
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
             <div className={styles.actions}>
-              <Button type="button" onClick={goToStep2}>
+              <Button type="button" onClick={goToStep2} disabled={transitioning}>
                 Continuar
               </Button>
             </div>
-          </>
+          </div>
         ) : (
-          <form className={styles.form} onSubmit={handleComplete} noValidate>
+          <form
+            key="step-2"
+            className={`${styles.form} ${styles.stepEnter}`}
+            onSubmit={handleComplete}
+            noValidate
+          >
             <p className={styles.steps}>Passo 2 de 2</p>
             <h2 className={styles.heading}>Onde e quanto?</h2>
             <p className={styles.subtitle}>
@@ -142,7 +215,7 @@ export function OnboardingRentPage() {
               <Select
                 id="rent-city"
                 value={city}
-                disabled={isSubmitting}
+                disabled={isSubmitting || transitioning}
                 onChange={(e) => {
                   setCity(e.target.value)
                   setPrefsError('')
@@ -154,23 +227,46 @@ export function OnboardingRentPage() {
               </Select>
             </Field>
 
-            <Field label="Aluguel até (R$)" htmlFor="rent-budget">
-              <Select
+            <div className={styles.sliderBlock}>
+              <span className={styles.sliderValue}>
+                {maxRent === null ? 'Sem limite' : `Até ${formatCurrencyBrl(maxRent)}`}
+              </span>
+              <label className={styles.checkItem}>
+                <input
+                  type="checkbox"
+                  checked={maxRent === null}
+                  disabled={isSubmitting || transitioning}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setMaxRent(null)
+                    } else {
+                      setMaxRent(sliderValue)
+                    }
+                  }}
+                />
+                Sem limite de aluguel
+              </label>
+              <input
                 id="rent-budget"
-                value={maxRent === null ? 'null' : String(maxRent)}
-                disabled={isSubmitting}
+                className={styles.slider}
+                type="range"
+                min={RENT_SLIDER_MIN}
+                max={RENT_SLIDER_MAX}
+                step={RENT_SLIDER_STEP}
+                value={sliderValue}
+                disabled={maxRent === null || isSubmitting || transitioning}
+                aria-label="Aluguel máximo"
                 onChange={(e) => {
-                  const v = e.target.value
-                  setMaxRent(v === 'null' ? null : Number(v))
+                  const next = Number(e.target.value)
+                  setSliderValue(next)
+                  setMaxRent(next)
                 }}
-              >
-                {RENT_BUDGETS.map(({ value, label }) => (
-                  <option key={label} value={value === null ? 'null' : String(value)}>
-                    {label}
-                  </option>
-                ))}
-              </Select>
-            </Field>
+              />
+              <div className={styles.sliderMeta}>
+                <span>{formatCurrencyBrl(RENT_SLIDER_MIN)}</span>
+                <span>{formatCurrencyBrl(RENT_SLIDER_MAX)}</span>
+              </div>
+            </div>
 
             <fieldset className={`${styles.choiceGroup} ${prefsError && minBedrooms === null ? styles.choiceError : ''}`}>
               <legend>Quartos</legend>
@@ -186,9 +282,59 @@ export function OnboardingRentPage() {
                     role="radio"
                     aria-checked={minBedrooms === value}
                     className={`chip ${minBedrooms === value ? 'active' : ''}`}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onClick={() => {
                       setMinBedrooms(value)
+                      setPrefsError('')
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset className={`${styles.choiceGroup} ${prefsError && condoIncluded === null ? styles.choiceError : ''}`}>
+              <legend>Condomínio incluso no aluguel?</legend>
+              <div role="radiogroup" aria-label="Condomínio incluso" className={styles.chips}>
+                {[
+                  { value: true, label: 'Sim, incluso' },
+                  { value: false, label: 'Sem condomínio incluso' },
+                ].map(({ value, label }) => (
+                  <button
+                    key={label}
+                    type="button"
+                    role="radio"
+                    aria-checked={condoIncluded === value}
+                    className={`chip ${condoIncluded === value ? 'active' : ''}`}
+                    disabled={isSubmitting || transitioning}
+                    onClick={() => {
+                      setCondoIncluded(value)
+                      setPrefsError('')
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset className={`${styles.choiceGroup} ${prefsError && wantsParking === null ? styles.choiceError : ''}`}>
+              <legend>Deseja vaga de garagem?</legend>
+              <div role="radiogroup" aria-label="Vaga de garagem" className={styles.chips}>
+                {[
+                  { value: true, label: 'Sim, com vaga' },
+                  { value: false, label: 'Sem vaga' },
+                ].map(({ value, label }) => (
+                  <button
+                    key={label}
+                    type="button"
+                    role="radio"
+                    aria-checked={wantsParking === value}
+                    className={`chip ${wantsParking === value ? 'active' : ''}`}
+                    disabled={isSubmitting || transitioning}
+                    onClick={() => {
+                      setWantsParking(value)
                       setPrefsError('')
                     }}
                   >
@@ -202,14 +348,14 @@ export function OnboardingRentPage() {
             </fieldset>
 
             <div className={styles.actions}>
-              <Button type="submit" loading={isSubmitting}>
+              <Button type="submit" loading={isSubmitting} disabled={transitioning}>
                 Concluir
               </Button>
               <Button
                 type="button"
                 variant="outline"
-                disabled={isSubmitting}
-                onClick={() => setStep(1)}
+                disabled={isSubmitting || transitioning}
+                onClick={goToStep1}
               >
                 Voltar
               </Button>

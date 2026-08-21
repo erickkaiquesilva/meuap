@@ -6,7 +6,18 @@ import {
   isRecommendationsCtaDismissed,
   shouldShowRecommendationsCta,
 } from './recommendations'
-import type { User } from '@/features/auth/types/auth'
+import type { RentProfile, User } from '@/features/auth/types/auth'
+
+const baseProfile: RentProfile = {
+  purpose: 'morar',
+  city: 'Sarandi',
+  maxRent: 2500,
+  minBedrooms: 2,
+  nearby: ['mercado'],
+  condoIncluded: true,
+  wantsParking: true,
+  wantRecommendations: false,
+}
 
 function rentUser(partial: Partial<User> = {}): User {
   return {
@@ -16,13 +27,7 @@ function rentUser(partial: Partial<User> = {}): User {
     goal: 'rent',
     role: null,
     onboardingComplete: true,
-    rentProfile: {
-      purpose: 'morar',
-      city: 'Sarandi',
-      maxRent: 2500,
-      minBedrooms: 2,
-      wantRecommendations: false,
-    },
+    rentProfile: baseProfile,
     listProfile: null,
     ...partial,
   }
@@ -41,38 +46,34 @@ describe('recommendations helpers', () => {
     expect(
       shouldShowRecommendationsCta(
         rentUser({
-          rentProfile: {
-            purpose: 'morar',
-            city: 'Maringá',
-            maxRent: null,
-            minBedrooms: 1,
-            wantRecommendations: true,
-          },
+          rentProfile: { ...baseProfile, wantRecommendations: true },
         }),
       ),
     ).toBe(false)
   })
 
   it('maps rent profile to listing filters', () => {
-    expect(filtersFromRentProfile(rentUser().rentProfile!)).toEqual({
+    expect(filtersFromRentProfile(baseProfile)).toEqual({
       op: 'rent',
       city: 'Sarandi',
       maxPrice: '2500',
       bedrooms: '2',
+      parkingSpots: '1',
     })
     expect(
       filtersFromRentProfile({
-        purpose: 'estudos',
+        ...baseProfile,
         city: 'Maringá',
         maxRent: null,
         minBedrooms: null,
-        wantRecommendations: false,
+        wantsParking: false,
       }),
     ).toEqual({
       op: 'rent',
       city: 'Maringá',
       maxPrice: undefined,
       bedrooms: undefined,
+      parkingSpots: undefined,
     })
   })
 

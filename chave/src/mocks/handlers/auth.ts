@@ -7,6 +7,7 @@ import type {
   UserGoal,
   UserRole,
 } from '@/features/auth/types/auth'
+import { digitsOnly, isValidCnpj, isValidCpf, isValidPhone } from '@/shared/utils/brDocuments'
 
 const MOCK_TOKEN = 'mock-jwt-token-dev-only'
 const GOALS: UserGoal[] = ['rent', 'list']
@@ -64,10 +65,6 @@ function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0
 }
 
-function digitsOnly(value: string): string {
-  return value.replace(/\D/g, '')
-}
-
 function parseRentProfile(raw: unknown): RentProfile | null {
   if (!raw || typeof raw !== 'object') return null
   const body = raw as Record<string, unknown>
@@ -90,11 +87,22 @@ function parseRentProfile(raw: unknown): RentProfile | null {
         : undefined
   if (minBedrooms === undefined) return null
 
+  if (!Array.isArray(body.nearby)) return null
+  const nearby = body.nearby.filter(
+    (item): item is string => typeof item === 'string',
+  )
+  if (nearby.length !== body.nearby.length) return null
+  if (typeof body.condoIncluded !== 'boolean') return null
+  if (typeof body.wantsParking !== 'boolean') return null
+
   return {
     purpose: body.purpose,
     city: body.city.trim(),
     maxRent,
     minBedrooms,
+    nearby: nearby as RentProfile['nearby'],
+    condoIncluded: body.condoIncluded,
+    wantsParking: body.wantsParking,
     wantRecommendations: false,
   }
 }
@@ -105,12 +113,14 @@ function parseListProfile(raw: unknown, role: UserRole): ListProfile | null {
 
   if (role === 'proprietario') {
     if (body.kind !== 'proprietario') return null
-    if (!isNonEmptyString(body.phone) || digitsOnly(body.phone).length < 10) return null
+    if (!isNonEmptyString(body.cpf) || !isValidCpf(body.cpf)) return null
+    if (!isNonEmptyString(body.phone) || !isValidPhone(body.phone)) return null
     if (!isNonEmptyString(body.city)) return null
     if (typeof body.hasListingReady !== 'boolean') return null
     return {
       kind: 'proprietario',
-      phone: body.phone.trim(),
+      cpf: digitsOnly(body.cpf),
+      phone: digitsOnly(body.phone),
       city: body.city.trim(),
       hasListingReady: body.hasListingReady,
     }
@@ -118,13 +128,15 @@ function parseListProfile(raw: unknown, role: UserRole): ListProfile | null {
 
   if (role === 'corretor') {
     if (body.kind !== 'corretor') return null
+    if (!isNonEmptyString(body.cpf) || !isValidCpf(body.cpf)) return null
     if (!isNonEmptyString(body.creci)) return null
-    if (!isNonEmptyString(body.phone) || digitsOnly(body.phone).length < 10) return null
+    if (!isNonEmptyString(body.phone) || !isValidPhone(body.phone)) return null
     if (!isNonEmptyString(body.city)) return null
     return {
       kind: 'corretor',
+      cpf: digitsOnly(body.cpf),
       creci: body.creci.trim(),
-      phone: body.phone.trim(),
+      phone: digitsOnly(body.phone),
       city: body.city.trim(),
     }
   }
@@ -132,8 +144,8 @@ function parseListProfile(raw: unknown, role: UserRole): ListProfile | null {
   if (role === 'corretora') {
     if (body.kind !== 'corretora') return null
     if (!isNonEmptyString(body.tradeName)) return null
-    if (!isNonEmptyString(body.cnpj) || digitsOnly(body.cnpj).length !== 14) return null
-    if (!isNonEmptyString(body.phone) || digitsOnly(body.phone).length < 10) return null
+    if (!isNonEmptyString(body.cnpj) || !isValidCnpj(body.cnpj)) return null
+    if (!isNonEmptyString(body.phone) || !isValidPhone(body.phone)) return null
     if (!Array.isArray(body.cities) || body.cities.length === 0) return null
     if (!body.cities.every((c) => typeof c === 'string' && c.trim())) return null
     return {
@@ -142,7 +154,7 @@ function parseListProfile(raw: unknown, role: UserRole): ListProfile | null {
       legalName: typeof body.legalName === 'string' ? body.legalName.trim() : '',
       cnpj: digitsOnly(body.cnpj),
       creciJ: typeof body.creciJ === 'string' ? body.creciJ.trim() : '',
-      phone: body.phone.trim(),
+      phone: digitsOnly(body.phone),
       cities: body.cities.map((c) => String(c).trim()),
       website: typeof body.website === 'string' ? body.website.trim() : '',
     }

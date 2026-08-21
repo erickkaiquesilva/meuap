@@ -4,11 +4,18 @@ import { useAuth } from '@/features/auth/context/AuthContext'
 import type { ListProfile, UserRole } from '@/features/auth/types/auth'
 import { Field, Input, Select } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
+import { digitsOnly } from '@/shared/utils/brDocuments'
+import { maskCnpj, maskCpf, maskPhone } from '@/shared/utils/brMasks'
 import { OnboardingShell } from '../components/OnboardingShell/OnboardingShell'
+import {
+  delay,
+  StepLoadingOverlay,
+} from '../components/StepLoadingOverlay/StepLoadingOverlay'
 import {
   LIST_CITIES,
   LIST_PERSONAS,
-  isValidCnpjFormat,
+  isValidCnpj,
+  isValidCpf,
   isValidOptionalUrl,
   isValidPhone,
 } from '../constants/listPersona'
@@ -34,7 +41,10 @@ export function OnboardingListPage() {
   const [errors, setErrors] = useState<FormErrors>({})
   const [serverError, setServerError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [transitioning, setTransitioning] = useState(false)
+  const [transitionMsg, setTransitionMsg] = useState('')
 
+  const [cpf, setCpf] = useState('')
   const [phone, setPhone] = useState('')
   const [city, setCity] = useState<string>(LIST_CITIES[0])
   const [hasListingReady, setHasListingReady] = useState<boolean | null>(null)
@@ -46,14 +56,26 @@ export function OnboardingListPage() {
   const [cities, setCities] = useState<string[]>([LIST_CITIES[0]])
   const [website, setWebsite] = useState('')
 
-  function goToStep2() {
+  async function goToStep2() {
     if (!role) {
       setRoleError('Selecione como você anuncia')
       return
     }
     setRoleError('')
     setErrors({})
+    setTransitionMsg('Preparando o próximo passo…')
+    setTransitioning(true)
+    await delay(650)
     setStep(2)
+    setTransitioning(false)
+  }
+
+  async function goToStep1() {
+    setTransitionMsg('Voltando…')
+    setTransitioning(true)
+    await delay(450)
+    setStep(1)
+    setTransitioning(false)
   }
 
   function toggleCity(value: string) {
@@ -67,6 +89,7 @@ export function OnboardingListPage() {
     const next: FormErrors = {}
 
     if (selected === 'proprietario') {
+      if (!isValidCpf(cpf)) next.cpf = 'CPF inválido'
       if (!isValidPhone(phone)) next.phone = 'Informe um telefone válido com DDD'
       if (!city) next.city = 'Selecione a cidade'
       if (hasListingReady === null) next.hasListingReady = 'Informe se já tem imóvel para anunciar'
@@ -75,7 +98,8 @@ export function OnboardingListPage() {
         errors: next,
         profile: {
           kind: 'proprietario',
-          phone: phone.trim(),
+          cpf: digitsOnly(cpf),
+          phone: digitsOnly(phone),
           city,
           hasListingReady: hasListingReady!,
         },
@@ -83,6 +107,7 @@ export function OnboardingListPage() {
     }
 
     if (selected === 'corretor') {
+      if (!isValidCpf(cpf)) next.cpf = 'CPF inválido'
       if (!creci.trim()) next.creci = 'CRECI é obrigatório'
       if (!isValidPhone(phone)) next.phone = 'Informe um telefone válido com DDD'
       if (!city) next.city = 'Selecione a cidade'
@@ -91,15 +116,16 @@ export function OnboardingListPage() {
         errors: next,
         profile: {
           kind: 'corretor',
+          cpf: digitsOnly(cpf),
           creci: creci.trim(),
-          phone: phone.trim(),
+          phone: digitsOnly(phone),
           city,
         },
       }
     }
 
     if (!tradeName.trim()) next.tradeName = 'Nome fantasia é obrigatório'
-    if (!isValidCnpjFormat(cnpj)) next.cnpj = 'CNPJ inválido'
+    if (!isValidCnpj(cnpj)) next.cnpj = 'CNPJ inválido'
     if (!isValidPhone(phone)) next.phone = 'Informe um telefone comercial válido com DDD'
     if (cities.length === 0) next.cities = 'Selecione ao menos uma cidade'
     if (!isValidOptionalUrl(website)) next.website = 'URL inválida'
@@ -111,9 +137,9 @@ export function OnboardingListPage() {
         kind: 'corretora',
         tradeName: tradeName.trim(),
         legalName: legalName.trim(),
-        cnpj: cnpj.trim(),
+        cnpj: digitsOnly(cnpj),
         creciJ: creciJ.trim(),
-        phone: phone.trim(),
+        phone: digitsOnly(phone),
         cities,
         website: website.trim(),
       },
@@ -134,14 +160,18 @@ export function OnboardingListPage() {
     if (!profile) return
 
     setIsSubmitting(true)
+    setTransitionMsg('Salvando seus dados…')
+    setTransitioning(true)
     try {
       await completeOnboarding({ role, listProfile: profile })
+      await delay(400)
       navigate('/', { replace: true })
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message
         ?? 'Não foi possível salvar seus dados. Tente novamente.'
       setServerError(message)
+      setTransitioning(false)
     } finally {
       setIsSubmitting(false)
     }
@@ -153,6 +183,8 @@ export function OnboardingListPage() {
       subtitle="Diga se é dono, corretor ou corretora — coletamos só o essencial agora."
     >
       <div className={styles.panel}>
+        {transitioning ? <StepLoadingOverlay message={transitionMsg} /> : null}
+
         {serverError ? (
           <div className={styles.serverError} role="alert">
             {serverError}
@@ -160,7 +192,7 @@ export function OnboardingListPage() {
         ) : null}
 
         {step === 1 ? (
-          <>
+          <div key="step-1" className={styles.stepEnter}>
             <p className={styles.steps}>Passo 1 de 2</p>
             <h2 className={styles.heading}>Você está anunciando como?</h2>
             <p className={styles.subtitle}>
@@ -194,13 +226,18 @@ export function OnboardingListPage() {
             ) : null}
 
             <div className={styles.actions}>
-              <Button type="button" onClick={goToStep2}>
+              <Button type="button" onClick={goToStep2} disabled={transitioning}>
                 Continuar
               </Button>
             </div>
-          </>
+          </div>
         ) : (
-          <form className={styles.form} onSubmit={handleComplete} noValidate>
+          <form
+            key="step-2"
+            className={`${styles.form} ${styles.stepEnter}`}
+            onSubmit={handleComplete}
+            noValidate
+          >
             <p className={styles.steps}>Passo 2 de 2</p>
             <h2 className={styles.heading}>{step2Title(role!)}</h2>
             <p className={styles.subtitle}>
@@ -209,6 +246,21 @@ export function OnboardingListPage() {
 
             {role === 'proprietario' ? (
               <>
+                <Field label="CPF" htmlFor="list-cpf" error={errors.cpf}>
+                  <Input
+                    id="list-cpf"
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    placeholder="000.000.000-00"
+                    value={cpf}
+                    disabled={isSubmitting || transitioning}
+                    onChange={(e) => {
+                      setCpf(maskCpf(e.target.value))
+                      setErrors((p) => ({ ...p, cpf: '' }))
+                    }}
+                  />
+                </Field>
                 <Field label="Telefone / WhatsApp" htmlFor="list-phone" error={errors.phone}>
                   <Input
                     id="list-phone"
@@ -217,9 +269,9 @@ export function OnboardingListPage() {
                     autoComplete="tel"
                     placeholder="(44) 99999-9999"
                     value={phone}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => {
-                      setPhone(e.target.value)
+                      setPhone(maskPhone(e.target.value))
                       setErrors((p) => ({ ...p, phone: '' }))
                     }}
                   />
@@ -228,7 +280,7 @@ export function OnboardingListPage() {
                   <Select
                     id="list-city"
                     value={city}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => {
                       setCity(e.target.value)
                       setErrors((p) => ({ ...p, city: '' }))
@@ -252,7 +304,7 @@ export function OnboardingListPage() {
                         role="radio"
                         aria-checked={hasListingReady === value}
                         className={`chip ${hasListingReady === value ? 'active' : ''}`}
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || transitioning}
                         onClick={() => {
                           setHasListingReady(value)
                           setErrors((p) => ({ ...p, hasListingReady: '' }))
@@ -271,13 +323,28 @@ export function OnboardingListPage() {
 
             {role === 'corretor' ? (
               <>
+                <Field label="CPF" htmlFor="list-cpf-corretor" error={errors.cpf}>
+                  <Input
+                    id="list-cpf-corretor"
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    placeholder="000.000.000-00"
+                    value={cpf}
+                    disabled={isSubmitting || transitioning}
+                    onChange={(e) => {
+                      setCpf(maskCpf(e.target.value))
+                      setErrors((p) => ({ ...p, cpf: '' }))
+                    }}
+                  />
+                </Field>
                 <Field label="CRECI (PF)" htmlFor="list-creci" error={errors.creci}>
                   <Input
                     id="list-creci"
                     type="text"
                     placeholder="CRECI-PR 12345"
                     value={creci}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => {
                       setCreci(e.target.value)
                       setErrors((p) => ({ ...p, creci: '' }))
@@ -292,9 +359,9 @@ export function OnboardingListPage() {
                     autoComplete="tel"
                     placeholder="(44) 99999-9999"
                     value={phone}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => {
-                      setPhone(e.target.value)
+                      setPhone(maskPhone(e.target.value))
                       setErrors((p) => ({ ...p, phone: '' }))
                     }}
                   />
@@ -303,7 +370,7 @@ export function OnboardingListPage() {
                   <Select
                     id="list-city-corretor"
                     value={city}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => {
                       setCity(e.target.value)
                       setErrors((p) => ({ ...p, city: '' }))
@@ -325,7 +392,7 @@ export function OnboardingListPage() {
                     type="text"
                     placeholder="Imobiliária Exemplo"
                     value={tradeName}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => {
                       setTradeName(e.target.value)
                       setErrors((p) => ({ ...p, tradeName: '' }))
@@ -337,7 +404,7 @@ export function OnboardingListPage() {
                     id="list-legal"
                     type="text"
                     value={legalName}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => setLegalName(e.target.value)}
                   />
                 </Field>
@@ -348,9 +415,9 @@ export function OnboardingListPage() {
                     inputMode="numeric"
                     placeholder="00.000.000/0000-00"
                     value={cnpj}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => {
-                      setCnpj(e.target.value)
+                      setCnpj(maskCnpj(e.target.value))
                       setErrors((p) => ({ ...p, cnpj: '' }))
                     }}
                   />
@@ -361,7 +428,7 @@ export function OnboardingListPage() {
                     type="text"
                     placeholder="CRECI-J"
                     value={creciJ}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => setCreciJ(e.target.value)}
                   />
                 </Field>
@@ -373,9 +440,9 @@ export function OnboardingListPage() {
                     autoComplete="tel"
                     placeholder="(44) 99999-9999"
                     value={phone}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => {
-                      setPhone(e.target.value)
+                      setPhone(maskPhone(e.target.value))
                       setErrors((p) => ({ ...p, phone: '' }))
                     }}
                   />
@@ -389,7 +456,7 @@ export function OnboardingListPage() {
                         type="button"
                         aria-pressed={cities.includes(c)}
                         className={`chip ${cities.includes(c) ? 'active' : ''}`}
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || transitioning}
                         onClick={() => toggleCity(c)}
                       >
                         {c}
@@ -406,7 +473,7 @@ export function OnboardingListPage() {
                     type="url"
                     placeholder="https://"
                     value={website}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || transitioning}
                     onChange={(e) => {
                       setWebsite(e.target.value)
                       setErrors((p) => ({ ...p, website: '' }))
@@ -417,18 +484,18 @@ export function OnboardingListPage() {
             ) : null}
 
             <p className={styles.note}>
-              Validamos formato básico de telefone e CNPJ no MVP — sem consulta a órgãos.
+              Validamos CPF, CNPJ e telefone no cliente — sem consulta a órgãos.
             </p>
 
             <div className={styles.actions}>
-              <Button type="submit" loading={isSubmitting}>
+              <Button type="submit" loading={isSubmitting} disabled={transitioning}>
                 Concluir
               </Button>
               <Button
                 type="button"
                 variant="outline"
-                disabled={isSubmitting}
-                onClick={() => setStep(1)}
+                disabled={isSubmitting || transitioning}
+                onClick={goToStep1}
               >
                 Voltar
               </Button>

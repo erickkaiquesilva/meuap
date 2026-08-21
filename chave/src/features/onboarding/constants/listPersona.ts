@@ -1,4 +1,5 @@
 import type { UserRole } from '@/features/auth/types/auth'
+import { digitsOnly, isValidCnpj, isValidCpf, isValidPhone } from '@/shared/utils/brDocuments'
 
 export const LIST_PERSONAS: {
   value: UserRole
@@ -24,18 +25,7 @@ export const LIST_PERSONAS: {
 
 export const LIST_CITIES = ['Maringá', 'Sarandi'] as const
 
-export function digitsOnly(value: string): string {
-  return value.replace(/\D/g, '')
-}
-
-export function isValidPhone(value: string): boolean {
-  const digits = digitsOnly(value)
-  return digits.length >= 10 && digits.length <= 11
-}
-
-export function isValidCnpjFormat(value: string): boolean {
-  return digitsOnly(value).length === 14
-}
+export { digitsOnly, isValidCnpj, isValidCpf, isValidPhone }
 
 export function isValidOptionalUrl(value: string): boolean {
   const trimmed = value.trim()
