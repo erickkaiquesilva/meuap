@@ -1,9 +1,18 @@
 import { apiClient } from '@/core/api/client'
-import type { DeleteListingPayload, MyListing } from '../types/listings'
+import type {
+  CreateListingInput,
+  DeleteListingPayload,
+  MyListing,
+} from '../types/listings'
 
 export async function fetchMyListings(): Promise<MyListing[]> {
   const { data } = await apiClient.get<{ data: MyListing[] }>('/api/me/listings')
   return data.data ?? []
+}
+
+export async function createMyListing(payload: CreateListingInput): Promise<MyListing> {
+  const { data } = await apiClient.post<{ data: MyListing }>('/api/me/listings', payload)
+  return data.data
 }
 
 export async function deleteMyListing(
