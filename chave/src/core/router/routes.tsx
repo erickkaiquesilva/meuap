@@ -1,11 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { Layout } from '@/shared/components/Layout/Layout'
+import { OnboardingGate } from '@/core/router/OnboardingGate'
+import { OnboardingRoute } from '@/core/router/OnboardingRoute'
 import { HomePage } from '@/features/home/pages/HomePage'
 import { LoginPage } from '@/features/auth/pages/LoginPage'
 import { RegisterPage } from '@/features/auth/pages/RegisterPage'
 import { ForgotPasswordPage } from '@/features/auth/pages/ForgotPasswordPage'
 import { ListingsPage } from '@/features/listings/pages/ListingsPage'
 import { PropertyPage } from '@/features/property/pages/PropertyPage'
+import { OnboardingRentPage } from '@/features/onboarding/pages/OnboardingRentPage'
+import { OnboardingListPage } from '@/features/onboarding/pages/OnboardingListPage'
 
 function NotFoundPage() {
   return (
@@ -27,14 +31,27 @@ export const router = createBrowserRouter([
   { path: 'entrar', element: <LoginPage /> },
   { path: 'cadastro', element: <RegisterPage /> },
   {
-    path: '/',
-    element: <Layout />,
+    path: 'onboarding',
+    element: <OnboardingRoute />,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: 'recuperar-senha', element: <ForgotPasswordPage /> },
-      { path: 'imoveis', element: <ListingsPage /> },
-      { path: 'imoveis/:id', element: <PropertyPage /> },
-      { path: '*', element: <NotFoundPage /> },
+      { path: 'alugar', element: <OnboardingRentPage /> },
+      { path: 'anunciar', element: <OnboardingListPage /> },
+    ],
+  },
+  {
+    path: '/',
+    element: <OnboardingGate />,
+    children: [
+      {
+        element: <Layout />,
+        children: [
+          { index: true, element: <HomePage /> },
+          { path: 'recuperar-senha', element: <ForgotPasswordPage /> },
+          { path: 'imoveis', element: <ListingsPage /> },
+          { path: 'imoveis/:id', element: <PropertyPage /> },
+          { path: '*', element: <NotFoundPage /> },
+        ],
+      },
     ],
   },
 ])

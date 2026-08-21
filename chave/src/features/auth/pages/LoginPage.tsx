@@ -5,6 +5,8 @@ import { AuthSplitLayout } from '../components/AuthSplitLayout/AuthSplitLayout'
 import { GoogleLoginButton } from '../components/GoogleLoginButton/GoogleLoginButton'
 import { Field, Input } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
+import { needsOnboarding, onboardingPathForGoal } from '../utils/onboarding'
+import type { User } from '../types/auth'
 import styles from './LoginPage.module.css'
 
 function EyeIcon({ open }: { open: boolean }) {
@@ -46,7 +48,11 @@ export function LoginPage() {
   const [serverError, setServerError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  function redirectAfterLogin() {
+  function redirectAfterLogin(me: User) {
+    if (needsOnboarding(me) && me.goal) {
+      navigate(onboardingPathForGoal(me.goal), { replace: true })
+      return
+    }
     const redirect = searchParams.get('redirect') ?? '/'
     navigate(redirect, { replace: true })
   }
@@ -63,8 +69,8 @@ export function LoginPage() {
 
     setIsSubmitting(true)
     try {
-      await login(email, password)
-      redirectAfterLogin()
+      const me = await login(email, password)
+      redirectAfterLogin(me)
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message
@@ -164,8 +170,8 @@ export function LoginPage() {
           onError={setServerError}
           onSuccess={async (idToken) => {
             setServerError('')
-            await loginWithGoogle(idToken)
-            redirectAfterLogin()
+            const me = await loginWithGoogle(idToken)
+            redirectAfterLogin(me)
           }}
         />
 
