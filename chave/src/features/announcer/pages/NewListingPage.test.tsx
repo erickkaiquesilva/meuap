@@ -77,28 +77,44 @@ describe('NewListingPage', () => {
     expect(await screen.findByRole('heading', { name: 'Novo anúncio' })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Publicar anúncio' }))
     expect(screen.getByText('Título com pelo menos 8 caracteres')).toBeInTheDocument()
-    expect(screen.getByText('Informe um preço válido')).toBeInTheDocument()
+    expect(screen.getByText('Informe um CEP válido')).toBeInTheDocument()
   })
 
-  it('publishes a listing and returns to the dashboard ready state', async () => {
+  it('autofills address from CEP and publishes the listing', async () => {
     await seedListAnnouncer()
     const user = userEvent.setup()
     renderCreateFlow()
 
     await screen.findByRole('heading', { name: 'Novo anúncio' })
 
+    expect(screen.getByText('R$ 2.500')).toBeInTheDocument()
+
     await user.type(
       screen.getByLabelText('Título do anúncio'),
       'Apartamento amplo na Zona 7',
     )
-    await user.type(screen.getByLabelText(/Aluguel mensal/i), '2500')
-    await user.type(screen.getByLabelText('Endereço'), 'Rua Exemplo 100')
+
+    const cepInput = screen.getByLabelText('CEP')
+    await user.type(cepInput, '87020035')
+    await user.tab()
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Rua')).toHaveValue('Avenida Colombo')
+    })
+    expect(screen.getByLabelText('Bairro')).toHaveValue('Zona 7')
+    expect(screen.getByLabelText('Cidade')).toHaveValue('Maringá')
+    expect(screen.getByLabelText('Estado')).toHaveValue('PR')
+
+    await user.type(screen.getByLabelText('Número'), '100')
     await user.clear(screen.getByLabelText('Descrição'))
     await user.type(
       screen.getByLabelText('Descrição'),
       'Imóvel iluminado, próximo ao centro universitário e comércio local.',
     )
     await user.click(screen.getByLabelText('Piscina'))
+    await user.click(screen.getByRole('button', { name: 'Aumentar quartos' }))
+    expect(screen.getByText('3')).toBeInTheDocument()
+
     await user.click(screen.getByRole('button', { name: 'Publicar anúncio' }))
 
     await waitFor(() => {

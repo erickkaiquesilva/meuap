@@ -34,8 +34,11 @@ export interface CreateListingInput {
   area: number
   description: string
   amenities: string[]
-  /** Optional photo URL; mock generates a placeholder when empty */
-  photoUrl?: string
+  /**
+   * Photo data URLs or remote URLs.
+   * Mock generates a placeholder when empty.
+   */
+  photos?: string[]
 }
 
 export interface DeleteListingPayload {

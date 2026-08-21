@@ -53,6 +53,14 @@ function parseCreateListing(raw: unknown): CreateListingInput | null {
     return null
   }
 
+  let photos: string[] | undefined
+  if (Array.isArray(body.photos)) {
+    photos = body.photos
+      .filter((p): p is string => typeof p === 'string' && p.trim().length > 0)
+      .map((p) => p.trim())
+    if (photos.length === 0) photos = undefined
+  }
+
   return {
     title: body.title.trim(),
     type: body.type as CreateListingInput['type'],
@@ -67,11 +75,26 @@ function parseCreateListing(raw: unknown): CreateListingInput | null {
     area: body.area,
     description: body.description.trim(),
     amenities: body.amenities.map((a) => String(a).trim()).filter(Boolean),
-    photoUrl: typeof body.photoUrl === 'string' ? body.photoUrl.trim() : undefined,
+    photos,
   }
 }
 
 export const announcerHandlers = [
+  http.get('https://viacep.com.br/ws/:cep/json/', ({ params }) => {
+    const cep = String(params.cep).replace(/\D/g, '')
+    if (cep.length !== 8) {
+      return HttpResponse.json({ erro: true })
+    }
+    // Deterministic mock for tests / offline mock mode
+    return HttpResponse.json({
+      cep: `${cep.slice(0, 5)}-${cep.slice(5)}`,
+      logradouro: 'Avenida Colombo',
+      bairro: 'Zona 7',
+      localidade: 'Maringá',
+      uf: 'PR',
+    })
+  }),
+
   http.get('/api/me/listings', ({ request }) => {
     const auth = request.headers.get('Authorization')
     if (!auth?.startsWith('Bearer ')) {
@@ -103,8 +126,9 @@ export const announcerHandlers = [
     }
 
     const seed = encodeURIComponent(parsed.title.slice(0, 24) || 'listing')
-    const photo = parsed.photoUrl
-      || `https://picsum.photos/seed/${seed}/800/600`
+    const photos = parsed.photos?.length
+      ? parsed.photos
+      : [`https://picsum.photos/seed/${seed}/800/600`]
 
     const listing: MyListing = {
       id: `mine-${Date.now()}`,
@@ -123,7 +147,7 @@ export const announcerHandlers = [
       area: parsed.area,
       description: parsed.description,
       amenities: parsed.amenities,
-      photos: [photo],
+      photos,
       featured: false,
       createdAt: new Date().toISOString().slice(0, 10),
     }

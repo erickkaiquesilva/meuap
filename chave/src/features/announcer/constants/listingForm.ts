@@ -36,3 +36,17 @@ export const LISTING_AMENITIES = [
   'Elevador',
   'Churrasqueira',
 ] as const
+
+/** Price slider ranges */
+export const RENT_PRICE_MIN = 500
+export const RENT_PRICE_MAX = 10_000
+export const RENT_PRICE_STEP = 100
+export const RENT_PRICE_DEFAULT = 2_500
+
+export const SALE_PRICE_MIN = 50_000
+export const SALE_PRICE_MAX = 2_000_000
+export const SALE_PRICE_STEP = 10_000
+export const SALE_PRICE_DEFAULT = 350_000
+
+export const MAX_LISTING_PHOTOS = 6
+export const MAX_PHOTO_BYTES = 2 * 1024 * 1024

@@ -66,3 +66,4 @@
 - feat-T056: polish onboarding — máscaras/validação CPF·CNPJ·telefone, rent nearby/slider/condo/vaga, tipografia e transição
 - feat-T057: dashboard do anunciante — /anuncios com loading/empty/error/ready, exclusão com modal de motivo
 - feat-T058: formulário criar anúncio em /anuncios/novo com POST mock e retorno ao dashboard
+- feat-T059: UX do formulário criar anúncio — slider de preço, CEP ViaCEP, steppers e upload de fotos
