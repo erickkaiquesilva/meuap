@@ -14,21 +14,42 @@ function renderRegister() {
   )
 }
 
-async function fillAccountFields(user: ReturnType<typeof userEvent.setup>, email = 'nova@chave.com.br') {
-  await user.type(screen.getByLabelText('Nome'), 'Ana Silva')
-  await user.type(screen.getByLabelText('E-mail'), email)
-  await user.type(screen.getByLabelText('Senha'), 'Abcdefgh')
+async function fillAccountFields(
+  user: ReturnType<typeof userEvent.setup>,
+  email = 'nova@chave.com.br',
+) {
+  await user.type(screen.getByLabelText('Qual o seu nome?'), 'Ana Silva')
+  await user.type(screen.getByLabelText('Qual o seu e-mail?'), email)
+  await user.type(screen.getByLabelText('Digite uma senha'), 'Abcdefgh')
+  await user.type(screen.getByLabelText('Confirme a senha'), 'Abcdefgh')
+  await user.click(screen.getByRole('checkbox', { name: /Aceito os/i }))
 }
 
 describe('RegisterPage', () => {
-  it('blocks submit without role or intent', async () => {
+  it('blocks submit without goal or terms', async () => {
     const user = userEvent.setup()
     renderRegister()
 
     await user.click(screen.getByRole('button', { name: 'Criar conta' }))
 
-    expect(screen.getByText('Selecione se você é corretor, corretora ou proprietário')).toBeInTheDocument()
-    expect(screen.getByText('Selecione se quer vender, alugar ou ambos')).toBeInTheDocument()
+    expect(screen.getByText('Selecione se quer alugar ou anunciar um imóvel')).toBeInTheDocument()
+    expect(screen.getByText('Aceite os Termos de uso e a Política de privacidade')).toBeInTheDocument()
+    expect(getAuthToken()).toBeNull()
+  })
+
+  it('blocks mismatched confirm password', async () => {
+    const user = userEvent.setup()
+    renderRegister()
+
+    await user.click(screen.getByRole('radio', { name: 'Alugar um imóvel' }))
+    await user.type(screen.getByLabelText('Qual o seu nome?'), 'Ana Silva')
+    await user.type(screen.getByLabelText('Qual o seu e-mail?'), 'ana@chave.com.br')
+    await user.type(screen.getByLabelText('Digite uma senha'), 'Abcdefgh')
+    await user.type(screen.getByLabelText('Confirme a senha'), 'OutraSenha1')
+    await user.click(screen.getByRole('checkbox', { name: /Aceito os/i }))
+    await user.click(screen.getByRole('button', { name: 'Criar conta' }))
+
+    expect(screen.getByText('As senhas não coincidem')).toBeInTheDocument()
     expect(getAuthToken()).toBeNull()
   })
 
@@ -36,13 +57,14 @@ describe('RegisterPage', () => {
     const user = userEvent.setup()
     renderRegister()
 
-    await user.type(screen.getByLabelText('Senha'), 'abc')
+    await user.type(screen.getByLabelText('Digite uma senha'), 'abc')
     expect(screen.getByText('Fraca — use 8+ caracteres')).toBeInTheDocument()
 
-    await user.click(screen.getByRole('radio', { name: 'Corretor' }))
-    await user.click(screen.getByRole('button', { name: 'Vender' }))
-    await user.type(screen.getByLabelText('Nome'), 'Ana Silva')
-    await user.type(screen.getByLabelText('E-mail'), 'ana@chave.com.br')
+    await user.click(screen.getByRole('radio', { name: 'Anunciar um imóvel' }))
+    await user.type(screen.getByLabelText('Qual o seu nome?'), 'Ana Silva')
+    await user.type(screen.getByLabelText('Qual o seu e-mail?'), 'ana@chave.com.br')
+    await user.type(screen.getByLabelText('Confirme a senha'), 'abc')
+    await user.click(screen.getByRole('checkbox', { name: /Aceito os/i }))
     await user.click(screen.getByRole('button', { name: 'Criar conta' }))
 
     expect(screen.getByText('Senha fraca demais')).toBeInTheDocument()
@@ -53,8 +75,7 @@ describe('RegisterPage', () => {
     const user = userEvent.setup()
     renderRegister()
 
-    await user.click(screen.getByRole('radio', { name: 'Proprietário' }))
-    await user.click(screen.getByRole('button', { name: 'Alugar' }))
+    await user.click(screen.getByRole('radio', { name: 'Alugar um imóvel' }))
     await fillAccountFields(user)
 
     await user.click(screen.getByRole('button', { name: 'Criar conta' }))
@@ -68,8 +89,7 @@ describe('RegisterPage', () => {
     const user = userEvent.setup()
     renderRegister()
 
-    await user.click(screen.getByRole('radio', { name: 'Corretora' }))
-    await user.click(screen.getByRole('button', { name: 'Vender' }))
+    await user.click(screen.getByRole('radio', { name: 'Anunciar um imóvel' }))
     await fillAccountFields(user, 'existente@chave.com.br')
 
     await user.click(screen.getByRole('button', { name: 'Criar conta' }))

@@ -1,24 +1,23 @@
 import { http, HttpResponse } from 'msw'
-import type { ListingIntent, User, UserRole } from '@/features/auth/types/auth'
+import type { User, UserGoal, UserRole } from '@/features/auth/types/auth'
 
 const MOCK_TOKEN = 'mock-jwt-token-dev-only'
-const ROLES: UserRole[] = ['corretor', 'corretora', 'proprietario']
-const INTENTS: ListingIntent[] = ['sell', 'rent']
+const GOALS: UserGoal[] = ['rent', 'list']
 
 function makeMockUser(partial: {
   name: string
   email: string
   id?: string
+  goal?: UserGoal | null
   role?: UserRole | null
-  intent?: ListingIntent[]
   onboardingComplete?: boolean
 }): User {
   return {
     id: partial.id ?? 'user-001',
     name: partial.name,
     email: partial.email,
+    goal: partial.goal ?? null,
     role: partial.role ?? null,
-    intent: partial.intent ?? [],
     onboardingComplete: partial.onboardingComplete ?? false,
   }
 }
@@ -26,6 +25,7 @@ function makeMockUser(partial: {
 const DEFAULT_USER = makeMockUser({
   name: 'Usuário Teste',
   email: 'teste@chave.com.br',
+  goal: 'rent',
   onboardingComplete: true,
 })
 
@@ -35,15 +35,8 @@ export function resetAuthSession() {
   sessionUser = DEFAULT_USER
 }
 
-function isRole(value: unknown): value is UserRole {
-  return typeof value === 'string' && ROLES.includes(value as UserRole)
-}
-
-function parseIntent(value: unknown): ListingIntent[] | null {
-  if (!Array.isArray(value) || value.length === 0) return null
-  const unique = [...new Set(value)]
-  if (unique.some((item) => !INTENTS.includes(item as ListingIntent))) return null
-  return unique as ListingIntent[]
+function isGoal(value: unknown): value is UserGoal {
+  return typeof value === 'string' && GOALS.includes(value as UserGoal)
 }
 
 export const authHandlers = [
@@ -73,6 +66,7 @@ export const authHandlers = [
       name: 'Conta Google',
       email: 'google.user@chave.com.br',
       id: 'user-google',
+      goal: null,
       onboardingComplete: true,
     })
     return HttpResponse.json({ token: MOCK_TOKEN, user: sessionUser })
@@ -83,8 +77,7 @@ export const authHandlers = [
       name?: string
       email?: string
       password?: string
-      role?: unknown
-      intent?: unknown
+      goal?: unknown
     }
 
     if (!body.name || !body.email || !body.password) {
@@ -94,17 +87,9 @@ export const authHandlers = [
       )
     }
 
-    if (!isRole(body.role)) {
+    if (!isGoal(body.goal)) {
       return HttpResponse.json(
-        { message: 'Selecione se você é corretor, corretora ou proprietário' },
-        { status: 400 },
-      )
-    }
-
-    const intent = parseIntent(body.intent)
-    if (!intent) {
-      return HttpResponse.json(
-        { message: 'Selecione se quer vender, alugar ou ambos' },
+        { message: 'Selecione se quer alugar ou anunciar um imóvel' },
         { status: 400 },
       )
     }
@@ -120,8 +105,8 @@ export const authHandlers = [
       name: body.name,
       email: body.email,
       id: `user-${Date.now()}`,
-      role: body.role,
-      intent,
+      goal: body.goal,
+      role: null,
       onboardingComplete: false,
     })
     return HttpResponse.json({ token: MOCK_TOKEN, user: sessionUser }, { status: 201 })
