@@ -1,0 +1,27 @@
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-5) var(--sp-10);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+  flex-wrap: wrap;
+}
+
+.title {
+  margin: 0 0 6px;
+  font: 800 28px/1.15 var(--font-display);
+  color: var(--neutral-900);
+  letter-spacing: -0.4px;
+}
+
+.sub {
+  margin: 0;
+  font: 400 15px/1.4 var(--font-ui);
+  color: var(--neutral-500);
+}

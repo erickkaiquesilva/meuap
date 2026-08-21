@@ -1,0 +1,17 @@
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-5) var(--sp-10);
+}
+
+.title {
+  margin: 0 0 8px;
+  font: 800 28px/1.15 var(--font-display);
+  color: var(--neutral-900);
+}
+
+.sub {
+  margin: 0 0 var(--sp-6);
+  font: 400 15px/1.45 var(--font-ui);
+  color: var(--neutral-500);
+}

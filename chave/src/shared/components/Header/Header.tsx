@@ -29,7 +29,19 @@ export function Header() {
   }
 
   function handleAnnounceClick() {
-    window.alert('Em breve você poderá anunciar seu imóvel na Chave.')
+    if (isAuthenticated && user?.goal === 'list' && user.onboardingComplete) {
+      navigate('/anuncios')
+      return
+    }
+    if (!isAuthenticated) {
+      navigate('/cadastro')
+      return
+    }
+    if (user?.goal === 'list' && !user.onboardingComplete) {
+      navigate('/onboarding/anunciar')
+      return
+    }
+    navigate('/cadastro')
   }
 
   const [menuOpen, setMenuOpen] = useState(false)
@@ -92,6 +104,14 @@ export function Header() {
 
           {isAuthenticated ? (
             <div className={styles.userMenu}>
+              {user?.goal === 'list' && user.onboardingComplete ? (
+                <NavLink
+                  to="/anuncios"
+                  className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}
+                >
+                  Meus anúncios
+                </NavLink>
+              ) : null}
               <span className={styles.userName}>{user?.name}</span>
               <button type="button" className="btn btn-outline btn-sm" onClick={handleLogout}>
                 Sair
@@ -167,14 +187,21 @@ export function Header() {
             </select>
           </label>
           {isAuthenticated ? (
-            <button
-              type="button"
-              className={styles.drawerLink}
-              onClick={() => { handleLogout(); closeMenu() }}
-              style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}
-            >
-              Sair ({user?.name})
-            </button>
+            <>
+              {user?.goal === 'list' && user.onboardingComplete ? (
+                <NavLink to="/anuncios" className={styles.drawerLink} onClick={closeMenu}>
+                  Meus anúncios
+                </NavLink>
+              ) : null}
+              <button
+                type="button"
+                className={styles.drawerLink}
+                onClick={() => { handleLogout(); closeMenu() }}
+                style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}
+              >
+                Sair ({user?.name})
+              </button>
+            </>
           ) : (
             <>
               <NavLink to="/entrar" className={styles.drawerLink} onClick={closeMenu}>
