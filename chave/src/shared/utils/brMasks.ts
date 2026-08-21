@@ -30,6 +30,12 @@ export function maskCnpj(value: string): string {
   return `${d.slice(0, 2)}.${d.slice(2, 5)}.${d.slice(5, 8)}/${d.slice(8, 12)}-${d.slice(12)}`
 }
 
+export function maskCep(value: string): string {
+  const d = digitsOnly(value).slice(0, 8)
+  if (d.length <= 5) return d
+  return `${d.slice(0, 5)}-${d.slice(5)}`
+}
+
 export function formatCurrencyBrl(value: number): string {
   return value.toLocaleString('pt-BR', {
     style: 'currency',
