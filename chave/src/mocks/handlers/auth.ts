@@ -137,4 +137,18 @@ export const authHandlers = [
     }
     return HttpResponse.json(sessionUser)
   }),
+
+  http.patch('/api/auth/onboarding', async ({ request }) => {
+    const auth = request.headers.get('Authorization')
+    if (!auth?.startsWith('Bearer ')) {
+      return new HttpResponse(null, { status: 401 })
+    }
+
+    const body = await request.json() as { onboardingComplete?: boolean }
+    sessionUser = {
+      ...sessionUser,
+      onboardingComplete: body.onboardingComplete ?? true,
+    }
+    return HttpResponse.json(sessionUser)
+  }),
 ]

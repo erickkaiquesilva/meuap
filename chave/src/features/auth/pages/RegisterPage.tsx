@@ -6,6 +6,7 @@ import { PasswordStrengthMeter } from '../components/PasswordStrengthMeter/Passw
 import { Field, Input } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
 import { scorePassword } from '../utils/passwordStrength'
+import { onboardingPathForGoal } from '../utils/onboarding'
 import type { UserGoal } from '../types/auth'
 import styles from './RegisterPage.module.css'
 
@@ -89,7 +90,7 @@ export function RegisterPage() {
         password,
         goal,
       })
-      navigate('/', { replace: true })
+      navigate(onboardingPathForGoal(goal), { replace: true })
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message ??
