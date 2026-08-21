@@ -1,5 +1,5 @@
 import { apiClient } from '@/core/api/client'
-import type { RegisterPayload, User } from '../types/auth'
+import type { CompleteOnboardingPayload, RegisterPayload, User } from '../types/auth'
 
 export async function apiLogin(
   email: string,
@@ -32,9 +32,12 @@ export async function apiRegister(
   return data
 }
 
-export async function apiCompleteOnboarding(): Promise<User> {
+export async function apiCompleteOnboarding(
+  payload?: CompleteOnboardingPayload,
+): Promise<User> {
   const { data } = await apiClient.patch<User>('/api/auth/onboarding', {
     onboardingComplete: true,
+    ...payload,
   })
   if (!data || typeof data !== 'object' || !('id' in data)) {
     throw new Error('Invalid user response')

@@ -6,7 +6,12 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import type { AuthContextValue, RegisterPayload, User } from '../types/auth'
+import type {
+  AuthContextValue,
+  CompleteOnboardingPayload,
+  RegisterPayload,
+  User,
+} from '../types/auth'
 import {
   apiCompleteOnboarding,
   apiGetMe,
@@ -56,8 +61,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return me
   }, [])
 
-  const completeOnboarding = useCallback(async () => {
-    const me = await apiCompleteOnboarding()
+  const completeOnboarding = useCallback(async (payload?: CompleteOnboardingPayload) => {
+    const me = await apiCompleteOnboarding(payload)
     setUser(me)
     return me
   }, [])

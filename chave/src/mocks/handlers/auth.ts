@@ -1,8 +1,15 @@
 import { http, HttpResponse } from 'msw'
-import type { User, UserGoal, UserRole } from '@/features/auth/types/auth'
+import type {
+  RentProfile,
+  RentPurpose,
+  User,
+  UserGoal,
+  UserRole,
+} from '@/features/auth/types/auth'
 
 const MOCK_TOKEN = 'mock-jwt-token-dev-only'
 const GOALS: UserGoal[] = ['rent', 'list']
+const PURPOSES: RentPurpose[] = ['morar', 'trabalho', 'estudos', 'temporada', 'outro']
 
 function makeMockUser(partial: {
   name: string
@@ -11,6 +18,7 @@ function makeMockUser(partial: {
   goal?: UserGoal | null
   role?: UserRole | null
   onboardingComplete?: boolean
+  rentProfile?: RentProfile | null
 }): User {
   return {
     id: partial.id ?? 'user-001',
@@ -19,6 +27,7 @@ function makeMockUser(partial: {
     goal: partial.goal ?? null,
     role: partial.role ?? null,
     onboardingComplete: partial.onboardingComplete ?? false,
+    rentProfile: partial.rentProfile ?? null,
   }
 }
 
@@ -37,6 +46,41 @@ export function resetAuthSession() {
 
 function isGoal(value: unknown): value is UserGoal {
   return typeof value === 'string' && GOALS.includes(value as UserGoal)
+}
+
+function isPurpose(value: unknown): value is RentPurpose {
+  return typeof value === 'string' && PURPOSES.includes(value as RentPurpose)
+}
+
+function parseRentProfile(raw: unknown): RentProfile | null {
+  if (!raw || typeof raw !== 'object') return null
+  const body = raw as Record<string, unknown>
+  if (!isPurpose(body.purpose)) return null
+  if (typeof body.city !== 'string' || !body.city.trim()) return null
+
+  const maxRent =
+    body.maxRent === null
+      ? null
+      : typeof body.maxRent === 'number' && Number.isFinite(body.maxRent)
+        ? body.maxRent
+        : undefined
+  if (maxRent === undefined) return null
+
+  const minBedrooms =
+    body.minBedrooms === null
+      ? null
+      : typeof body.minBedrooms === 'number' && Number.isFinite(body.minBedrooms)
+        ? body.minBedrooms
+        : undefined
+  if (minBedrooms === undefined) return null
+
+  return {
+    purpose: body.purpose,
+    city: body.city.trim(),
+    maxRent,
+    minBedrooms,
+    wantRecommendations: false,
+  }
 }
 
 export const authHandlers = [
@@ -144,9 +188,26 @@ export const authHandlers = [
       return new HttpResponse(null, { status: 401 })
     }
 
-    const body = await request.json() as { onboardingComplete?: boolean }
+    const body = await request.json() as {
+      onboardingComplete?: boolean
+      rentProfile?: unknown
+    }
+
+    let rentProfile = sessionUser.rentProfile
+    if (body.rentProfile !== undefined) {
+      const parsed = parseRentProfile(body.rentProfile)
+      if (!parsed) {
+        return HttpResponse.json(
+          { message: 'Perfil de busca inválido' },
+          { status: 400 },
+        )
+      }
+      rentProfile = parsed
+    }
+
     sessionUser = {
       ...sessionUser,
+      rentProfile,
       onboardingComplete: body.onboardingComplete ?? true,
     }
     return HttpResponse.json(sessionUser)
