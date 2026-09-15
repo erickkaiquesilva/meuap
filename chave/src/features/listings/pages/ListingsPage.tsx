@@ -122,8 +122,12 @@ export function ListingsPage() {
                   setVisibleIds(null)
                   setFilters(next)
                 }}
-                onAccept={() => setWantRecommendations(true)}
-                onDecline={() => setWantRecommendations(false)}
+                onAccept={async () => {
+                  await setWantRecommendations(true)
+                }}
+                onDecline={async () => {
+                  await setWantRecommendations(false)
+                }}
               />
             ) : null}
 
