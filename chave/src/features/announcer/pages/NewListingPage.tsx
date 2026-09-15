@@ -2,6 +2,8 @@ import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Field, Input, Select } from '@/shared/components/Field/Field'
 import { Button } from '@/shared/components/Button/Button'
+import { getApiErrorMessage } from '@/core/api/errors'
+import { isMock } from '@/core/api/config'
 import { digitsOnly } from '@/shared/utils/brDocuments'
 import {
   formatCurrencyBrlCents,
@@ -16,6 +18,7 @@ import {
   useUpdateMyListing,
 } from '../hooks/useMyListings'
 import { lookupCep } from '../services/cepLookup'
+import { uploadListingPhoto } from '../services/mediaApi'
 import {
   LISTING_AMENITIES,
   LISTING_OPERATIONS,
@@ -175,8 +178,10 @@ export function NewListingPage() {
   const [description, setDescription] = useState('')
   const [amenities, setAmenities] = useState<string[]>([])
   const [photos, setPhotos] = useState<string[]>([])
+  const [photoFiles, setPhotoFiles] = useState<File[]>([])
   const [errors, setErrors] = useState<FormErrors>({})
   const [serverError, setServerError] = useState('')
+  const [uploadingPhotos, setUploadingPhotos] = useState(false)
 
   const cfg = priceConfig(operation)
   const saving = createMutation.isPending || updateMutation.isPending
@@ -208,6 +213,7 @@ export function NewListingPage() {
     setDescription(data.description)
     setAmenities(data.amenities)
     setPhotos(data.photos)
+    setPhotoFiles([])
   }, [listingId, listingQuery.data])
 
   function toggleAmenity(value: string) {
@@ -257,6 +263,7 @@ export function NewListingPage() {
 
     const files = Array.from(fileList).slice(0, remaining)
     const nextUrls: string[] = []
+    const nextFiles: File[] = []
     for (const file of files) {
       if (!file.type.startsWith('image/')) {
         setErrors((p) => ({ ...p, photos: 'Envie apenas imagens' }))
@@ -267,12 +274,24 @@ export function NewListingPage() {
         continue
       }
       nextUrls.push(await readFileAsDataUrl(file))
+      nextFiles.push(file)
     }
     if (nextUrls.length) {
       setPhotos((prev) => [...prev, ...nextUrls].slice(0, MAX_LISTING_PHOTOS))
+      setPhotoFiles((prev) => [...prev, ...nextFiles].slice(0, MAX_LISTING_PHOTOS))
       setErrors((p) => ({ ...p, photos: undefined }))
     }
     if (photoInputRef.current) photoInputRef.current.value = ''
+  }
+
+  function removePhotoAt(index: number) {
+    setPhotos((prev) => prev.filter((_, i) => i !== index))
+    setPhotoFiles((prev) => {
+      const remoteCount = photos.length - prev.length
+      const fileIndex = index - remoteCount
+      if (fileIndex < 0) return prev
+      return prev.filter((_, i) => i !== fileIndex)
+    })
   }
 
   function validate(): FormErrors {
@@ -319,41 +338,67 @@ export function NewListingPage() {
     if (Object.keys(next).length > 0) return
 
     const address = `${street.trim()}, ${number.trim()}`
+    const remotePhotos = photos.filter((p) => /^https?:\/\//i.test(p))
     const payload: CreateListingInput = {
       title: title.trim(),
       type,
       operation,
-      price: Math.round(price * 100) / 100,
+      price: Math.round(price),
       city: city.trim(),
       neighborhood: neighborhood.trim(),
       address,
       bedrooms,
       bathrooms,
       parkingSpots,
-      area: Number(area),
+      area: Math.round(Number(area)),
       description: description.trim(),
       amenities,
-      photos: photos.length ? photos : undefined,
+      photos: isMock
+        ? photos.length
+          ? photos
+          : undefined
+        : remotePhotos.length
+          ? remotePhotos
+          : undefined,
     }
 
     try {
+      let listingIdSaved = listingId
       if (isEdit && listingId) {
         await updateMutation.mutateAsync({ id: listingId, payload })
       } else {
-        await createMutation.mutateAsync(payload)
+        const created = await createMutation.mutateAsync(payload)
+        listingIdSaved = created.id
       }
+
+      if (!isMock && listingIdSaved && photoFiles.length > 0) {
+        setUploadingPhotos(true)
+        for (let i = 0; i < photoFiles.length; i++) {
+          await uploadListingPhoto(
+            listingIdSaved,
+            photoFiles[i]!,
+            remotePhotos.length + i,
+          )
+        }
+      }
+
       navigate('/anuncios', { replace: true })
     } catch (err: unknown) {
-      const message =
-        (err as { response?: { data?: { message?: string } } })?.response?.data?.message
-        ?? (isEdit
-          ? 'Não foi possível salvar as alterações. Tente novamente.'
-          : 'Não foi possível publicar o anúncio. Tente novamente.')
-      setServerError(message)
+      setServerError(
+        getApiErrorMessage(
+          err,
+          isEdit
+            ? 'Não foi possível salvar as alterações. Tente novamente.'
+            : 'Não foi possível publicar o anúncio. Tente novamente.',
+        ),
+      )
+    } finally {
+      setUploadingPhotos(false)
     }
   }
 
-  const busy = saving || cepLoading || (isEdit && listingQuery.isLoading)
+  const busy =
+    saving || uploadingPhotos || cepLoading || (isEdit && listingQuery.isLoading)
   const priceLabel = operation === 'rent' ? 'Aluguel mensal' : 'Preço de venda'
   const pageTitle = isEdit ? 'Editar anúncio' : 'Novo anúncio'
   const submitLabel = isEdit ? 'Salvar alterações' : 'Publicar anúncio'
@@ -694,7 +739,7 @@ export function NewListingPage() {
                       className={styles.photoRemove}
                       aria-label={`Remover foto ${index + 1}`}
                       disabled={busy}
-                      onClick={() => setPhotos((prev) => prev.filter((_, i) => i !== index))}
+                      onClick={() => removePhotoAt(index)}
                     >
                       Remover
                     </button>
@@ -710,7 +755,7 @@ export function NewListingPage() {
         </section>
 
         <div className={styles.actions}>
-          <Button type="submit" loading={saving}>
+          <Button type="submit" loading={saving || uploadingPhotos}>
             {submitLabel}
           </Button>
           <Button

@@ -13,6 +13,11 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
+    env: {
+      VITE_ENV: 'mock',
+      VITE_API_URL: '',
+      VITE_WA_NUMBER: '44999999999',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],

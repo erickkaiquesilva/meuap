@@ -85,17 +85,24 @@ export function MyListingCard({ listing }: MyListingCardProps) {
     <>
       <article className={styles.card}>
         <div className={styles.photoWrap}>
-          <img
-            src={listing.photos[0]}
-            alt=""
-            className={styles.photo}
-            loading="lazy"
-          />
+          {listing.photos[0] ? (
+            <img
+              src={listing.photos[0]}
+              alt=""
+              className={styles.photo}
+              loading="lazy"
+            />
+          ) : (
+            <div className={styles.photo} aria-hidden="true" />
+          )}
         </div>
         <div className={styles.body}>
           <p className={styles.price}>{formatPrice(listing)}</p>
           <h3 className={styles.title}>{listing.title}</h3>
           <p className={styles.meta}>
+            {listing.status === 'pending' ? 'Em moderação · ' : ''}
+            {listing.status === 'rejected' ? 'Rejeitado · ' : ''}
+            {listing.status === 'paused' ? 'Pausado · ' : ''}
             {listing.bedrooms > 0 ? `${listing.bedrooms} quartos · ` : ''}
             {listing.neighborhood}, {listing.city}
           </p>
