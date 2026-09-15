@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'chave/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'chave/**'
+      - '.github/workflows/ci.yml'
+      - '.specs/**'
+
+jobs:
+  chave:
+    name: chave (lint · test · build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: chave
+
+    env:
+      VITE_ENV: production
+      VITE_API_URL: ''
+      VITE_WA_NUMBER: '44999999999'
+      VITE_GOOGLE_MAPS_API_KEY: ''
+      VITE_GOOGLE_CLIENT_ID: ''
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: chave/package-lock.json
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:run
+      - run: npm run build

@@ -1,4 +1,5 @@
 import { apiClient } from '@/core/api/client'
+import { isMock } from '@/core/api/config'
 import type {
   CreateListingInput,
   DeleteListingPayload,
@@ -36,8 +37,11 @@ export async function deleteMyListing(
   await apiClient.delete(`/api/me/listings/${id}`, { data: payload })
 }
 
-/** Test / demo helper — seeds mock listings for the session. */
+/** Helper só do MSW / testes — a API real não expõe seed. */
 export async function seedMyListings(ownerId: string, count = 3): Promise<MyListing[]> {
+  if (!isMock) {
+    throw new Error('seedMyListings só está disponível em VITE_ENV=mock')
+  }
   const { data } = await apiClient.post<{ data: MyListing[] }>('/api/me/listings/seed', {
     ownerId,
     count,

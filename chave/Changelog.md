@@ -69,3 +69,6 @@
 - feat-T059: UX do formulário criar anúncio — slider de preço, CEP ViaCEP, steppers e upload de fotos
 - feat-T060: teto de preço do anúncio até R$ 1 bilhão (aluguel e venda) com campo numérico
 - feat-T061: polish anunciante — espaçamento dashboard, footer sticky, edição, exclusão com detalhes e preço decimal
+- T8-feat: ligando catálogo e anunciante à API real em staging (sem MSW), upload R2 via presign e testes dos clients
+- chore-ci: GitHub Actions — lint, test e build do front em PRs/push para main; corrige tipagem do banner de recomendações que quebrava o build
+- chore-ci: versiona `chave/package-lock.json` (sai do gitignore) para `npm ci` e cache no Actions

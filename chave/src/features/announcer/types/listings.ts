@@ -35,7 +35,7 @@ export const OTHER_LISTING_CHANNELS: { value: OtherListingChannel; label: string
 
 export interface MyListing extends Property {
   ownerId: string
-  status: 'active' | 'paused'
+  status: 'active' | 'paused' | 'pending' | 'rejected'
 }
 
 export interface CreateListingInput {
