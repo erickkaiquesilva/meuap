@@ -71,3 +71,4 @@
 - feat-T061: polish anunciante — espaçamento dashboard, footer sticky, edição, exclusão com detalhes e preço decimal
 - T8-feat: ligando catálogo e anunciante à API real em staging (sem MSW), upload R2 via presign e testes dos clients
 - chore-ci: GitHub Actions — lint, test e build do front em PRs/push para main; corrige tipagem do banner de recomendações que quebrava o build
+- chore-ci: versiona `chave/package-lock.json` (sai do gitignore) para `npm ci` e cache no Actions
