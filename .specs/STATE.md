@@ -38,16 +38,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Execute — Phase 1 complete (T1–T8); next Phase 2 T9 |
-| **Branch** | `meuap`: `feat/tlc-t8-wire-api` |
+| **Phase** | Execute — Phase 2 T12 done; next T13 admin route |
+| **Branch** | `meuap`: `feat/tlc-t12-admin-queue` |
 | **PRD** | `docs/prd/2026-08-28-chave-imoveis-prd.md` (approved) |
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
-| **Front** | `chave/` — T8 wire staging→API |
-| **Back** | `chave-api/` — Phase 1 merged on `main` |
+| **Front** | `chave/` — T12 fila de moderação (rota `/admin` no T13) |
+| **Back** | `chave-api/` — T11 merged |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | Abrir PR do T8 → CI + review humano → merge → T9 AdminGuard |
+| **Next step** | CI + review da PR do T12 → T13 AdminGuard na rota `/admin` |
 
 ## Open (product)
 
