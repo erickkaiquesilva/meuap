@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 1 complete (T1–T8); next T9 AdminGuard
+**Status**: In Progress — Phase 2 T12 complete; next T13 admin route guard
 
 ---
 
@@ -410,15 +410,15 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] Queue renders pending listings with approve/reject actions
-- [ ] Reject modal captures reason
-- [ ] Gate check passes: `cd chave && npm run test:run`
-- [ ] Test count: ≥4 component tests pass
+- [x] Queue renders pending listings with approve/reject actions
+- [x] Reject modal captures reason
+- [x] Gate check passes: `cd chave && npm run test:run`
+- [x] Test count: ≥4 component tests pass
 
 **Tests**: unit  
 **Gate**: quick
 
-**Commit**: `feat(chave): add admin moderation portal UI`
+**Commit**: `T12-feat: adicionando fila de moderação no front`
 
 ---
 
