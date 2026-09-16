@@ -72,6 +72,7 @@ export interface User {
   goal: UserGoal | null
   role: UserRole | null
   onboardingComplete: boolean
+  isAdmin?: boolean
   rentProfile: RentProfile | null
   listProfile: ListProfile | null
 }

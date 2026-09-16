@@ -21,6 +21,7 @@ function makeMockUser(partial: {
   goal?: UserGoal | null
   role?: UserRole | null
   onboardingComplete?: boolean
+  isAdmin?: boolean
   rentProfile?: RentProfile | null
   listProfile?: ListProfile | null
 }): User {
@@ -31,6 +32,7 @@ function makeMockUser(partial: {
     goal: partial.goal ?? null,
     role: partial.role ?? null,
     onboardingComplete: partial.onboardingComplete ?? false,
+    isAdmin: partial.isAdmin ?? false,
     rentProfile: partial.rentProfile ?? null,
     listProfile: partial.listProfile ?? null,
   }
@@ -47,6 +49,10 @@ let sessionUser: User = DEFAULT_USER
 
 export function resetAuthSession() {
   sessionUser = DEFAULT_USER
+}
+
+export function markSessionAdmin() {
+  sessionUser = { ...sessionUser, isAdmin: true }
 }
 
 function isGoal(value: unknown): value is UserGoal {
