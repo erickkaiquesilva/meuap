@@ -38,16 +38,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Execute — Phase 3 T16 done; next T17 visit outbox |
-| **Branch** | `chave-api`: `feat/tlc-t16-visits` |
+| **Phase** | Execute — Phase 3 T17 done; next T18 front visit booking |
+| **Branch** | `chave-api`: `feat/tlc-t17-visit-outbox` |
 | **PRD** | `docs/prd/2026-08-28-chave-imoveis-prd.md` (approved) |
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
-| **Front** | `chave/` — T15 favorites merged |
-| **Back** | `chave-api/` — T16 VisitRequest + slot validation |
+| **Front** | `chave/` — T15 favorites merged; visita na T18 |
+| **Back** | `chave-api/` — T17 outbox `visit-request` no create |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | CI + review da PR do T16 → T17 outbox de visita |
+| **Next step** | CI + review da PR do T17 → T18 VisitScheduler no front |
 
 ## Open (product)
 
