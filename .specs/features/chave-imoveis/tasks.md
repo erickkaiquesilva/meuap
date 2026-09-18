@@ -437,15 +437,15 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] `/admin` accessible only for admin users
-- [ ] Non-admin redirected to `/`
-- [ ] Gate check passes: `cd chave && npm run test:run`
-- [ ] Test count: ≥2 route guard tests pass
+- [x] `/admin` accessible only for admin users
+- [x] Non-admin redirected to `/`
+- [x] Gate check passes: `cd chave && npm run test:run`
+- [x] Test count: ≥2 route guard tests pass
 
 **Tests**: unit  
 **Gate**: quick
 
-**Commit**: `feat(chave): add admin route with AdminGuard`
+**Commit**: `T13-feat: adicionando rota /admin com AdminGuard`
 
 ---
 

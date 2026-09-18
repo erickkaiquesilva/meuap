@@ -44,10 +44,10 @@
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
-| **Front** | `chave/` — T15 favorites wired (`/favoritos` + useFavorite) |
+| **Front** | `chave/` — T15 favorites wired (`/favoritos` + useFavorite); `/admin` na main |
 | **Back** | `chave-api/` — T14 favorites endpoints merged |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | CI + review da PR do T15 → T16 VisitRequest |
+| **Next step** | CI + review da PR #35 → T16 VisitRequest |
 
 ## Open (product)
 
