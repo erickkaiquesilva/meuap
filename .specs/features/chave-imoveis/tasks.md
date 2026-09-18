@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 4 T19 complete; next T20 search alerts CRUD
+**Status**: In Progress — Phase 4 T20 complete; next T21 alert matching on approval
 
 ---
 
@@ -630,10 +630,10 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] CRUD persists `SearchAlert` with channels array
-- [ ] Disable sets `active=false`
-- [ ] Gate check passes: `cd chave-api && npm run test:e2e`
-- [ ] Test count: ≥4 e2e tests pass in `test/alerts.e2e-spec.ts`
+- [x] CRUD persists `SearchAlert` with channels array
+- [x] Disable sets `active=false`
+- [x] Gate check passes: `cd chave-api && npm run test:e2e`
+- [x] Test count: ≥4 e2e tests pass in `test/alerts.e2e-spec.ts`
 
 **Tests**: e2e  
 **Gate**: full
