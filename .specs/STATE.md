@@ -38,16 +38,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Execute — Phase 3 T15 done; next T16 visit requests |
-| **Branch** | `meuap`: `feat/tlc-t15-favorites-wire` |
+| **Phase** | Execute — Phase 3 T16 done; next T17 visit outbox |
+| **Branch** | `chave-api`: `feat/tlc-t16-visits` |
 | **PRD** | `docs/prd/2026-08-28-chave-imoveis-prd.md` (approved) |
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
-| **Front** | `chave/` — T15 favorites wired (`/favoritos` + useFavorite); `/admin` na main |
-| **Back** | `chave-api/` — T14 favorites endpoints merged |
+| **Front** | `chave/` — T15 favorites merged |
+| **Back** | `chave-api/` — T16 VisitRequest + slot validation |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | CI + review da PR #35 → T16 VisitRequest |
+| **Next step** | CI + review da PR do T16 → T17 outbox de visita |
 
 ## Open (product)
 

@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 3 T15 complete; next T16 visit requests
+**Status**: In Progress — Phase 3 T16 complete; next T17 visit notification outbox
 
 ---
 
@@ -520,11 +520,11 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] Valid slot creates `VisitRequest`
-- [ ] Concurrent same slot returns 409
-- [ ] Invalid slot outside availability rejected
-- [ ] Gate check passes: `cd chave-api && npm run test:e2e`
-- [ ] Test count: ≥5 e2e tests pass in `test/visits.e2e-spec.ts`
+- [x] Valid slot creates `VisitRequest`
+- [x] Concurrent same slot returns 409
+- [x] Invalid slot outside availability rejected
+- [x] Gate check passes: `cd chave-api && npm run test:e2e`
+- [x] Test count: ≥5 e2e tests pass in `test/visits.e2e-spec.ts`
 
 **Tests**: e2e  
 **Gate**: full
