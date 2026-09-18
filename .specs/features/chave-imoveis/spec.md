@@ -283,15 +283,16 @@ Sites imobiliários locais em Maringá e Sarandi falham em expor filtros, transm
 | CHV-18 | P1 Admin | 2 | T9, T11, T12, T13 | Pending |
 | CHV-19 | P1 Admin | 2 | T10, T11, T12 | Pending |
 | CHV-20 | P1 Admin | 2 | T10, T11, T12 | Pending |
-| CHV-21 | P1 Admin | 2, 4 | T10, T11, T19 | Pending |
+| CHV-21 | P1 Admin | 2, 4 | T10, T11, T19 | Partial |
 | CHV-22 | P1 Admin | 2 | T9, T11, T13 | Pending |
 | CHV-23 | P1 Favoritos | 3 | T14, T15 | Done |
 | CHV-24 | P1 Favoritos | 3 | T14, T15 | Done |
 | CHV-25 | P1 Favoritos | 3 | T14, T15 | Done |
-| CHV-26 | P1 Favoritos | 3 | T15 | Done || CHV-27 | P1 Alertas | 4 | T20, T22 | Pending |
+| CHV-26 | P1 Favoritos | 3 | T15 | Done |
+| CHV-27 | P1 Alertas | 4 | T20, T22 | Pending |
 | CHV-28 | P1 Alertas | 4 | T21 | Pending |
 | CHV-29 | P1 Alertas | 4 | T20, T22 | Pending |
-| CHV-30 | P1 Alertas | 4 | T19, T21 | Pending |
+| CHV-30 | P1 Alertas | 4 | T19, T21 | Partial |
 | CHV-31 | P1 Visitas | 3 | T16, T18 | Done |
 | CHV-32 | P1 Visitas | 3, 4 | T17, T19 | Partial |
 | CHV-33 | P1 Visitas | 3, 4 | T17, T19 | Pending |
