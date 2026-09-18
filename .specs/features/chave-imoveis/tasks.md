@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 4 T20 complete; next T21 alert matching on approval
+**Status**: In Progress — Phase 4 T21 complete; next T22 front search alerts
 
 ---
 
@@ -657,10 +657,10 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] Matching alert enqueues email notification
-- [ ] WhatsApp failure does not block email (CHV-30)
-- [ ] Gate check passes: `cd chave-api && npm run test:e2e`
-- [ ] Test count: ≥4 e2e tests pass
+- [x] Matching alert enqueues email notification
+- [x] WhatsApp failure does not block email (CHV-30)
+- [x] Gate check passes: `cd chave-api && npm run test:e2e`
+- [x] Test count: ≥4 e2e tests pass
 
 **Tests**: e2e  
 **Gate**: full
