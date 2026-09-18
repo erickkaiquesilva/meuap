@@ -73,3 +73,4 @@
 - chore-ci: GitHub Actions — lint, test e build do front em PRs/push para main; corrige tipagem do banner de recomendações que quebrava o build
 - chore-ci: versiona `chave/package-lock.json` (sai do gitignore) para `npm ci` e cache no Actions
 - T12-feat: adicionando fila de moderação no front
+- T15-feat: ligando favoritos do front à API

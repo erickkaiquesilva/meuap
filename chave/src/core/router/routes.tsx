@@ -3,12 +3,14 @@ import { Layout } from '@/shared/components/Layout/Layout'
 import { OnboardingGate } from '@/core/router/OnboardingGate'
 import { OnboardingRoute } from '@/core/router/OnboardingRoute'
 import { ListGoalGate } from '@/core/router/ListGoalGate'
+import { ProtectedRoute } from '@/core/router/ProtectedRoute'
 import { HomePage } from '@/features/home/pages/HomePage'
 import { LoginPage } from '@/features/auth/pages/LoginPage'
 import { RegisterPage } from '@/features/auth/pages/RegisterPage'
 import { ForgotPasswordPage } from '@/features/auth/pages/ForgotPasswordPage'
 import { ListingsPage } from '@/features/listings/pages/ListingsPage'
 import { PropertyPage } from '@/features/property/pages/PropertyPage'
+import { FavoritesPage } from '@/features/property/pages/FavoritesPage'
 import { OnboardingRentPage } from '@/features/onboarding/pages/OnboardingRentPage'
 import { OnboardingListPage } from '@/features/onboarding/pages/OnboardingListPage'
 import { AnnouncerDashboardPage } from '@/features/announcer/pages/AnnouncerDashboardPage'
@@ -52,6 +54,10 @@ export const router = createBrowserRouter([
           { path: 'recuperar-senha', element: <ForgotPasswordPage /> },
           { path: 'imoveis', element: <ListingsPage /> },
           { path: 'imoveis/:id', element: <PropertyPage /> },
+          {
+            element: <ProtectedRoute />,
+            children: [{ path: 'favoritos', element: <FavoritesPage /> }],
+          },
           {
             element: <ListGoalGate />,
             children: [

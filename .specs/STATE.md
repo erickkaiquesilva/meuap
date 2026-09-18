@@ -38,16 +38,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Execute — Phase 2 T12 done; next T13 admin route |
-| **Branch** | `meuap`: `feat/tlc-t12-admin-queue` |
+| **Phase** | Execute — Phase 3 T15 done; next T16 visit requests |
+| **Branch** | `meuap`: `feat/tlc-t15-favorites-wire` |
 | **PRD** | `docs/prd/2026-08-28-chave-imoveis-prd.md` (approved) |
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
-| **Front** | `chave/` — T12 fila de moderação (rota `/admin` no T13) |
-| **Back** | `chave-api/` — T11 merged |
+| **Front** | `chave/` — T15 favorites wired (`/favoritos` + useFavorite) |
+| **Back** | `chave-api/` — T14 favorites endpoints merged |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | CI + review da PR do T12 → T13 AdminGuard na rota `/admin` |
+| **Next step** | CI + review da PR do T15 → T16 VisitRequest |
 
 ## Open (product)
 

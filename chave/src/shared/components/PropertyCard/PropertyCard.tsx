@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatCurrency } from '@/shared/utils/formatCurrency'
 import type { Property } from '@/shared/types/property'
+import { useFavorite } from '@/features/property/hooks/useFavorite'
 import styles from './PropertyCard.module.css'
 
 const PLACEHOLDER_GRADIENTS = [
@@ -31,14 +32,15 @@ interface PropertyCardProps {
 
 export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
   const [imgError, setImgError] = useState(false)
-  const [favorited, setFavorited] = useState(false)
+  const { isFavorite, toggle, isPending } = useFavorite(property.id)
 
   const gradient = PLACEHOLDER_GRADIENTS[index % PLACEHOLDER_GRADIENTS.length]
   const hasPhoto = property.photos.length > 0 && !imgError
 
   function toggleFavorite(e: React.MouseEvent) {
     e.preventDefault()
-    setFavorited((f) => !f)
+    e.stopPropagation()
+    if (!isPending) toggle()
   }
 
   return (
@@ -70,11 +72,13 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
           {/* Favorite */}
           <button
             type="button"
-            className={`${styles.favoriteBtn} ${favorited ? styles.favoritedBtn : ''}`}
-            aria-label={`${favorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}: ${property.title}`}
+            className={`${styles.favoriteBtn} ${isFavorite ? styles.favoritedBtn : ''}`}
+            aria-label={`${isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}: ${property.title}`}
+            aria-pressed={isFavorite}
+            disabled={isPending}
             onClick={toggleFavorite}
           >
-            <svg viewBox="0 0 24 24" fill={favorited ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
             </svg>
           </button>
