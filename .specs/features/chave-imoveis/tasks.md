@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 2 T13 complete; next Phase 3 T14 favorites
+**Status**: In Progress — Phase 3 T14 complete; next T15 front favorites wire
 
 ---
 
@@ -466,10 +466,10 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] POST favorite returns 201; DELETE returns 204
-- [ ] GET returns user's saved listings
-- [ ] Gate check passes: `cd chave-api && npm run test:e2e`
-- [ ] Test count: ≥4 e2e tests pass in `test/favorites.e2e-spec.ts`
+- [x] POST favorite returns 201; DELETE returns 204
+- [x] GET returns user's saved listings
+- [x] Gate check passes: `cd chave-api && npm run test:e2e`
+- [x] Test count: ≥4 e2e tests pass in `test/favorites.e2e-spec.ts`
 
 **Tests**: e2e  
 **Gate**: full
