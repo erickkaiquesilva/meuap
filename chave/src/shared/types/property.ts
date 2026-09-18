@@ -24,6 +24,14 @@ export interface Property {
   /** Optional coordinates from backend; mock scatters around city when absent */
   lat?: number
   lng?: number
+  /** Visit availability — when absent, front assumes weekdays 9–18 UTC */
+  visitMode?: 'weekdays' | 'custom'
+  visitSchedule?: {
+    weekdays?: boolean
+    startHour?: number
+    endHour?: number
+    slots?: Array<{ dayOfWeek: number; startHour: number; endHour: number }>
+  }
 }
 
 export interface PaginatedProperties {
