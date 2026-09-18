@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 2 T12 complete; next T13 admin route guard
+**Status**: In Progress — Phase 2 T13 complete; next Phase 3 T14 favorites
 
 ---
 
@@ -437,15 +437,15 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] `/admin` accessible only for admin users
-- [ ] Non-admin redirected to `/`
-- [ ] Gate check passes: `cd chave && npm run test:run`
-- [ ] Test count: ≥2 route guard tests pass
+- [x] `/admin` accessible only for admin users
+- [x] Non-admin redirected to `/`
+- [x] Gate check passes: `cd chave && npm run test:run`
+- [x] Test count: ≥2 route guard tests pass
 
 **Tests**: unit  
 **Gate**: quick
 
-**Commit**: `feat(chave): add admin route with AdminGuard`
+**Commit**: `T13-feat: adicionando rota /admin com AdminGuard`
 
 ---
 
