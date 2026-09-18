@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 3 T18 complete; next T19 NotificationOutbox Resend
+**Status**: In Progress — Phase 4 T19 complete; next T20 search alerts CRUD
 
 ---
 
@@ -603,10 +603,10 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] Outbox processes pending rows and marks sent/failed
-- [ ] Failed rows retry up to 3 attempts
-- [ ] Gate check passes: `cd chave-api && npm test`
-- [ ] Test count: ≥5 unit tests pass (mock Resend)
+- [x] Outbox processes pending rows and marks sent/failed
+- [x] Failed rows retry up to 3 attempts
+- [x] Gate check passes: `cd chave-api && npm test`
+- [x] Test count: ≥5 unit tests pass (mock Resend)
 
 **Tests**: unit  
 **Gate**: quick

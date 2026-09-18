@@ -38,16 +38,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Execute — Phase 3 T18 done; next T19 outbox Resend |
-| **Branch** | `meuap`: `feat/tlc-t18-visit-scheduler` |
+| **Phase** | Execute — Phase 4 T19 done; next T20 search alerts |
+| **Branch** | `chave-api`: `feat/tlc-t19-notifications` |
 | **PRD** | `docs/prd/2026-08-28-chave-imoveis-prd.md` (approved) |
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
-| **Front** | `chave/` — T18 VisitScheduler no detalhe do imóvel |
-| **Back** | `chave-api/` — T16/T17 visits + outbox merged |
+| **Front** | `chave/` — T18 VisitScheduler merged |
+| **Back** | `chave-api/` — T19 outbox + Resend + cron 1 min |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | CI + review da PR do T18 → T19 NotificationsService Resend |
+| **Next step** | CI + review da PR do T19 → T20 SearchAlert CRUD |
 
 ## Open (product)
 
