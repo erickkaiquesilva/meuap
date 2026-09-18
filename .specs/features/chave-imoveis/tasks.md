@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 3 T16 complete; next T17 visit notification outbox
+**Status**: In Progress — Phase 3 T17 complete; next T18 front visit booking
 
 ---
 
@@ -548,9 +548,9 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] Visit create writes outbox row with announcer email payload
-- [ ] Gate check passes: `cd chave-api && npm run test:e2e`
-- [ ] Test count: ≥2 e2e tests verify outbox enqueue
+- [x] Visit create writes outbox row with announcer email payload
+- [x] Gate check passes: `cd chave-api && npm run test:e2e`
+- [x] Test count: ≥2 e2e tests verify outbox enqueue
 
 **Tests**: e2e  
 **Gate**: full
