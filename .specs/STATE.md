@@ -38,16 +38,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Execute — Phase 4 T20 done; next T21 alert matching |
-| **Branch** | `chave-api`: `feat/tlc-t20-alerts` |
+| **Phase** | Execute — Phase 4 T21 done; next T22 front alerts |
+| **Branch** | `chave-api`: `feat/tlc-t21-alert-matching` |
 | **PRD** | `docs/prd/2026-08-28-chave-imoveis-prd.md` (approved) |
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
 | **Front** | `chave/` — alertas UI na T22 |
-| **Back** | `chave-api/` — T20 SearchAlert CRUD |
+| **Back** | `chave-api/` — T21 matching na aprovação |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | CI + review da PR do T20 → T21 matching na aprovação |
+| **Next step** | CI + review da PR do T21 → T22 front search alerts |
 
 ## Open (product)
 
