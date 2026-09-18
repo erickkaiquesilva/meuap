@@ -3,6 +3,7 @@ import { Layout } from '@/shared/components/Layout/Layout'
 import { OnboardingGate } from '@/core/router/OnboardingGate'
 import { OnboardingRoute } from '@/core/router/OnboardingRoute'
 import { ListGoalGate } from '@/core/router/ListGoalGate'
+import { AdminGuard } from '@/core/router/AdminGuard'
 import { HomePage } from '@/features/home/pages/HomePage'
 import { LoginPage } from '@/features/auth/pages/LoginPage'
 import { RegisterPage } from '@/features/auth/pages/RegisterPage'
@@ -13,6 +14,7 @@ import { OnboardingRentPage } from '@/features/onboarding/pages/OnboardingRentPa
 import { OnboardingListPage } from '@/features/onboarding/pages/OnboardingListPage'
 import { AnnouncerDashboardPage } from '@/features/announcer/pages/AnnouncerDashboardPage'
 import { NewListingPage } from '@/features/announcer/pages/NewListingPage'
+import { AdminQueuePage } from '@/features/admin/pages/AdminQueuePage'
 
 function NotFoundPage() {
   return (
@@ -33,6 +35,16 @@ function NotFoundPage() {
 export const router = createBrowserRouter([
   { path: 'entrar', element: <LoginPage /> },
   { path: 'cadastro', element: <RegisterPage /> },
+  {
+    path: 'admin',
+    element: <AdminGuard />,
+    children: [
+      {
+        element: <Layout />,
+        children: [{ index: true, element: <AdminQueuePage /> }],
+      },
+    ],
+  },
   {
     path: 'onboarding',
     element: <OnboardingRoute />,
