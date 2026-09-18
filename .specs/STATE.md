@@ -38,16 +38,17 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Execute — Phase 3 T14 done; next T15 front favorites wire |
-| **Branch** | `meuap`: `chore/tlc-t14-tasks` |
+| **Phase** | Execute — Phase 3 T15 done; next T16 visit requests |
+| **Branch** | `meuap`: `feat/tlc-t15-favorites-wire` |
 | **PRD** | `docs/prd/2026-08-28-chave-imoveis-prd.md` (approved) |
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
-| **Front** | `chave/` — `/admin` com AdminGuard (T13 merged); favoritos na T15 |
+| **Front** | `chave/` — T15 favorites wired (`/favoritos` + useFavorite); `/admin` na main |
 | **Back** | `chave-api/` — T14 favorites endpoints merged |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | Merge da PR #34 (T14-docs) → mergeback + merge da T15 |
+| **Next step** | CI + review da PR #35 → T16 VisitRequest |
+
 ## Open (product)
 
 - OQ-09: Preço plano pago acima de 3 anúncios — não bloqueia beta

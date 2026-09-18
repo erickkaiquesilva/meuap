@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 3 T14 complete; next T15 front favorites wire
+**Status**: In Progress — Phase 3 T15 complete; next T16 visit requests
 
 ---
 
@@ -493,10 +493,10 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] Favorite persists across page reload
-- [ ] Unauthenticated click redirects to `/entrar?redirect=...`
-- [ ] Gate check passes: `cd chave && npm run test:run`
-- [ ] Test count: ≥3 tests pass
+- [x] Favorite persists across page reload
+- [x] Unauthenticated click redirects to `/entrar?redirect=...`
+- [x] Gate check passes: `cd chave && npm run test:run`
+- [x] Test count: ≥3 tests pass
 
 **Tests**: unit  
 **Gate**: quick

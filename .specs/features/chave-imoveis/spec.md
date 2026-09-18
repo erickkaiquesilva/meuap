@@ -285,11 +285,10 @@ Sites imobiliários locais em Maringá e Sarandi falham em expor filtros, transm
 | CHV-20 | P1 Admin | 2 | T10, T11, T12 | Pending |
 | CHV-21 | P1 Admin | 2, 4 | T10, T11, T19 | Pending |
 | CHV-22 | P1 Admin | 2 | T9, T11, T13 | Pending |
-| CHV-23 | P1 Favoritos | 3 | T14, T15 | Partial |
-| CHV-24 | P1 Favoritos | 3 | T14, T15 | Partial |
-| CHV-25 | P1 Favoritos | 3 | T14, T15 | Partial |
-| CHV-26 | P1 Favoritos | 3 | T15 | Pending |
-| CHV-27 | P1 Alertas | 4 | T20, T22 | Pending |
+| CHV-23 | P1 Favoritos | 3 | T14, T15 | Done |
+| CHV-24 | P1 Favoritos | 3 | T14, T15 | Done |
+| CHV-25 | P1 Favoritos | 3 | T14, T15 | Done |
+| CHV-26 | P1 Favoritos | 3 | T15 | Done || CHV-27 | P1 Alertas | 4 | T20, T22 | Pending |
 | CHV-28 | P1 Alertas | 4 | T21 | Pending |
 | CHV-29 | P1 Alertas | 4 | T20, T22 | Pending |
 | CHV-30 | P1 Alertas | 4 | T19, T21 | Pending |

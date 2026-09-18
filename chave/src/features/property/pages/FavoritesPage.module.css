@@ -1,0 +1,37 @@
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-4) var(--sp-12);
+}
+
+.header {
+  margin-bottom: var(--sp-8);
+}
+
+.title {
+  margin: 0 0 var(--sp-2);
+  font: 800 28px/1.2 var(--font-display);
+  color: var(--neutral-900);
+}
+
+.subtitle {
+  margin: 0;
+  font: 400 15px/1.5 var(--font-ui);
+  color: var(--neutral-500);
+}
+
+.status,
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  color: var(--neutral-600);
+  font: 400 15px/1.5 var(--font-ui);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--sp-6);
+}

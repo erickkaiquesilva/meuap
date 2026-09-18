@@ -104,6 +104,12 @@ export function Header() {
 
           {isAuthenticated ? (
             <div className={styles.userMenu}>
+              <NavLink
+                to="/favoritos"
+                className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}
+              >
+                Favoritos
+              </NavLink>
               {user?.goal === 'list' && user.onboardingComplete ? (
                 <NavLink
                   to="/anuncios"
@@ -188,6 +194,9 @@ export function Header() {
           </label>
           {isAuthenticated ? (
             <>
+              <NavLink to="/favoritos" className={styles.drawerLink} onClick={closeMenu}>
+                Favoritos
+              </NavLink>
               {user?.goal === 'list' && user.onboardingComplete ? (
                 <NavLink to="/anuncios" className={styles.drawerLink} onClick={closeMenu}>
                   Meus anúncios

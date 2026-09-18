@@ -74,3 +74,4 @@
 - chore-ci: versiona `chave/package-lock.json` (sai do gitignore) para `npm ci` e cache no Actions
 - T12-feat: adicionando fila de moderação no front
 - T13-feat: adicionando rota /admin com AdminGuard
+- T15-feat: ligando favoritos do front à API

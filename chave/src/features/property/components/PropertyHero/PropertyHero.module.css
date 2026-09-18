@@ -159,6 +159,10 @@
   outline-offset: 2px;
 }
 
+.favorited {
+  color: var(--danger-500, #e11d48);
+}
+
 /* ── Action icons overlay (top-left of photo area) ───────────── */
 .actionIcons {
   position: absolute;
