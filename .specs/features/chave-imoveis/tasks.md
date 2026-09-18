@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 3 T17 complete; next T18 front visit booking
+**Status**: In Progress — Phase 3 T18 complete; next T19 NotificationOutbox Resend
 
 ---
 
@@ -574,10 +574,10 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] Renter can book available slot
-- [ ] 409 shows "horário indisponível" message
-- [ ] Gate check passes: `cd chave && npm run test:run`
-- [ ] Test count: ≥3 component tests pass
+- [x] Renter can book available slot
+- [x] 409 shows "horário indisponível" message
+- [x] Gate check passes: `cd chave && npm run test:run`
+- [x] Test count: ≥3 component tests pass
 
 **Tests**: unit  
 **Gate**: quick

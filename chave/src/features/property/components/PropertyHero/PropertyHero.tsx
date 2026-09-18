@@ -3,6 +3,7 @@ import type { Property } from '@/shared/types/property'
 import { formatCurrency } from '@/shared/utils/formatCurrency'
 import { buildWhatsAppUrl } from '@/shared/utils/buildWhatsAppUrl'
 import { useFavorite } from '@/features/property/hooks/useFavorite'
+import { VisitScheduler } from '../VisitScheduler/VisitScheduler'
 import styles from './PropertyHero.module.css'
 
 /* ── Icons ──────────────────────────────────────────────────── */
@@ -88,11 +89,13 @@ export function PropertyHero({ property }: PropertyHeroProps) {
   const [current, setCurrent] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIdx, setLightboxIdx] = useState(0)
+  const [visitOpen, setVisitOpen] = useState(false)
   const { isFavorite, toggle, isPending } = useFavorite(property.id)
 
   const total = photos.length
 
   const prevStrip = useCallback(() => setCurrent((c) => Math.max(0, c - 1)), [])
+  const closeVisit = useCallback(() => setVisitOpen(false), [])
   const nextStrip = useCallback(() => setCurrent((c) => Math.min(total - 1, c + 1)), [total])
 
   const prevLb = useCallback(() => setLightboxIdx((i) => (i - 1 + total) % total), [total])
@@ -158,7 +161,11 @@ export function PropertyHero({ property }: PropertyHeroProps) {
               <WhatsAppIcon />
               Chamar no WhatsApp
             </a>
-            <button type="button" className={`btn btn-outline ${styles.ctaBtn}`}>
+            <button
+              type="button"
+              className={`btn btn-outline ${styles.ctaBtn}`}
+              onClick={() => setVisitOpen(true)}
+            >
               Agendar visita
             </button>
           </div>
@@ -280,6 +287,12 @@ export function PropertyHero({ property }: PropertyHeroProps) {
           <span className={styles.lbCounter} aria-live="polite">{lightboxIdx + 1} / {total}</span>
         </div>
       )}
+
+      <VisitScheduler
+        property={property}
+        open={visitOpen}
+        onClose={closeVisit}
+      />
     </>
   )
 }
