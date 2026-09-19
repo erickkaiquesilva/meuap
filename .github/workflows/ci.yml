@@ -25,7 +25,7 @@ jobs:
       VITE_ENV: production
       VITE_API_URL: ''
       VITE_WA_NUMBER: '44999999999'
-      VITE_GOOGLE_MAPS_API_KEY: ''
+      VITE_GOOGLE_MAPS_API_KEY: 'AIzaSyAK6jMuUMK9sycZZnzAyH6llf99GD4xrd0'
       VITE_GOOGLE_CLIENT_ID: ''
 
     steps:

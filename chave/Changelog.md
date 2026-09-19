@@ -79,3 +79,4 @@
 - T22-feat: ligando alertas de busca do front à API
 - T23-feat: adicionando scaffold SSR com Vite e Express
 - T24-feat: renderizando rotas públicas no SSR
+- fix: habilitando VITE_GOOGLE_MAPS_API_KEY em todos os ambientes
