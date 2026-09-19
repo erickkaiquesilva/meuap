@@ -8,6 +8,7 @@ interface SearchContextBarProps {
   resultNoun: string
   sort: string
   onSortChange: (val: string) => void
+  onCreateAlert?: () => void
 }
 
 export function SearchContextBar({
@@ -17,12 +18,8 @@ export function SearchContextBar({
   resultNoun,
   sort,
   onSortChange,
+  onCreateAlert,
 }: SearchContextBarProps) {
-  function handleAlertClick() {
-    // Stub — backend alert subscription comes in a later story
-    window.alert('Em breve você poderá criar alertas para esta busca.')
-  }
-
   return (
     <div className={styles.bar}>
       <div className={styles.left}>
@@ -41,14 +38,16 @@ export function SearchContextBar({
 
       <div className={styles.right}>
         <SortSelect value={sort} onChange={onSortChange} />
-        <button
-          type="button"
-          className={`btn btn-outline btn-sm ${styles.alertBtn}`}
-          onClick={handleAlertClick}
-        >
-          <BellIcon />
-          Criar alerta
-        </button>
+        {onCreateAlert ? (
+          <button
+            type="button"
+            className={`btn btn-outline btn-sm ${styles.alertBtn}`}
+            onClick={onCreateAlert}
+          >
+            <BellIcon />
+            Criar alerta
+          </button>
+        ) : null}
       </div>
     </div>
   )
