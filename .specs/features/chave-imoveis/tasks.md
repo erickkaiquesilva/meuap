@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 4 T21 complete; next T22 front search alerts
+**Status**: In Progress — Phase 4 T22 complete; next T23 Vite SSR scaffold
 
 ---
 
@@ -684,9 +684,9 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] User can create and disable alerts
-- [ ] Gate check passes: `cd chave && npm run test:run`
-- [ ] Test count: ≥3 tests pass
+- [x] User can create and disable alerts
+- [x] Gate check passes: `cd chave && npm run test:run`
+- [x] Test count: ≥3 tests pass
 
 **Tests**: unit  
 **Gate**: quick

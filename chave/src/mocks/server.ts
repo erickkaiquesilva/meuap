@@ -5,6 +5,7 @@ import { announcerHandlers } from './handlers/announcer'
 import { adminHandlers } from './handlers/admin'
 import { favoritesHandlers } from './handlers/favorites'
 import { visitsHandlers } from './handlers/visits'
+import { alertsHandlers } from './handlers/alerts'
 
 export const server = setupServer(
   ...propertyHandlers,
@@ -13,4 +14,5 @@ export const server = setupServer(
   ...adminHandlers,
   ...favoritesHandlers,
   ...visitsHandlers,
+  ...alertsHandlers,
 )

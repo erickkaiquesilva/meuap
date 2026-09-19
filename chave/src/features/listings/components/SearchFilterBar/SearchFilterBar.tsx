@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import type { SearchFilters } from '@/shared/types/property'
+import { AlertModal } from '../AlertModal/AlertModal'
 import { FilterChip, MoreFiltersChip } from '../FilterChip/FilterChip'
 import styles from './SearchFilterBar.module.css'
 
@@ -39,6 +40,7 @@ export function SearchFilterBar({ filters, onFilterChange, locationPlaceholder }
   const [query, setQuery] = useState(
     [filters.neighborhood, filters.city].filter(Boolean).join(', '),
   )
+  const [alertOpen, setAlertOpen] = useState(false)
 
   function handleSearch(e: FormEvent) {
     e.preventDefault()
@@ -52,10 +54,6 @@ export function SearchFilterBar({ filters, onFilterChange, locationPlaceholder }
       if (match) onFilterChange({ city: match, neighborhood: undefined })
       else onFilterChange({ neighborhood: parts[0] })
     }
-  }
-
-  function handleAlert() {
-    window.alert('Em breve você poderá criar alertas para esta busca.')
   }
 
   const moreCount = [filters.minPrice, filters.maxPrice, filters.minArea].filter(Boolean).length
@@ -166,11 +164,13 @@ export function SearchFilterBar({ filters, onFilterChange, locationPlaceholder }
           </MoreFiltersChip>
         </div>
 
-        <button type="button" className={styles.alertBtn} onClick={handleAlert}>
+        <button type="button" className={styles.alertBtn} onClick={() => setAlertOpen(true)}>
           <BellIcon />
           Criar alerta de imóvel
         </button>
       </div>
+
+      <AlertModal open={alertOpen} filters={filters} onClose={() => setAlertOpen(false)} />
     </div>
   )
 }

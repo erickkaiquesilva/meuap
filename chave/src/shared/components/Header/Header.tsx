@@ -110,6 +110,12 @@ export function Header() {
               >
                 Favoritos
               </NavLink>
+              <NavLink
+                to="/alertas"
+                className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}
+              >
+                Alertas
+              </NavLink>
               {user?.goal === 'list' && user.onboardingComplete ? (
                 <NavLink
                   to="/anuncios"
@@ -196,6 +202,9 @@ export function Header() {
             <>
               <NavLink to="/favoritos" className={styles.drawerLink} onClick={closeMenu}>
                 Favoritos
+              </NavLink>
+              <NavLink to="/alertas" className={styles.drawerLink} onClick={closeMenu}>
+                Alertas
               </NavLink>
               {user?.goal === 'list' && user.onboardingComplete ? (
                 <NavLink to="/anuncios" className={styles.drawerLink} onClick={closeMenu}>

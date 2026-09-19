@@ -38,16 +38,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Execute — Phase 4 T21 done; next T22 front alerts |
-| **Branch** | `chave-api`: `feat/tlc-t21-alert-matching` |
+| **Phase** | Execute — Phase 4 complete (T19–T22); next Phase 5 SSR |
+| **Branch** | `meuap`: `feat/tlc-t22-alerts-wire` |
 | **PRD** | `docs/prd/2026-08-28-chave-imoveis-prd.md` (approved) |
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
-| **Front** | `chave/` — alertas UI na T22 |
-| **Back** | `chave-api/` — T21 matching na aprovação |
+| **Front** | `chave/` — T22 alertas wired |
+| **Back** | `chave-api/` — T21 matching na main |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | CI + review da PR do T21 → T22 front search alerts |
+| **Next step** | CI + review da PR do T22 → T23 Vite SSR scaffold |
 
 ## Open (product)
 

@@ -12,6 +12,7 @@ import { ForgotPasswordPage } from '@/features/auth/pages/ForgotPasswordPage'
 import { ListingsPage } from '@/features/listings/pages/ListingsPage'
 import { PropertyPage } from '@/features/property/pages/PropertyPage'
 import { FavoritesPage } from '@/features/property/pages/FavoritesPage'
+import { AlertsPage } from '@/features/listings/pages/AlertsPage'
 import { OnboardingRentPage } from '@/features/onboarding/pages/OnboardingRentPage'
 import { OnboardingListPage } from '@/features/onboarding/pages/OnboardingListPage'
 import { AnnouncerDashboardPage } from '@/features/announcer/pages/AnnouncerDashboardPage'
@@ -68,7 +69,10 @@ export const router = createBrowserRouter([
           { path: 'imoveis/:id', element: <PropertyPage /> },
           {
             element: <ProtectedRoute />,
-            children: [{ path: 'favoritos', element: <FavoritesPage /> }],
+            children: [
+              { path: 'favoritos', element: <FavoritesPage /> },
+              { path: 'alertas', element: <AlertsPage /> },
+            ],
           },
           {
             element: <ListGoalGate />,
