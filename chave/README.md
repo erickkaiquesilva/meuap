@@ -19,8 +19,17 @@ npm run dev:mock
 # Desenvolvimento (aponta para VITE_API_URL do .env)
 npm run dev
 
-# Build de produção
+# Desenvolvimento com SSR (Express + Vite middleware / HMR)
+npm run dev:ssr
+
+# Build de produção (SPA)
 npm run build
+
+# Build SSR (client → dist/client + server → dist/server)
+npm run build:ssr
+
+# Servir build SSR
+npm run start:ssr
 
 # Build de staging
 npm run build:staging
