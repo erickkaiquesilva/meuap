@@ -21,7 +21,9 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       clearAuthToken()
-      window.location.href = '/entrar'
+      if (typeof window !== 'undefined') {
+        window.location.href = '/entrar'
+      }
     }
     return Promise.reject(error)
   },

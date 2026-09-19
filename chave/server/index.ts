@@ -9,7 +9,11 @@ const isProd = process.env.NODE_ENV === 'production'
 const port = Number(process.env.PORT) || 5173
 const resolve = (...segments: string[]) => path.resolve(__dirname, ...segments)
 
-type RenderFn = (url: string) => { html: string }
+type RenderFn = (url: string) => Promise<{
+  html: string
+  title: string
+  spaOnly: boolean
+}>
 
 async function createServer() {
   const app = express()
@@ -58,8 +62,10 @@ async function createServer() {
         render = mod.render
       }
 
-      const { html } = render(url)
-      const page = template.replace('<!--app-html-->', html)
+      const { html, title } = await render(url)
+      const page = template
+        .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
+        .replace('<!--app-html-->', html)
 
       res
         .status(200)
@@ -76,6 +82,14 @@ async function createServer() {
   app.listen(port, () => {
     console.log(`[ssr] http://localhost:${port} (${isProd ? 'prod' : 'dev'})`)
   })
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
 }
 
 void createServer()

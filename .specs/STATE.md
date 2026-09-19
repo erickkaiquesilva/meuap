@@ -38,16 +38,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Execute — Phase 5 T23 done; next T24 SSR public routes |
-| **Branch** | `meuap`: `feat/tlc-t23-ssr-scaffold` |
+| **Phase** | Execute — Phase 5 T24 done; next T25 SEO meta/JSON-LD |
+| **Branch** | `meuap`: `feat/tlc-t24-ssr-render` |
 | **PRD** | `docs/prd/2026-08-28-chave-imoveis-prd.md` (approved) |
 | **Spec** | `.specs/features/chave-imoveis/spec.md` |
 | **Design** | `.specs/features/chave-imoveis/design.md` (approved) |
 | **Tasks** | `.specs/features/chave-imoveis/tasks.md` |
-| **Front** | `chave/` — T23 SSR scaffold |
+| **Front** | `chave/` — T24 SSR rotas públicas |
 | **Back** | `chave-api/` — Phase 4 on main |
 | **Deadline** | Beta fechado dez/2026; público 2027 |
-| **Next step** | CI + review da PR do T23 → T24 SSR render rotas públicas |
+| **Next step** | CI + review da PR do T24 → T25 SEO meta e JSON-LD |
 
 ## Open (product)
 

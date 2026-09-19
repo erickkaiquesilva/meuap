@@ -78,3 +78,4 @@
 - T18-feat: ligando agendamento de visita à API
 - T22-feat: ligando alertas de busca do front à API
 - T23-feat: adicionando scaffold SSR com Vite e Express
+- T24-feat: renderizando rotas públicas no SSR

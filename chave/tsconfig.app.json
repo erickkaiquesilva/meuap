@@ -27,5 +27,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "server/render.tsx", "server/catalog.ts", "server/ssrRoutes.ts", "server/**/*.test.ts"]
 }

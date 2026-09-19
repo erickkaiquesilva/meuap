@@ -298,11 +298,11 @@ Sites imobiliários locais em Maringá e Sarandi falham em expor filtros, transm
 | CHV-33 | P1 Visitas | 3, 4 | T17, T19 | Pending |
 | CHV-34 | P1 Visitas | 3 | T16, T18 | Done |
 | CHV-35 | P1 Visitas | 3 | T16, T18 | Done |
-| CHV-36 | P1 SEO | 5 | T23, T24, T25, T27 | Pending |
+| CHV-36 | P1 SEO | 5 | T23, T24, T25, T27 | Partial |
 | CHV-37 | P1 SEO | 5 | T25, T27 | Pending |
 | CHV-38 | P1 SEO | 5 | T26, T27 | Pending |
 | CHV-39 | P1 SEO | 5 | T26, T27 | Pending |
-| CHV-40 | P1 SEO | 5 | T23, T24 | Pending |
+| CHV-40 | P1 SEO | 5 | T23, T24 | Done |
 | CHV-41 | P1 Analytics/Obs | 6 | T28 | Pending |
 | CHV-42 | P1 Analytics/Obs | 6 | T28 | Pending |
 | CHV-43 | P1 Analytics/Obs | 6 | T29 | Pending |
