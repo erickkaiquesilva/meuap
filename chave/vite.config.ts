@@ -9,4 +9,8 @@ export default defineConfig({
       '@': resolve(import.meta.dirname, 'src'),
     },
   },
+  ssr: {
+    // Keep react-router bundled for predictable SSR in Node
+    noExternal: ['react-router-dom'],
+  },
 })

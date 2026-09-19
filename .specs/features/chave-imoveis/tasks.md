@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 4 T22 complete; next T23 Vite SSR scaffold
+**Status**: In Progress — Phase 5 T23 complete; next T24 SSR render public routes
 
 ---
 
@@ -712,9 +712,9 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] `dev:ssr` serves app with HMR
-- [ ] Production build produces server bundle
-- [ ] Gate check passes: `cd chave && npm run build`
+- [x] `dev:ssr` serves app with HMR
+- [x] Production build produces server bundle
+- [x] Gate check passes: `cd chave && npm run build`
 
 **Tests**: none  
 **Gate**: build
