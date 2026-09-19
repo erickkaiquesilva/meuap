@@ -25,12 +25,12 @@ function toProperty(row: (typeof mockProperties)[number]): Property {
   }
 }
 
-function useLocalCatalog(): boolean {
+function shouldUseLocalCatalog(): boolean {
   return isMock || !apiUrl
 }
 
 export async function loadFeaturedForSsr(): Promise<Property[]> {
-  if (useLocalCatalog()) {
+  if (shouldUseLocalCatalog()) {
     return mockProperties.filter((p) => p.featured).slice(0, 6).map(toProperty)
   }
   const res = await fetch(`${apiUrl}/api/properties/featured`)
@@ -41,7 +41,7 @@ export async function loadFeaturedForSsr(): Promise<Property[]> {
 export async function loadListingsForSsr(
   search = '',
 ): Promise<PaginatedProperties> {
-  if (useLocalCatalog()) {
+  if (shouldUseLocalCatalog()) {
     const params = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search)
     let rows = [...mockProperties]
     const city = params.get('city')
@@ -68,7 +68,7 @@ export async function loadListingsForSsr(
 }
 
 export async function loadPropertyForSsr(id: string): Promise<Property | null> {
-  if (useLocalCatalog()) {
+  if (shouldUseLocalCatalog()) {
     const found = mockProperties.find((p) => p.id === id)
     return found ? toProperty(found) : null
   }
