@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getApiErrorMessage } from '@/core/api/errors'
 import { useAuth } from '@/features/auth/context/AuthContext'
 import type { RentNearby, RentPurpose } from '@/features/auth/types/auth'
 import { Field, Select } from '@/shared/components/Field/Field'
@@ -115,9 +116,10 @@ export function OnboardingRentPage() {
       await delay(400)
       navigate('/', { replace: true })
     } catch (err: unknown) {
-      const message =
-        (err as { response?: { data?: { message?: string } } })?.response?.data?.message
-        ?? 'Não foi possível salvar seu perfil. Tente novamente.'
+      const message = getApiErrorMessage(
+        err,
+        'Não foi possível salvar seu perfil. Tente novamente.',
+      )
       setServerError(message)
       setTransitioning(false)
     } finally {

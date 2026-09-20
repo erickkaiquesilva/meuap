@@ -6,9 +6,6 @@ import { MapPanel } from '../components/MapPanel/MapPanel'
 import { NeighborhoodChips } from '../components/NeighborhoodChips/NeighborhoodChips'
 import { SortSelect } from '../components/SortSelect/SortSelect'
 import { RecommendationsBanner } from '../components/RecommendationsBanner/RecommendationsBanner'
-import { mockNeighborhoods } from '@/mocks/data/neighborhoods'
-import { mockProperties } from '@/mocks/data/properties'
-import { hasGoogleMaps } from '@/core/api/config'
 import { useAuth } from '@/features/auth/context/AuthContext'
 import {
   isRecommendationsCtaDismissed,
@@ -35,19 +32,13 @@ export function ListingsPage() {
   const { filters, setFilters, resetFilters } = useListingsFilters()
   const { data, isLoading, isError, refetch } = useMapListings(filters)
   const [mobileView, setMobileView] = useState<'list' | 'map'>('list')
-  const [visibleIds, setVisibleIds] = useState<string[] | null>(null)
 
   const showRecCta =
     shouldShowRecommendationsCta(user)
     && !!user?.rentProfile
     && !isRecommendationsCtaDismissed()
 
-  const allProperties = data?.data ?? []
-  const properties = useMemo(() => {
-    if (!hasGoogleMaps || !visibleIds) return allProperties
-    const set = new Set(visibleIds)
-    return allProperties.filter((p) => set.has(p.id))
-  }, [allProperties, visibleIds])
+  const properties = data?.data ?? []
 
   const city = filters.city ?? 'Maringá'
   const neighborhood = filters.neighborhood
@@ -62,33 +53,29 @@ export function ListingsPage() {
     if (neighborhood && filters.city) parts.push(`em ${neighborhood}, ${filters.city}, PR`)
     else if (filters.city) parts.push(`em ${filters.city}, PR`)
     else parts.push('em Maringá e Sarandi, PR')
-    if (hasGoogleMaps) parts.push('· visíveis no mapa')
     return parts.join(' ')
   })()
 
   const nearby = useMemo(() => {
     const cityName = filters.city ?? city
-    return mockNeighborhoods
-      .filter((n) => n.city === cityName && n.name !== neighborhood)
+    const counts = new Map<string, number>()
+    for (const p of properties) {
+      if (p.city !== cityName) continue
+      if (filters.op && p.operation !== filters.op) continue
+      if (neighborhood && p.neighborhood === neighborhood) continue
+      counts.set(p.neighborhood, (counts.get(p.neighborhood) ?? 0) + 1)
+    }
+    return [...counts.entries()]
+      .map(([name, count]) => ({ name, city: cityName, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
       .slice(0, 8)
-      .map((n) => ({
-        name: n.name,
-        city: n.city,
-        count: mockProperties.filter(
-          (p) => p.city === n.city && p.neighborhood === n.name && (!filters.op || p.operation === filters.op),
-        ).length,
-      }))
-      .filter((n) => n.count > 0)
-  }, [filters.city, filters.op, neighborhood, city])
+  }, [properties, filters.city, filters.op, neighborhood, city])
 
   return (
     <div className={styles.page}>
       <SearchFilterBar
         filters={filters}
-        onFilterChange={(next) => {
-          setVisibleIds(null)
-          setFilters(next)
-        }}
+        onFilterChange={setFilters}
         locationPlaceholder={locationPlaceholder}
       />
 
@@ -118,10 +105,7 @@ export function ListingsPage() {
             {showRecCta && user?.rentProfile ? (
               <RecommendationsBanner
                 profile={user.rentProfile}
-                onApplyFilters={(next) => {
-                  setVisibleIds(null)
-                  setFilters(next)
-                }}
+                onApplyFilters={setFilters}
                 onAccept={async () => {
                   await setWantRecommendations(true)
                 }}
@@ -157,7 +141,7 @@ export function ListingsPage() {
             />
 
             {Object.keys(filters).some((k) => k !== 'page' && filters[k as keyof typeof filters]) && (
-              <button type="button" className={styles.clearLink} onClick={() => { setVisibleIds(null); resetFilters() }}>
+              <button type="button" className={styles.clearLink} onClick={resetFilters}>
                 Limpar todos os filtros
               </button>
             )}
@@ -169,12 +153,11 @@ export function ListingsPage() {
           aria-label="Mapa"
         >
           <MapPanel
-            properties={allProperties}
+            properties={properties}
             city={filters.city}
             neighborhood={neighborhood}
             typeLabel={filters.type ? TYPE_LABEL[filters.type] : undefined}
             onClearType={() => setFilters({ type: undefined })}
-            onVisibleChange={setVisibleIds}
           />
         </aside>
       </div>

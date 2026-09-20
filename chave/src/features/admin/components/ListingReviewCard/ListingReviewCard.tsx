@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
 import type { MyListing } from '@/features/announcer/types/listings'
 import { Button } from '@/shared/components/Button/Button'
 import { Modal } from '@/shared/components/Modal/Modal'
@@ -55,18 +56,33 @@ export function ListingReviewCard({ listing, onApprove, onReject }: ListingRevie
   }
 
   const price = formatCurrencyBrlCents(listing.price)
+  const photos = listing.photos ?? []
+  const cover = photos[0]
 
   return (
     <article className={styles.card}>
-      <div>
-        <h2 className={styles.title}>{listing.title}</h2>
-        <p className={styles.meta}>
-          {price}
-          {listing.operation === 'rent' ? '/mês' : ''}
-          {' · '}
-          {listing.neighborhood}, {listing.city}
-        </p>
-        <p className={styles.description}>{listing.description}</p>
+      <div className={styles.body}>
+        {cover ? (
+          <img src={cover} alt="" className={styles.cover} />
+        ) : (
+          <div className={styles.coverEmpty} aria-hidden="true">
+            Sem foto
+          </div>
+        )}
+        <div className={styles.content}>
+          <h2 className={styles.title}>{listing.title}</h2>
+          <p className={styles.meta}>
+            {price}
+            {listing.operation === 'rent' ? '/mês' : ''}
+            {' · '}
+            {listing.neighborhood}, {listing.city}
+            {photos.length > 0 ? ` · ${photos.length} foto${photos.length > 1 ? 's' : ''}` : ''}
+          </p>
+          <p className={styles.description}>{listing.description}</p>
+          <Link to={`/admin/listings/${listing.id}`} className={styles.detailLink}>
+            Ver detalhes e fotos
+          </Link>
+        </div>
       </div>
       <div className={styles.actions}>
         <Button type="button" disabled={busy} onClick={() => { void confirmApprove() }}>

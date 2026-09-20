@@ -19,6 +19,9 @@ npm run dev:mock
 # Desenvolvimento (aponta para VITE_API_URL do .env)
 npm run dev
 
+# Staging local (API real + Google Maps)
+npm run dev:staging
+
 # Desenvolvimento com SSR (Express + Vite middleware / HMR)
 npm run dev:ssr
 

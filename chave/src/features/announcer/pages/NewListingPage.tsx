@@ -338,7 +338,9 @@ export function NewListingPage() {
     if (Object.keys(next).length > 0) return
 
     const address = `${street.trim()}, ${number.trim()}`
-    const remotePhotos = photos.filter((p) => /^https?:\/\//i.test(p))
+    const embeddablePhotos = photos.filter(
+      (p) => p.startsWith('data:') || /^https?:\/\//i.test(p),
+    )
     const payload: CreateListingInput = {
       title: title.trim(),
       type,
@@ -353,13 +355,8 @@ export function NewListingPage() {
       area: Math.round(Number(area)),
       description: description.trim(),
       amenities,
-      photos: isMock
-        ? photos.length
-          ? photos
-          : undefined
-        : remotePhotos.length
-          ? remotePhotos
-          : undefined,
+      // Sem R2 as fotos ficam como data URL no create/update (evita URL cdn.example.com quebrada).
+      photos: embeddablePhotos.length ? embeddablePhotos : undefined,
     }
 
     try {
@@ -371,13 +368,20 @@ export function NewListingPage() {
         listingIdSaved = created.id
       }
 
-      if (!isMock && listingIdSaved && photoFiles.length > 0) {
+      const needsR2Upload =
+        !isMock
+        && !!listingIdSaved
+        && photoFiles.length > 0
+        && !photos.some((p) => p.startsWith('data:'))
+
+      if (needsR2Upload && listingIdSaved) {
         setUploadingPhotos(true)
+        const remoteCount = photos.filter((p) => /^https?:\/\//i.test(p)).length
         for (let i = 0; i < photoFiles.length; i++) {
           await uploadListingPhoto(
             listingIdSaved,
             photoFiles[i]!,
-            remotePhotos.length + i,
+            remoteCount + i,
           )
         }
       }

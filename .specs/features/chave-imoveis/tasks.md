@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chave-imoveis/design.md` (approved 2026-08-28)  
-**Status**: In Progress — Phase 5 T23 complete; next T24 SSR render public routes
+**Status**: In Progress — Phase 5 T24 complete; next T25 SEO meta/JSON-LD
 
 ---
 
@@ -738,10 +738,10 @@ T29 → T30 → T31
 
 **Done when**:
 
-- [ ] `curl /imoveis/:id` returns HTML with listing title in `<title>`
-- [ ] SPA routes (`/anuncios`) still client-only
-- [ ] Gate check passes: `cd chave && npm run test:run`
-- [ ] Test count: ≥3 SSR render tests pass
+- [x] `curl /imoveis/:id` returns HTML with listing title in `<title>`
+- [x] SPA routes (`/anuncios`) still client-only
+- [x] Gate check passes: `cd chave && npm run test:run`
+- [x] Test count: ≥3 SSR render tests pass
 
 **Tests**: integration  
 **Gate**: full

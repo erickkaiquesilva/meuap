@@ -78,3 +78,13 @@
 - T18-feat: ligando agendamento de visita à API
 - T22-feat: ligando alertas de busca do front à API
 - T23-feat: adicionando scaffold SSR com Vite e Express
+- T24-feat: renderizando rotas públicas no SSR
+- fix: habilitando VITE_GOOGLE_MAPS_API_KEY em todos os ambientes
+- N/A-fix: listagem de imóveis sem filtro implícito do viewport do mapa
+- N/A-fix: contagem de bairros próximos a partir dos anúncios reais da busca
+- N/A-feat: página de detalhe do anúncio na moderação admin com fotos
+- N/A-fix: fotos do anúncio persistidas como data URL quando R2 não está configurado
+- N/A-feat: menu da conta com avatar de iniciais, trocar senha e sair
+- N/A-fix: menu da conta abre no clique e fecha ao clicar fora
+- N/A-fix: tipagem do upload de fotos no cadastro de anúncio
+- N/A-fix: menu mobile oculto no desktop para não vazar no scroll horizontal

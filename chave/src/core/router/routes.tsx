@@ -18,6 +18,7 @@ import { OnboardingListPage } from '@/features/onboarding/pages/OnboardingListPa
 import { AnnouncerDashboardPage } from '@/features/announcer/pages/AnnouncerDashboardPage'
 import { NewListingPage } from '@/features/announcer/pages/NewListingPage'
 import { AdminQueuePage } from '@/features/admin/pages/AdminQueuePage'
+import { AdminListingDetailPage } from '@/features/admin/pages/AdminListingDetailPage'
 
 function NotFoundPage() {
   return (
@@ -44,7 +45,10 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <Layout />,
-        children: [{ index: true, element: <AdminQueuePage /> }],
+        children: [
+          { index: true, element: <AdminQueuePage /> },
+          { path: 'listings/:listingId', element: <AdminListingDetailPage /> },
+        ],
       },
     ],
   },

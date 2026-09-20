@@ -5,6 +5,15 @@ import styles from './Header.module.css'
 
 const CITIES = ['Maringá', 'Sarandi']
 
+function userInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase()
+  const first = parts[0]![0] ?? ''
+  const last = parts[parts.length - 1]![0] ?? ''
+  return `${first}${last}`.toUpperCase()
+}
+
 export function Header() {
   const { isAuthenticated, user, logout } = useAuth()
   const navigate = useNavigate()
@@ -45,29 +54,50 @@ export function Header() {
   }
 
   const [menuOpen, setMenuOpen] = useState(false)
+  const [accountOpen, setAccountOpen] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const accountRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape' && menuOpen) {
-        setMenuOpen(false)
-        triggerRef.current?.focus()
+      if (e.key === 'Escape') {
+        if (accountOpen) {
+          setAccountOpen(false)
+          return
+        }
+        if (menuOpen) {
+          setMenuOpen(false)
+          triggerRef.current?.focus()
+        }
       }
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [menuOpen])
+  }, [menuOpen, accountOpen])
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
+  useEffect(() => {
+    if (!accountOpen) return
+    function onPointerDown(e: MouseEvent) {
+      if (accountRef.current && !accountRef.current.contains(e.target as Node)) {
+        setAccountOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onPointerDown)
+    return () => document.removeEventListener('mousedown', onPointerDown)
+  }, [accountOpen])
+
   function closeMenu() {
     setMenuOpen(false)
     triggerRef.current?.focus()
   }
+
+  const displayName = user?.name?.trim() || 'Conta'
 
   return (
     <header className={styles.header} role="banner">
@@ -124,10 +154,44 @@ export function Header() {
                   Meus anúncios
                 </NavLink>
               ) : null}
-              <span className={styles.userName}>{user?.name}</span>
-              <button type="button" className="btn btn-outline btn-sm" onClick={handleLogout}>
-                Sair
-              </button>
+              <div className={styles.account} ref={accountRef}>
+                <button
+                  type="button"
+                  className={styles.avatarBtn}
+                  aria-label="Menu da conta"
+                  aria-expanded={accountOpen}
+                  aria-haspopup="menu"
+                  onClick={() => setAccountOpen((open) => !open)}
+                >
+                  <span className={styles.avatar} aria-hidden="true">
+                    {userInitials(displayName)}
+                  </span>
+                </button>
+                {accountOpen ? (
+                  <div className={styles.accountMenu} role="menu">
+                    <p className={styles.accountName}>{displayName}</p>
+                    <Link
+                      to="/recuperar-senha"
+                      role="menuitem"
+                      className={styles.accountItem}
+                      onClick={() => setAccountOpen(false)}
+                    >
+                      Trocar senha
+                    </Link>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className={styles.accountItem}
+                      onClick={() => {
+                        setAccountOpen(false)
+                        void handleLogout()
+                      }}
+                    >
+                      Sair
+                    </button>
+                  </div>
+                ) : null}
+              </div>
             </div>
           ) : (
             <div className={styles.authButtons}>
@@ -168,6 +232,7 @@ export function Header() {
         ref={drawerRef}
         className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ''}`}
         aria-hidden={!menuOpen}
+        hidden={!menuOpen}
       >
         <nav aria-label="Menu mobile">
           <NavLink to="/imoveis?op=rent" className={styles.drawerLink} onClick={closeMenu}>
@@ -211,13 +276,17 @@ export function Header() {
                   Meus anúncios
                 </NavLink>
               ) : null}
+              <p className={styles.drawerUser}>{displayName}</p>
+              <NavLink to="/recuperar-senha" className={styles.drawerLink} onClick={closeMenu}>
+                Trocar senha
+              </NavLink>
               <button
                 type="button"
                 className={styles.drawerLink}
-                onClick={() => { handleLogout(); closeMenu() }}
+                onClick={() => { void handleLogout(); closeMenu() }}
                 style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}
               >
-                Sair ({user?.name})
+                Sair
               </button>
             </>
           ) : (

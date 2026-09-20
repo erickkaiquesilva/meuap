@@ -19,8 +19,7 @@ async function bootstrap() {
   const root = document.getElementById('root')
   if (!root) throw new Error('Root element not found')
 
-  // T23 scaffold: client mounts SPA over the SSR shell (no hydrate yet).
-  // T24 aligns public-route trees and switches to hydrateRoot.
+  // SSR public shells are SEO placeholders; the SPA mounts over them.
   createRoot(root).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
