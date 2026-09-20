@@ -31,7 +31,7 @@ interface SearchBarProps {
 export function SearchBar({ compact = false, initialFilters }: SearchBarProps) {
   const { navigateToListings, setFilters } = useSearchFilters()
 
-  const [op, setOp] = useState<'rent' | 'sale'>(initialFilters?.op ?? 'rent')
+  const [op, setOp] = useState<'rent' | 'sale' | null>(initialFilters?.op ?? null)
   const [city, setCity] = useState(initialFilters?.city ?? '')
   const [neighborhood, setNeighborhood] = useState(initialFilters?.neighborhood ?? '')
   const [maxPrice, setMaxPrice] = useState(initialFilters?.maxPrice ?? '')
@@ -52,7 +52,8 @@ export function SearchBar({ compact = false, initialFilters }: SearchBarProps) {
   function handleSearch() {
     setCityError('')
 
-    const filters: SearchFilters = { op }
+    const filters: SearchFilters = {}
+    if (op) filters.op = op
     if (city) filters.city = city
     if (neighborhood) filters.neighborhood = neighborhood
     if (maxPrice) filters.maxPrice = maxPrice
@@ -71,13 +72,13 @@ export function SearchBar({ compact = false, initialFilters }: SearchBarProps) {
 
   return (
     <div className={`${styles.wrapper} ${compact ? styles.compact : ''}`}>
-      {/* Operation tabs */}
+      {/* Operation tabs — opcional; sem seleção a busca lista aluguel e venda */}
       <div className={styles.tabs} role="tablist" aria-label="Tipo de operação">
         <button
           role="tab"
           aria-selected={op === 'rent'}
           className={`${styles.tab} ${op === 'rent' ? styles.tabActive : ''}`}
-          onClick={() => setOp('rent')}
+          onClick={() => setOp((prev) => (prev === 'rent' ? null : 'rent'))}
           type="button"
         >
           Alugar
@@ -86,7 +87,7 @@ export function SearchBar({ compact = false, initialFilters }: SearchBarProps) {
           role="tab"
           aria-selected={op === 'sale'}
           className={`${styles.tab} ${op === 'sale' ? styles.tabActive : ''}`}
-          onClick={() => setOp('sale')}
+          onClick={() => setOp((prev) => (prev === 'sale' ? null : 'sale'))}
           type="button"
         >
           Comprar

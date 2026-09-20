@@ -94,3 +94,4 @@
 - N/A-fix: busca da home sem exigir cidade e filtro de cidade case-insensitive
 - N/A-feat: filtros da listagem com dropdowns e painel lateral Mais filtros
 - N/A-fix: marcadores do mapa estilo preço Airbnb com hover
+- N/A-fix: busca de imóveis sem forçar filtro op=rent

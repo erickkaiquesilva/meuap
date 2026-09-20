@@ -108,7 +108,7 @@ export function Header() {
         </Link>
 
         <nav aria-label="Menu principal" className={styles.desktopNav}>
-          <NavLink to="/imoveis?op=rent" className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}>
+          <NavLink to="/imoveis" className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}>
             Alugar
           </NavLink>
           <NavLink to="/imoveis?op=sale" className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}>
@@ -236,7 +236,7 @@ export function Header() {
         hidden={!menuOpen}
       >
         <nav aria-label="Menu mobile">
-          <NavLink to="/imoveis?op=rent" className={styles.drawerLink} onClick={closeMenu}>
+          <NavLink to="/imoveis" className={styles.drawerLink} onClick={closeMenu}>
             Alugar
           </NavLink>
           <NavLink to="/imoveis?op=sale" className={styles.drawerLink} onClick={closeMenu}>

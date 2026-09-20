@@ -49,7 +49,10 @@ export function ListingsPage() {
       : 'Buscar bairro ou cidade'
 
   const subtitleClean = (() => {
-    const parts: string[] = ['para alugar']
+    const parts: string[] = []
+    if (filters.op === 'rent') parts.push('para alugar')
+    else if (filters.op === 'sale') parts.push('à venda')
+    else parts.push('para alugar ou comprar')
     if (neighborhood && filters.city) parts.push(`em ${neighborhood}, ${filters.city}, PR`)
     else if (filters.city) parts.push(`em ${filters.city}, PR`)
     else parts.push('em Maringá e Sarandi, PR')

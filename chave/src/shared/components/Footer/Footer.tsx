@@ -18,9 +18,9 @@ export function Footer() {
           <nav aria-label="Links do rodapé — Alugar">
             <h4 className={styles.colTitle}>Alugar</h4>
             <ul className={styles.linkList}>
-              <li><Link to="/imoveis?op=rent&type=apartment">Apartamentos</Link></li>
-              <li><Link to="/imoveis?op=rent&type=house">Casas</Link></li>
-              <li><Link to="/imoveis?op=rent&type=commercial">Comercial</Link></li>
+              <li><Link to="/imoveis?type=apartment">Apartamentos</Link></li>
+              <li><Link to="/imoveis?type=house">Casas</Link></li>
+              <li><Link to="/imoveis?type=commercial">Comercial</Link></li>
             </ul>
           </nav>
 

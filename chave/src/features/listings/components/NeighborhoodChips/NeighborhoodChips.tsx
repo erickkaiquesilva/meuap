@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import styles from './NeighborhoodChips.module.css'
 
 export interface NearbyNeighborhood {
@@ -13,11 +13,22 @@ interface NeighborhoodChipsProps {
 }
 
 export function NeighborhoodChips({ currentNeighborhood, items }: NeighborhoodChipsProps) {
+  const [searchParams] = useSearchParams()
+
   if (items.length === 0) return null
 
   const title = currentNeighborhood
     ? `Bairros próximos a ${currentNeighborhood}`
     : 'Bairros próximos'
+
+  function hrefFor(n: NearbyNeighborhood) {
+    const params = new URLSearchParams()
+    const op = searchParams.get('op')
+    if (op === 'rent' || op === 'sale') params.set('op', op)
+    params.set('city', n.city)
+    params.set('neighborhood', n.name)
+    return `/imoveis?${params.toString()}`
+  }
 
   return (
     <section className={styles.section} aria-label={title}>
@@ -26,7 +37,7 @@ export function NeighborhoodChips({ currentNeighborhood, items }: NeighborhoodCh
         {items.map((n) => (
           <Link
             key={`${n.city}-${n.name}`}
-            to={`/imoveis?op=rent&city=${encodeURIComponent(n.city)}&neighborhood=${encodeURIComponent(n.name)}`}
+            to={hrefFor(n)}
             className={styles.chip}
           >
             <span className={styles.name}>{n.name}</span>
