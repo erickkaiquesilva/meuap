@@ -50,13 +50,10 @@ export function SearchBar({ compact = false, initialFilters }: SearchBarProps) {
   }, [city])
 
   function handleSearch() {
-    if (!city) {
-      setCityError('Selecione uma cidade')
-      return
-    }
     setCityError('')
 
-    const filters: SearchFilters = { op, city }
+    const filters: SearchFilters = { op }
+    if (city) filters.city = city
     if (neighborhood) filters.neighborhood = neighborhood
     if (maxPrice) filters.maxPrice = maxPrice
     if (bedrooms) filters.bedrooms = bedrooms

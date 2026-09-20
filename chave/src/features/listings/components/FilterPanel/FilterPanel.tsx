@@ -26,7 +26,6 @@ const CHIP_OPTIONS = ['1', '2', '3', '4']
 const AMENITY_OPTIONS = [
   { value: 'Mobiliado', label: 'Mobiliado' },
   { value: 'Aceita pet', label: 'Aceita pet' },
-  { value: 'Perto de metrô', label: 'Perto de metrô' },
 ]
 
 const CONDO_OPTIONS = [

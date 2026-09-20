@@ -21,6 +21,24 @@ interface MyListingCardProps {
   listing: MyListing
 }
 
+const STATUS_LABEL: Record<MyListing['status'], string> = {
+  active: 'Aprovado',
+  pending: 'Em aprovação',
+  rejected: 'Rejeitado',
+  paused: 'Pausado',
+}
+
+function StatusBanner({ listing }: { listing: MyListing }) {
+  return (
+    <span
+      className={`${styles.statusBanner} ${styles[`status_${listing.status}`]}`}
+      data-status={listing.status}
+    >
+      {STATUS_LABEL[listing.status]}
+    </span>
+  )
+}
+
 export function MyListingCard({ listing }: MyListingCardProps) {
   const [open, setOpen] = useState(false)
   const [reason, setReason] = useState<DeleteListingReason | null>(null)
@@ -97,15 +115,18 @@ export function MyListingCard({ listing }: MyListingCardProps) {
           )}
         </div>
         <div className={styles.body}>
+          <StatusBanner listing={listing} />
           <p className={styles.price}>{formatPrice(listing)}</p>
           <h3 className={styles.title}>{listing.title}</h3>
           <p className={styles.meta}>
-            {listing.status === 'pending' ? 'Em moderação · ' : ''}
-            {listing.status === 'rejected' ? 'Rejeitado · ' : ''}
-            {listing.status === 'paused' ? 'Pausado · ' : ''}
             {listing.bedrooms > 0 ? `${listing.bedrooms} quartos · ` : ''}
             {listing.neighborhood}, {listing.city}
           </p>
+          {listing.status === 'rejected' && listing.rejectionReason ? (
+            <p className={styles.rejectReason} role="status">
+              Motivo da rejeição: {listing.rejectionReason}
+            </p>
+          ) : null}
           <div className={styles.actions}>
             <Link to={`/imoveis/${listing.id}`} className={styles.viewBtn}>
               Ver

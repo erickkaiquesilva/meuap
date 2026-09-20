@@ -10,13 +10,16 @@ interface ModalProps {
 export function Modal({ title, children, onClose }: ModalProps) {
   const titleId = useId()
   const dialogRef = useRef<HTMLDivElement>(null)
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
 
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null
+    // Foco inicial no dialog uma vez; re-focar a cada render rouba o caret do textarea.
     dialogRef.current?.focus()
 
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') onCloseRef.current()
     }
     document.addEventListener('keydown', onKeyDown)
     document.body.style.overflow = 'hidden'
@@ -25,10 +28,10 @@ export function Modal({ title, children, onClose }: ModalProps) {
       document.body.style.overflow = ''
       previous?.focus()
     }
-  }, [onClose])
+  }, [])
 
   return (
-    <div className={styles.backdrop} onClick={onClose}>
+    <div className={styles.backdrop} onClick={() => onCloseRef.current()}>
       <div
         ref={dialogRef}
         className={styles.dialog}

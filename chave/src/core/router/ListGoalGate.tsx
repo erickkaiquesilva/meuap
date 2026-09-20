@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '@/features/auth/context/AuthContext'
 
-/** Requires auth + list goal + completed onboarding. */
+/** Requires auth + list capability (goal list or listProfile completed). */
 export function ListGoalGate() {
   const { user, isAuthenticated, isLoading } = useAuth()
 
@@ -13,7 +13,14 @@ export function ListGoalGate() {
     return <Navigate to="/entrar?redirect=%2Fanuncios" replace />
   }
 
-  if (!user?.onboardingComplete || user.goal !== 'list') {
+  const canList =
+    !!user?.listProfile
+    || (user?.goal === 'list' && user.onboardingComplete)
+
+  if (!canList) {
+    if (isAuthenticated) {
+      return <Navigate to="/onboarding/anunciar?intent=list" replace />
+    }
     return <Navigate to="/" replace />
   }
 

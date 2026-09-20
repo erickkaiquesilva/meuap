@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import type { SearchFilters } from '@/shared/types/property'
 import { AlertModal } from '../AlertModal/AlertModal'
-import { FilterChip, MoreFiltersChip } from '../FilterChip/FilterChip'
+import { FilterChip } from '../FilterChip/FilterChip'
+import { MoreFiltersDrawer } from '../MoreFiltersDrawer/MoreFiltersDrawer'
 import styles from './SearchFilterBar.module.css'
 
 const OP_OPTIONS = [
@@ -41,6 +42,7 @@ export function SearchFilterBar({ filters, onFilterChange, locationPlaceholder }
     [filters.neighborhood, filters.city].filter(Boolean).join(', '),
   )
   const [alertOpen, setAlertOpen] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
 
   function handleSearch(e: FormEvent) {
     e.preventDefault()
@@ -48,15 +50,22 @@ export function SearchFilterBar({ filters, onFilterChange, locationPlaceholder }
     if (parts.length >= 2) {
       onFilterChange({ neighborhood: parts[0], city: parts[1] })
     } else if (parts.length === 1) {
-      // Treat single token as city or neighborhood
       const knownCities = ['Maringá', 'Sarandi']
-      const match = knownCities.find((c) => c.toLowerCase() === parts[0].toLowerCase())
+      const match = knownCities.find((c) => c.toLowerCase() === parts[0]!.toLowerCase())
       if (match) onFilterChange({ city: match, neighborhood: undefined })
-      else onFilterChange({ neighborhood: parts[0] })
+      else onFilterChange({ neighborhood: parts[0], city: undefined })
+    } else {
+      onFilterChange({ city: undefined, neighborhood: undefined })
     }
   }
 
-  const moreCount = [filters.minPrice, filters.maxPrice, filters.minArea].filter(Boolean).length
+  const moreCount = [
+    filters.minPrice,
+    filters.maxPrice,
+    filters.minArea,
+    filters.bathrooms,
+    filters.amenities,
+  ].filter(Boolean).length
 
   return (
     <div className={styles.bar}>
@@ -77,22 +86,22 @@ export function SearchFilterBar({ filters, onFilterChange, locationPlaceholder }
       <div className={styles.chipsRow}>
         <div className={styles.chipsScroll}>
           <FilterChip
-            label="Alugar"
+            label="Alugar/Comprar"
             value={filters.op}
             options={OP_OPTIONS}
             onChange={(v) => onFilterChange({ op: v as 'rent' | 'sale' | undefined })}
           />
           <FilterChip
-            label="Apartamento"
+            label="Tipo de imóvel"
             value={filters.type}
             options={TYPE_OPTIONS}
             onChange={(v) => onFilterChange({ type: v })}
           />
           <FilterChip
-            label="Quartos"
-            value={filters.bedrooms}
-            options={COUNT_OPTIONS.map((o) => ({ value: o.value, label: `${o.label} quartos` }))}
-            onChange={(v) => onFilterChange({ bedrooms: v })}
+            label="Área"
+            value={filters.maxArea}
+            options={AREA_OPTIONS}
+            onChange={(v) => onFilterChange({ maxArea: v })}
           />
           <FilterChip
             label="Vagas de garagem"
@@ -101,36 +110,109 @@ export function SearchFilterBar({ filters, onFilterChange, locationPlaceholder }
             onChange={(v) => onFilterChange({ parkingSpots: v })}
           />
           <FilterChip
-            label="Banheiros"
-            value={filters.bathrooms}
-            options={COUNT_OPTIONS.map((o) => ({ value: o.value, label: `${o.label} banheiros` }))}
-            onChange={(v) => onFilterChange({ bathrooms: v })}
+            label="Quartos"
+            value={filters.bedrooms}
+            options={COUNT_OPTIONS.map((o) => ({ value: o.value, label: `${o.label} quartos` }))}
+            onChange={(v) => onFilterChange({ bedrooms: v })}
           />
-          <FilterChip
-            label="Área"
-            value={filters.maxArea}
-            options={AREA_OPTIONS}
-            onChange={(v) => onFilterChange({ maxArea: v })}
-          />
-          <AmenityToggle
-            label="Mobiliado"
-            value="Mobiliado"
-            amenities={filters.amenities}
-            onChange={(next) => onFilterChange({ amenities: next })}
-          />
-          <AmenityToggle
-            label="Aceita pets"
-            value="Aceita pet"
-            amenities={filters.amenities}
-            onChange={(next) => onFilterChange({ amenities: next })}
-          />
-          <AmenityToggle
-            label="Próximo ao metrô"
-            value="Perto de metrô"
-            amenities={filters.amenities}
-            onChange={(next) => onFilterChange({ amenities: next })}
-          />
-          <MoreFiltersChip activeCount={moreCount}>
+          <MoreFiltersDrawer
+            open={moreOpen}
+            activeCount={moreCount}
+            onOpen={() => setMoreOpen(true)}
+            onClose={() => setMoreOpen(false)}
+          >
+            <label className={styles.moreField}>
+              Alugar / Comprar
+              <select
+                className={styles.moreInput}
+                value={filters.op ?? ''}
+                onChange={(e) =>
+                  onFilterChange({
+                    op: (e.target.value || undefined) as 'rent' | 'sale' | undefined,
+                  })
+                }
+              >
+                <option value="">Qualquer</option>
+                {OP_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.moreField}>
+              Tipo de imóvel
+              <select
+                className={styles.moreInput}
+                value={filters.type ?? ''}
+                onChange={(e) => onFilterChange({ type: e.target.value || undefined })}
+              >
+                <option value="">Qualquer</option>
+                {TYPE_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.moreField}>
+              Quartos (mín.)
+              <select
+                className={styles.moreInput}
+                value={filters.bedrooms ?? ''}
+                onChange={(e) => onFilterChange({ bedrooms: e.target.value || undefined })}
+              >
+                <option value="">Qualquer</option>
+                {COUNT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.moreField}>
+              Banheiros (mín.)
+              <select
+                className={styles.moreInput}
+                value={filters.bathrooms ?? ''}
+                onChange={(e) => onFilterChange({ bathrooms: e.target.value || undefined })}
+              >
+                <option value="">Qualquer</option>
+                {COUNT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.moreField}>
+              Vagas (mín.)
+              <select
+                className={styles.moreInput}
+                value={filters.parkingSpots ?? ''}
+                onChange={(e) => onFilterChange({ parkingSpots: e.target.value || undefined })}
+              >
+                <option value="">Qualquer</option>
+                {COUNT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.moreField}>
+              Área máxima (m²)
+              <select
+                className={styles.moreInput}
+                value={filters.maxArea ?? ''}
+                onChange={(e) => onFilterChange({ maxArea: e.target.value || undefined })}
+              >
+                <option value="">Qualquer</option>
+                {AREA_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.moreField}>
+              Área mínima (m²)
+              <input
+                type="number"
+                min={0}
+                className={styles.moreInput}
+                value={filters.minArea ?? ''}
+                onChange={(e) => onFilterChange({ minArea: e.target.value || undefined })}
+              />
+            </label>
             <label className={styles.moreField}>
               Preço mínimo
               <input
@@ -151,17 +233,21 @@ export function SearchFilterBar({ filters, onFilterChange, locationPlaceholder }
                 onChange={(e) => onFilterChange({ maxPrice: e.target.value || undefined })}
               />
             </label>
-            <label className={styles.moreField}>
-              Área mínima (m²)
-              <input
-                type="number"
-                min={0}
-                className={styles.moreInput}
-                value={filters.minArea ?? ''}
-                onChange={(e) => onFilterChange({ minArea: e.target.value || undefined })}
+            <div className={styles.amenityRow}>
+              <AmenityToggle
+                label="Mobiliado"
+                value="Mobiliado"
+                amenities={filters.amenities}
+                onChange={(next) => onFilterChange({ amenities: next })}
               />
-            </label>
-          </MoreFiltersChip>
+              <AmenityToggle
+                label="Aceita pets"
+                value="Aceita pet"
+                amenities={filters.amenities}
+                onChange={(next) => onFilterChange({ amenities: next })}
+              />
+            </div>
+          </MoreFiltersDrawer>
         </div>
 
         <button type="button" className={styles.alertBtn} onClick={() => setAlertOpen(true)}>

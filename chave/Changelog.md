@@ -88,3 +88,9 @@
 - N/A-fix: menu da conta abre no clique e fecha ao clicar fora
 - N/A-fix: tipagem do upload de fotos no cadastro de anúncio
 - N/A-fix: menu mobile oculto no desktop para não vazar no scroll horizontal
+- N/A-fix: locatário autenticado pode anunciar sem novo cadastro
+- N/A-fix: textarea de rejeição no admin mantém o foco ao digitar
+- N/A-feat: tarja de status e motivo de rejeição nos anúncios do anunciante
+- N/A-fix: busca da home sem exigir cidade e filtro de cidade case-insensitive
+- N/A-feat: filtros da listagem com dropdowns e painel lateral Mais filtros
+- N/A-fix: marcadores do mapa estilo preço Airbnb com hover

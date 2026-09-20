@@ -319,6 +319,7 @@ export const authHandlers = [
       rentProfile,
       role,
       listProfile,
+      goal: listProfile ? 'list' : sessionUser.goal,
       onboardingComplete: body.onboardingComplete ?? true,
     }
     return HttpResponse.json(sessionUser)

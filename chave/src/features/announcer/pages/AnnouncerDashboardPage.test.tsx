@@ -53,6 +53,7 @@ function renderDashboard(path = '/anuncios') {
         ],
       },
       { path: '/', element: <div>Home public</div> },
+      { path: 'onboarding/anunciar', element: <div>Onboarding anunciar</div> },
     ],
     { initialEntries: [path] },
   )
@@ -135,7 +136,7 @@ describe('AnnouncerDashboardPage', () => {
     expect(screen.getByDisplayValue(seeded[0].title)).toBeInTheDocument()
   })
 
-  it('redirects rent users away from the dashboard', async () => {
+  it('sends rent users to announcer onboarding instead of the dashboard', async () => {
     const { data } = await apiClient.post<{ token: string }>('/api/auth/register', {
       name: 'Locataria',
       email: `rent-dash-${Date.now()}@chave.com.br`,
@@ -157,6 +158,6 @@ describe('AnnouncerDashboardPage', () => {
     })
 
     renderDashboard()
-    expect(await screen.findByText('Home public')).toBeInTheDocument()
+    expect(await screen.findByText('Onboarding anunciar')).toBeInTheDocument()
   })
 })

@@ -166,7 +166,7 @@ export function OnboardingListPage() {
     try {
       await completeOnboarding({ role, listProfile: profile })
       await delay(400)
-      navigate('/', { replace: true })
+      navigate('/anuncios', { replace: true })
     } catch (err: unknown) {
       const message = getApiErrorMessage(
         err,

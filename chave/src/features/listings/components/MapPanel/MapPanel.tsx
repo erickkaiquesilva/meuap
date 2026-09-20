@@ -131,6 +131,31 @@ function MapOverlays({
   )
 }
 
+function pricePillIcon(priceLabel: string, active: boolean): google.maps.Icon {
+  const bg = active ? '#222222' : '#f0f0f0'
+  const fg = active ? '#ffffff' : '#222222'
+  const border = active ? '#222222' : '#d9d9d9'
+  const safe = priceLabel
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+  const width = Math.max(52, 18 + safe.length * 7)
+  const height = 28
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+      <rect x="1" y="1" width="${width - 2}" height="${height - 2}" rx="14" ry="14"
+        fill="${bg}" stroke="${border}" stroke-width="1.5"/>
+      <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle"
+        font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="${fg}">${safe}</text>
+    </svg>
+  `.trim()
+  return {
+    url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`,
+    scaledSize: new google.maps.Size(width, height),
+    anchor: new google.maps.Point(width / 2, height / 2),
+  }
+}
+
 function HoverBalloon({ property }: { property: Property }) {
   const photo = property.photos[0]
   const specs = [
@@ -276,34 +301,25 @@ function GoogleMapPanel({
         <MarkerClusterer>
           {(clusterer) => (
             <>
-              {points.map(({ property, position }) => (
-                <Marker
-                  key={property.id}
-                  position={position}
-                  clusterer={clusterer}
-                  title={`${property.title} — ${formatMapPrice(property.price)}`}
-                  label={{
-                    text: formatMapPrice(property.price),
-                    color: '#1a1a1a',
-                    fontSize: '11px',
-                    fontWeight: '700',
-                  }}
-                  icon={{
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 18,
-                    fillColor: hoveredId === property.id ? '#eff6ff' : '#ffffff',
-                    fillOpacity: 1,
-                    strokeColor: '#2563eb',
-                    strokeWeight: hoveredId === property.id ? 3 : 2,
-                    labelOrigin: new google.maps.Point(0, 0),
-                  }}
-                  onMouseOver={() => showBalloon(property.id)}
-                  onMouseOut={scheduleHideBalloon}
-                  onClick={() => {
-                    window.location.assign(`/imoveis/${property.id}`)
-                  }}
-                />
-              ))}
+              {points.map(({ property, position }) => {
+                const priceLabel = formatMapPrice(property.price)
+                const active = hoveredId === property.id
+                return (
+                  <Marker
+                    key={property.id}
+                    position={position}
+                    clusterer={clusterer}
+                    title={`${property.title} — ${priceLabel}`}
+                    icon={pricePillIcon(priceLabel, active)}
+                    zIndex={active ? 1000 : undefined}
+                    onMouseOver={() => showBalloon(property.id)}
+                    onMouseOut={scheduleHideBalloon}
+                    onClick={() => {
+                      window.location.assign(`/imoveis/${property.id}`)
+                    }}
+                  />
+                )
+              })}
             </>
           )}
         </MarkerClusterer>
@@ -311,7 +327,7 @@ function GoogleMapPanel({
         {hovered && (
           <InfoWindow
             position={hovered.position}
-            options={{ disableAutoPan: true, pixelOffset: new google.maps.Size(0, -36) }}
+            options={{ disableAutoPan: true, pixelOffset: new google.maps.Size(0, -28) }}
             onCloseClick={() => setHoveredId(null)}
           >
             <div

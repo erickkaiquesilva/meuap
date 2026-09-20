@@ -38,19 +38,20 @@ export function Header() {
   }
 
   function handleAnnounceClick() {
-    if (isAuthenticated && user?.goal === 'list' && user.onboardingComplete) {
-      navigate('/anuncios')
-      return
-    }
     if (!isAuthenticated) {
       navigate('/cadastro')
+      return
+    }
+    if (user?.listProfile || (user?.goal === 'list' && user.onboardingComplete)) {
+      navigate('/anuncios')
       return
     }
     if (user?.goal === 'list' && !user.onboardingComplete) {
       navigate('/onboarding/anunciar')
       return
     }
-    navigate('/cadastro')
+    // Já tem conta (ex.: cadastrou para alugar) — coleta dados de anunciante, sem novo cadastro.
+    navigate('/onboarding/anunciar?intent=list')
   }
 
   const [menuOpen, setMenuOpen] = useState(false)
@@ -146,7 +147,7 @@ export function Header() {
               >
                 Alertas
               </NavLink>
-              {user?.goal === 'list' && user.onboardingComplete ? (
+              {user?.listProfile || (user?.goal === 'list' && user.onboardingComplete) ? (
                 <NavLink
                   to="/anuncios"
                   className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.active}` : ''}`}
@@ -271,7 +272,7 @@ export function Header() {
               <NavLink to="/alertas" className={styles.drawerLink} onClick={closeMenu}>
                 Alertas
               </NavLink>
-              {user?.goal === 'list' && user.onboardingComplete ? (
+              {user?.listProfile || (user?.goal === 'list' && user.onboardingComplete) ? (
                 <NavLink to="/anuncios" className={styles.drawerLink} onClick={closeMenu}>
                   Meus anúncios
                 </NavLink>

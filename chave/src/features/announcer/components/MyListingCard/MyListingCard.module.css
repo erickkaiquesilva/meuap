@@ -27,6 +27,46 @@
   flex: 1;
 }
 
+.statusBanner {
+  align-self: flex-start;
+  margin: 0 0 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font: 700 11px/1.2 var(--font-ui);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.status_active {
+  background: #e8f7ef;
+  color: #067647;
+}
+
+.status_pending {
+  background: #fff6e5;
+  color: #b54708;
+}
+
+.status_rejected {
+  background: #fef3f2;
+  color: #b42318;
+}
+
+.status_paused {
+  background: var(--neutral-100);
+  color: var(--neutral-600);
+}
+
+.rejectReason {
+  margin: 4px 0 0;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  background: #fef3f2;
+  border: 1px solid #fecdca;
+  font: 500 13px/1.4 var(--font-ui);
+  color: #912018;
+}
+
 .price {
   margin: 0;
   font: 800 16px/1.2 var(--font-display);
