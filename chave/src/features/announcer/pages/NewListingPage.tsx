@@ -370,11 +370,11 @@ export function NewListingPage() {
 
       const needsR2Upload =
         !isMock
-        && listingIdSaved
+        && !!listingIdSaved
         && photoFiles.length > 0
         && !photos.some((p) => p.startsWith('data:'))
 
-      if (needsR2Upload) {
+      if (needsR2Upload && listingIdSaved) {
         setUploadingPhotos(true)
         const remoteCount = photos.filter((p) => /^https?:\/\//i.test(p)).length
         for (let i = 0; i < photoFiles.length; i++) {
