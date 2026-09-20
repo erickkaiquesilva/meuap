@@ -95,3 +95,4 @@
 - N/A-feat: filtros da listagem com dropdowns e painel lateral Mais filtros
 - N/A-fix: marcadores do mapa estilo preço Airbnb com hover
 - N/A-fix: busca de imóveis sem forçar filtro op=rent
+- N/A-fix: dropdowns dos filtros da listagem clicáveis (portal fora do overflow)

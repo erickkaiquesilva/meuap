@@ -35,12 +35,8 @@
 }
 
 .menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  z-index: 40;
-  min-width: 180px;
-  max-height: 280px;
+  z-index: 200;
+  max-height: min(280px, 50vh);
   overflow-y: auto;
   margin: 0;
   padding: var(--sp-2);

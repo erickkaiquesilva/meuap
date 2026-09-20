@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './FilterChip.module.css'
 
 interface FilterChipOption {
@@ -25,58 +26,91 @@ export function FilterChip({
   toggleable = true,
 }: FilterChipProps) {
   const [open, setOpen] = useState(false)
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number; minWidth: number } | null>(null)
   const id = useId()
   const rootRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLUListElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   const selectedLabel = options.find((o) => o.value === value)?.label
   const display = selectedLabel ?? label
 
+  useLayoutEffect(() => {
+    if (!open || !buttonRef.current) {
+      setMenuPos(null)
+      return
+    }
+    function place() {
+      const rect = buttonRef.current!.getBoundingClientRect()
+      const minWidth = Math.max(rect.width, 180)
+      let left = rect.left
+      if (left + minWidth > window.innerWidth - 8) {
+        left = Math.max(8, window.innerWidth - minWidth - 8)
+      }
+      setMenuPos({
+        top: rect.bottom + 6,
+        left,
+        minWidth,
+      })
+    }
+    place()
+    window.addEventListener('resize', place)
+    window.addEventListener('scroll', place, true)
+    return () => {
+      window.removeEventListener('resize', place)
+      window.removeEventListener('scroll', place, true)
+    }
+  }, [open])
+
   useEffect(() => {
     if (!open) return
-    function onDoc(e: MouseEvent) {
-      if (!rootRef.current?.contains(e.target as Node)) setOpen(false)
+    function onPointerDown(e: PointerEvent) {
+      const target = e.target as Node
+      if (rootRef.current?.contains(target)) return
+      if (menuRef.current?.contains(target)) return
+      setOpen(false)
     }
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') setOpen(false)
     }
-    document.addEventListener('mousedown', onDoc)
+    // Adia o listener para o clique que abriu o menu não fechar na hora.
+    const timer = window.setTimeout(() => {
+      document.addEventListener('pointerdown', onPointerDown)
+    }, 0)
     document.addEventListener('keydown', onKey)
     return () => {
-      document.removeEventListener('mousedown', onDoc)
+      window.clearTimeout(timer)
+      document.removeEventListener('pointerdown', onPointerDown)
       document.removeEventListener('keydown', onKey)
     }
   }, [open])
 
-  return (
-    <div className={styles.root} ref={rootRef}>
-      <button
-        type="button"
-        id={id}
-        className={`${styles.chip} ${active || value ? styles.chipActive : ''}`}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls={`${id}-list`}
-        onClick={() => setOpen((o) => !o)}
-      >
-        <span>{display}</span>
-        <Chevron />
-      </button>
+  function select(next: string | undefined) {
+    onChange(next)
+    setOpen(false)
+  }
 
-      {open && (
+  const menu = open && menuPos
+    ? createPortal(
         <ul
+          ref={menuRef}
           id={`${id}-list`}
           className={styles.menu}
           role="listbox"
           aria-labelledby={id}
+          style={{
+            position: 'fixed',
+            top: menuPos.top,
+            left: menuPos.left,
+            minWidth: menuPos.minWidth,
+            zIndex: 200,
+          }}
         >
           <li role="option" aria-selected={!value}>
             <button
               type="button"
               className={styles.option}
-              onClick={() => {
-                onChange(undefined)
-                setOpen(false)
-              }}
+              onClick={() => select(undefined)}
             >
               Qualquer
             </button>
@@ -88,16 +122,34 @@ export function FilterChip({
                 className={`${styles.option} ${value === o.value ? styles.optionActive : ''}`}
                 onClick={() => {
                   const next = toggleable && value === o.value ? undefined : o.value
-                  onChange(next)
-                  setOpen(false)
+                  select(next)
                 }}
               >
                 {o.label}
               </button>
             </li>
           ))}
-        </ul>
-      )}
+        </ul>,
+        document.body,
+      )
+    : null
+
+  return (
+    <div className={styles.root} ref={rootRef}>
+      <button
+        ref={buttonRef}
+        type="button"
+        id={id}
+        className={`${styles.chip} ${active || value ? styles.chipActive : ''}`}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={`${id}-list`}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span>{display}</span>
+        <Chevron />
+      </button>
+      {menu}
     </div>
   )
 }
@@ -120,10 +172,13 @@ export function MoreFiltersChip({ children, activeCount }: MoreFiltersChipProps)
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') setOpen(false)
     }
-    document.addEventListener('mousedown', onDoc)
+    const timer = window.setTimeout(() => {
+      document.addEventListener('click', onDoc)
+    }, 0)
     document.addEventListener('keydown', onKey)
     return () => {
-      document.removeEventListener('mousedown', onDoc)
+      window.clearTimeout(timer)
+      document.removeEventListener('click', onDoc)
       document.removeEventListener('keydown', onKey)
     }
   }, [open])
