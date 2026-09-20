@@ -85,4 +85,5 @@
 - N/A-feat: página de detalhe do anúncio na moderação admin com fotos
 - N/A-fix: fotos do anúncio persistidas como data URL quando R2 não está configurado
 - N/A-feat: menu da conta com avatar de iniciais, trocar senha e sair
+- N/A-fix: menu da conta abre no clique e fecha ao clicar fora
 - N/A-fix: menu mobile oculto no desktop para não vazar no scroll horizontal

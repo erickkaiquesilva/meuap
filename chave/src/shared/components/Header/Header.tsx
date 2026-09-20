@@ -154,12 +154,7 @@ export function Header() {
                   Meus anúncios
                 </NavLink>
               ) : null}
-              <div
-                className={styles.account}
-                ref={accountRef}
-                onMouseEnter={() => setAccountOpen(true)}
-                onMouseLeave={() => setAccountOpen(false)}
-              >
+              <div className={styles.account} ref={accountRef}>
                 <button
                   type="button"
                   className={styles.avatarBtn}
